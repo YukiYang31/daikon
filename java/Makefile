@@ -911,6 +911,7 @@ JAVAC_REGEX_ARGS := -processor org.checkerframework.checker.regex.RegexChecker -
 JAVAC_REGEX_QUAL_ARGS := -processor org.checkerframework.checker.experimental.regex_qual.RegexCheckerAdapter -implicit:class -Xlint:-processing -AskipDefs='${ALLSYSTEMS_SKIPDEFS}'
 JAVAC_SIGNATURE_ARGS := -processor org.checkerframework.checker.signature.SignatureChecker -implicit:class -Xlint:-processing -AskipDefs='${ALLSYSTEMS_SKIPDEFS}'
 JAVAC_SIGNEDNESS_ARGS := -processor org.checkerframework.checker.signedness.SignednessChecker -implicit:class -Xlint:-processing -AskipDefs='${ALLSYSTEMS_SKIPDEFS}'
+JAVAC_MODIFIABILITY_ARGS := -processor org.checkerframework.checker.modifiability.ModifiabilityChecker -implicit:class -Xlint:-processing -AskipDefs='${ALLSYSTEMS_SKIPDEFS}'
 JAVAC_VINDEX_ARGS := -processor org.checkerframework.common.subtyping.SubtypingChecker -Aquals=typequals.VIndexTop,typequals.ValueIndex,typequals.VarIndex,typequals.VIndexUnqualified,typequals.VIndexBottom -implicit:class -Xlint:-processing -J-Dcheckers.skipUses='^java\.'
 # -AsuppressWarnings=lock:method.guarantee.violated,lock:override.sideeffect is temporary.
 # Once the Purity Checker and -AsuggestPureMethods are fixed, they can be run on plume-lib
@@ -964,7 +965,7 @@ typecheck-part2: ${ALL_GENERATED_FILES} compile
 typecheck-part2-nocompile: typecheck-index-nocompile
 typecheck-part3: ${ALL_GENERATED_FILES} compile
 	${MAKE} typecheck-part3-nocompile
-typecheck-part3-nocompile: typecheck-resourceleak-nocompile typecheck-signature-nocompile typecheck-signedness-nocompile
+typecheck-part3-nocompile: typecheck-modifiability-nocompile typecheck-resourceleak-nocompile typecheck-signature-nocompile typecheck-signedness-nocompile
 typecheck-all: ${ALL_GENERATED_FILES} compile
 	${MAKE} typecheck-all-nocompile
 typecheck-all-nocompile: typecheck-part1 typecheck-part2 typecheck-part3
@@ -1065,6 +1066,12 @@ typecheck-resourceleak: ${ALL_GENERATED_FILES} compile
 typecheck-resourceleak-nocompile:
 	@echo ${JAVAC_COMMAND} ${JAVAC_RESOURCELEAK_ARGS} ${CHECKER_ARGS} ...
 	@${JAVAC_COMMAND} ${JAVAC_RESOURCELEAK_ARGS} ${CHECKER_ARGS} ${JAVA_FILES}
+
+typecheck-modifiability: ${ALL_GENERATED_FILES} compile
+	${MAKE} typecheck-modifiability-nocompile
+typecheck-modifiability-nocompile:
+	@echo ${JAVAC_COMMAND} ${JAVAC_MODIFIABILITY_ARGS} ${CHECKER_ARGS} ...
+	@${JAVAC_COMMAND} ${JAVAC_MODIFIABILITY_ARGS} ${CHECKER_ARGS} ${JAVA_FILES}
 
 typecheck-signature: ${ALL_GENERATED_FILES} compile
 	${MAKE} typecheck-signature-nocompile
