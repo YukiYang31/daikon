@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -129,7 +130,7 @@ public class Violation implements Serializable {
 
   // Collection of all the Violation objects created.
   // The key is the hashCode of the Violation that is the value.
-  private static HashMap<Integer, Violation> violationsMap = new HashMap<>();
+  private static @Modifiable HashMap<Integer, Violation> violationsMap = new HashMap<>();
 
   // [[[ TODO: ensure args are not null (otherwise hashCode,
   // equals can break). Do the same thing for Property. ]]]

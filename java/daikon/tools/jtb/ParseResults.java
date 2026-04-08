@@ -15,6 +15,7 @@ import jtb.*;
 import jtb.syntaxtree.*;
 import jtb.visitor.*;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
@@ -26,7 +27,7 @@ public class ParseResults {
 
   public String fileName;
 
-  public List<TypeDeclaration> roots = new ArrayList<>();
+  public @Modifiable List<TypeDeclaration> roots = new ArrayList<>();
 
   public CompilationUnit compilationUnit;
 

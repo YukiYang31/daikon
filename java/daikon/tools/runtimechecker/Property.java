@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -20,7 +21,7 @@ public class Property implements Serializable {
   private static final long serialVersionUID = 1L;
 
   /** Maps into all the Property objects created. */
-  private static HashMap<Integer, Property> propertiesMap = new HashMap<>();
+  private static @Modifiable HashMap<Integer, Property> propertiesMap = new HashMap<>();
 
   /** The signature of the method that this property describes. */
   private final String methodSignature;

@@ -4,12 +4,13 @@ import daikon.tools.jtb.Ast;
 import java.util.ArrayList;
 import java.util.List;
 import jtb.syntaxtree.*;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /** Represents a set of classes created by the instrumenter to check invariants. */
 public class CheckerClasses {
 
-  protected List<CheckerClass> classes = new ArrayList<>();
+  protected @Modifiable List<CheckerClass> classes = new ArrayList<>();
 
   public void addCheckerClass(ClassOrInterfaceBody clazz) {
     classes.add(new CheckerClass(clazz));

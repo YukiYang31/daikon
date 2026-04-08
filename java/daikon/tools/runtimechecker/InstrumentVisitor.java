@@ -22,6 +22,7 @@ import jtb.syntaxtree.*;
 import jtb.visitor.DepthFirstVisitor;
 import jtb.visitor.TreeDumper;
 import jtb.visitor.TreeFormatter;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.signature.qual.Identifier;
@@ -57,8 +58,8 @@ public class InstrumentVisitor extends DepthFirstVisitor {
 
   // The methods and constructors that were visited (in other words,
   // those explicitly declared in the source).
-  public List<Method> visitedMethods = new ArrayList<>();
-  public List<Constructor<?>> visitedConstructors = new ArrayList<>();
+  public @Modifiable List<Method> visitedMethods = new ArrayList<>();
+  public @Modifiable List<Constructor<?>> visitedConstructors = new ArrayList<>();
 
   // [[ TODO: I'm using xmlString() because it will definitely give
   // different values for different Properties. But if Properties
@@ -66,7 +67,7 @@ public class InstrumentVisitor extends DepthFirstVisitor {
   // returns unique values for unique Properties, then I should be
   // able to use hashcode. So: make sure that the statements above
   // are all correct, and then use hashcode. ]]
-  private final Map<String, String> xmlStringToIndex = new HashMap<>();
+  private final @Modifiable Map<String, String> xmlStringToIndex = new HashMap<>();
 
   private int varNumCounter = 0;
 
@@ -310,7 +311,7 @@ public class InstrumentVisitor extends DepthFirstVisitor {
   }
 
   // Methods that we have created
-  private final Set<MethodDeclaration> generated_methods = new HashSet<>();
+  private final @Modifiable Set<MethodDeclaration> generated_methods = new HashSet<>();
 
   /** */
   // MethodDeclaration:
