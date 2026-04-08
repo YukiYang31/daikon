@@ -18,6 +18,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -70,11 +73,11 @@ public class PptRelation implements Serializable {
 
   /** Map from parent vars to matching child vars. */
   @SuppressWarnings("serial")
-  public Map<VarInfo, VarInfo> parent_to_child_map;
+  public @Growable @Replaceable Map<VarInfo, VarInfo> parent_to_child_map;
 
   /** Map from child vars to matching parent vars. */
   @SuppressWarnings("serial")
-  public Map<VarInfo, VarInfo> child_to_parent_map;
+  public @Growable @Replaceable Map<VarInfo, VarInfo> child_to_parent_map;
 
   /** Boolean. Controls whether the object-user relation is created in the variable hierarchy. */
   public static boolean dkconfig_enable_object_user = false;
@@ -828,7 +831,7 @@ public class PptRelation implements Serializable {
 
       // Loop over each splitter
       // splitter_loop:
-      for (Iterator<PptSplitter> ii = ppt.splitters.iterator(); ii.hasNext(); ) {
+      for (@Modifiable Iterator<PptSplitter> ii = ppt.splitters.iterator(); ii.hasNext(); ) {
         PptSplitter ppt_split = ii.next();
 
         // list of children that match this splitter

@@ -61,6 +61,9 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.formatter.qual.FormatMethod;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -245,8 +248,8 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
 
   public @Nullable RefType ref_type;
   public VarKind var_kind;
-  public EnumSet<VarFlags> var_flags = EnumSet.noneOf(VarFlags.class);
-  public EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
+  public @Shrinkable @Growable EnumSet<VarFlags> var_flags = EnumSet.noneOf(VarFlags.class);
+  public @Shrinkable EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
 
   public VarDefinition vardef;
 
@@ -268,7 +271,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
 
   /** Parent program points in ppt hierarchy (optional) */
   @SuppressWarnings("serial")
-  public List<VarParent> parents;
+  public @Growable List<VarParent> parents;
 
   /**
    * The relative name of this variable with respect to its enclosing variable. Field name for
@@ -2589,7 +2592,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
         }
       }
 
-      private List<VarInfo> addVar(List<VarInfo> result, VarInfoName vin) {
+      private List<VarInfo> addVar(@Growable List<VarInfo> result, VarInfoName vin) {
         VarInfo vi = ppt.find_var_by_name(applyPreMaybe(vin).name());
         // vi could be null because some variable's prefix is not a
         // variable.  Example: for static variable "Class.staticvar",
@@ -2621,7 +2624,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
        */
       // Should this operate by side effect on a global variable?
       // (Then what is the type of the visitor; what does everything return?)
-      private List<VarInfo> addVarInfo(List<VarInfo> result, VarInfo vi) {
+      private List<VarInfo> addVarInfo(@Growable List<VarInfo> result, VarInfo vi) {
         assert vi != null;
         assert !vi.isDerived() || vi.isDerived() : "addVar on derived variable: " + vi;
         // Don't guard primitives
@@ -2651,7 +2654,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
     } // end of class GuardingVisitor
 
     if (!FileIO.new_decl_format) {
-      List<VarInfo> result = var_info_name.accept(new GuardingVisitor()); // vin ok
+      @Shrinkable List<VarInfo> result = var_info_name.accept(new GuardingVisitor()); // vin ok
       result.remove(ppt.find_var_by_name(var_info_name.name())); // vin ok
       assert !ArraysPlume.anyNull(result);
       return result;
@@ -2865,7 +2868,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
     }
   }
 
-  private static Set<String> out_strings = new LinkedHashSet<>();
+  private static @Modifiable Set<String> out_strings = new LinkedHashSet<>();
 
   /** If the message is new print it, otherwise discard it. */
   @FormatMethod
@@ -3043,7 +3046,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
   }
 
   // Map java objects to C# objects.
-  private static final Map<String, String> csharp_types = new HashMap<>();
+  private static final @Modifiable Map<String, String> csharp_types = new HashMap<>();
 
   static {
     csharp_types.put("java.lang.String", "string");

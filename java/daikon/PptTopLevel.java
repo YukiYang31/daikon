@@ -102,6 +102,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
@@ -274,7 +275,7 @@ public class PptTopLevel extends Ppt {
 
   /** List of all of the splitters for this ppt. */
   // Not List because List doesn't support the trimToSize() method.
-  public @MonotonicNonNull ArrayList<PptSplitter> splitters = null;
+  public @MonotonicNonNull @Modifiable ArrayList<PptSplitter> splitters = null;
 
   /**
    * Iterator for all of the conditional ppts. Returns each PptConditional from each entry in
@@ -355,11 +356,11 @@ public class PptTopLevel extends Ppt {
 
   /** All children relations in the variable/ppt hierarchy. */
   @SuppressWarnings("serial")
-  public List<PptRelation> children = new ArrayList<>();
+  public @Modifiable List<PptRelation> children = new ArrayList<>();
 
   /** All parent relations in the variable/ppt hierarchy. */
   @SuppressWarnings("serial")
-  public List<PptRelation> parents = new ArrayList<>();
+  public @Modifiable List<PptRelation> parents = new ArrayList<>();
 
   /**
    * List of parent relations in the variable/ppt hierarchy as specified in the declaration record.

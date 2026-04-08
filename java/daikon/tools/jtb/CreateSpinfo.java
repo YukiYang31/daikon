@@ -18,6 +18,10 @@ import java.util.logging.Logger;
 import jtb.JavaParser;
 import jtb.ParseException;
 import jtb.syntaxtree.*;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.plumelib.util.CollectionsPlume;
@@ -206,8 +210,8 @@ public class CreateSpinfo {
    * @param conditionMap the map from which to remove redundant and trivial conditions
    */
   private static void filterConditions(Map<String, List<String>> conditionMap) {
-    for (Map.Entry<String, List<String>> entry : conditionMap.entrySet()) {
-      List<String> conditions = entry.getValue();
+    for (Map.@Modifiable Entry<String, List<String>> entry : conditionMap.entrySet()) {
+      @Shrinkable List<String> conditions = entry.getValue();
       conditions = CollectionsPlume.withoutDuplicates(conditions);
       conditions.remove("true");
       conditions.remove("false");
@@ -219,8 +223,8 @@ public class CreateSpinfo {
    * For each condition in conditionMap, an additional condition is added which is identical to the
    * initial condition with the exception that it is prefixed with "orig(" and suffixed with ")".
    */
-  private static void addOrigConditions(Map<String, List<String>> conditionMap) {
-    for (List<String> conditions : conditionMap.values()) {
+  private static void addOrigConditions(Map<String, @Growable List<String>> conditionMap) {
+    for (@Growable List<String> conditions : conditionMap.values()) {
       int size = conditions.size();
       for (int i = 0; i < size; i++) {
         conditions.add(addOrig(conditions.get(i)));
@@ -246,7 +250,7 @@ public class CreateSpinfo {
    */
   private static void printSpinfoFile(
       PrintWriter output,
-      Map<String, List<String>> conditions,
+      Map<String, @Replaceable List<String>> conditions,
       Map<String, String> replaceStatements,
       @Nullable String packageName)
       throws IOException {
@@ -261,7 +265,7 @@ public class CreateSpinfo {
       output.println();
     }
     for (@KeyFor("conditions") String method : MapsP.sortedKeySet(conditions)) {
-      List<String> method_conds = conditions.get(method);
+      @Replaceable List<String> method_conds = conditions.get(method);
       Collections.sort(method_conds);
       if (!method_conds.isEmpty()) {
         String qualifiedMethod = (packageName == null) ? method : packageName + "." + method;

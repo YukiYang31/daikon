@@ -25,6 +25,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
@@ -131,27 +135,27 @@ public class NIS {
    * Map from invariant class to a list of all of the suppression sets that contain a suppressor of
    * that class.
    */
-  public static @MonotonicNonNull Map<Class<? extends Invariant>, List<NISuppressionSet>>
+  public static @MonotonicNonNull @Shrinkable Map<Class<? extends Invariant>, List<NISuppressionSet>>
       suppressor_map;
 
   /**
    * Map from invariant class to the number of suppressions that contain a suppressor of that class.
    */
-  public static @MonotonicNonNull Map<Class<? extends Invariant>, Integer>
+  public static @MonotonicNonNull @Growable @Replaceable Map<Class<? extends Invariant>, Integer>
       suppressor_map_suppression_count;
 
   /** List of all suppressions. Is set by {@link #init_ni_suppression}. */
-  static @MonotonicNonNull List<NISuppressionSet> all_suppressions;
+  static @MonotonicNonNull @Growable List<NISuppressionSet> all_suppressions;
 
   /** List of suppressor invariant prototypes. */
-  public static @MonotonicNonNull List<@Prototype Invariant> suppressor_proto_invs;
+  public static @MonotonicNonNull @Growable List<@Prototype Invariant> suppressor_proto_invs;
 
   /**
    * List of invariants that are unsuppressed by the current sample. The {@link #falsified} and
    * {@link #process_falsified_invs} methods add created invariants to this list. This list is
    * cleared by {@link #apply_samples}.
    */
-  public static List<Invariant> new_invs = new ArrayList<>();
+  public static @Modifiable List<Invariant> new_invs = new ArrayList<>();
 
   /**
    * List of invariants that are unsuppressed and then falsified by the current sample. This list is
@@ -159,7 +163,7 @@ public class NIS {
    * sample is applied to invariants in new_invs. The list is only used when the falsified method is
    * used for processing suppressions.
    */
-  public static List<Invariant> newly_falsified = new ArrayList<>();
+  public static @Modifiable List<Invariant> newly_falsified = new ArrayList<>();
 
   // Statistics that are kept during processing.  Some of these are kept
   // and/or make sense for some approaches and not for others
@@ -736,7 +740,7 @@ public class NIS {
    * antecedents.
    */
   @RequiresNonNull("NIS.suppressor_map")
-  static void merge_always_comparable(Map<VarComparability, Antecedents> comp_ants) {
+  static void merge_always_comparable(@Shrinkable Map<VarComparability, Antecedents> comp_ants) {
 
     // Find the antecedents that are always comparable (if any)
     Antecedents compare_all = null;

@@ -33,6 +33,8 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.interning.qual.InternMethod;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -445,7 +447,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
 
   // It would be nice if a generalized form of the mechanics of
   // interning were abstracted out somewhere.
-  private static final WeakHashMap<VarInfoName, WeakReference<VarInfoName>> internTable =
+  private static final @Modifiable WeakHashMap<VarInfoName, WeakReference<VarInfoName>> internTable =
       new WeakHashMap<>();
 
   // This does not make any guarantee that the components of the
@@ -3057,7 +3059,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     // state and accessors
-    private final List<VarInfoName> result = new ArrayList<>();
+    private final @Modifiable List<VarInfoName> result = new ArrayList<>();
 
     /** Method returning the actual results (the nodes in order). */
     public List<VarInfoName> nodes() {
@@ -3165,7 +3167,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
      *
      * @see #simples()
      */
-    private Set<String> simples;
+    private @Growable Set<String> simples;
 
     /**
      * Returns collection of simple identifiers used in this expression, as Strings. (Used, for
@@ -3236,7 +3238,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
      *
      * @see #unquants()
      */
-    private Set<VarInfoName> /*actually <Elements || Slice>*/ unquant;
+    private @Growable Set<VarInfoName> /*actually <Elements || Slice>*/ unquant;
 
     /**
      * Returns a collection of the nodes under the root that need quantification. Each node
@@ -3528,7 +3530,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     /** Record type for return value of the quantify method below. */
     public static class QuantifyReturn {
       public @Interned VarInfoName[] root_primes;
-      public List<@Interned VarInfoName[]>
+      public @Growable List<@Interned VarInfoName[]>
           bound_vars; // each element is VarInfoName[3] = <variable, lower, upper>
     }
 

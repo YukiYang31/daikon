@@ -192,6 +192,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.checkerframework.checker.interning.qual.Interned;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -502,7 +503,7 @@ public final class Daikon {
   public static @Nullable Invariant current_inv = null;
 
   /* List of prototype invariants (one for each type of invariant) */
-  public static ArrayList<@Prototype Invariant> proto_invs = new ArrayList<>();
+  public static @Growable ArrayList<@Prototype Invariant> proto_invs = new ArrayList<>();
 
   /** Debug tracer. */
   public static final Logger debugTrace = Logger.getLogger("daikon.Daikon");
