@@ -60,6 +60,8 @@ import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -213,7 +215,7 @@ public final class FileIO {
   // old values of all variables in scope the last time the program point
   // was executed. This enables us to determine whether the values have been
   // modified since this program point was last executed.
-  static HashMap<PptTopLevel, String[]> ppt_to_value_reps = new HashMap<>();
+  static @Growable @Replaceable HashMap<PptTopLevel, String[]> ppt_to_value_reps = new HashMap<>();
 
   // For debugging purposes: printing out a modified trace file with
   // changed modbits.
@@ -524,7 +526,7 @@ public final class FileIO {
   }
 
   /** Parses a program point flag record. Adds any specified flags to to flags. */
-  private static void parse_ppt_flags(ParseState state, Scanner scanner, EnumSet<PptFlags> flags) {
+  private static void parse_ppt_flags(ParseState state, Scanner scanner, @Growable EnumSet<PptFlags> flags) {
 
     flags.add(parse_enum_val(state, scanner, PptFlags.class, "ppt flags"));
     while (scanner.hasNext()) {
@@ -1010,9 +1012,9 @@ public final class FileIO {
 
   // Map key is a (global, not per-procedure) nonce.
   // The nonce indicates which returns are associated with which entries.
-  static HashMap<Integer, Invocation> call_hashmap = new HashMap<>();
+  static @Modifiable HashMap<Integer, Invocation> call_hashmap = new HashMap<>();
   // call_stack is for procedures without nonces.
-  static Deque<Invocation> call_stack = new ArrayDeque<Invocation>();
+  static @Modifiable Deque<Invocation> call_stack = new ArrayDeque<Invocation>();
 
   /**
    * Reads data from {@code .dtrace} files. For each record in the files, calls the appropriate
@@ -1037,7 +1039,7 @@ public final class FileIO {
    * @see #read_data_trace_file(String,PptMap,Processor,boolean,boolean)
    */
   public static void read_data_trace_files(
-      Collection<String> files, PptMap all_ppts, Processor processor, boolean ppts_may_be_new)
+      @Growable Collection<String> files, PptMap all_ppts, Processor processor, boolean ppts_may_be_new)
       throws IOException {
 
     for (String filename : files) {
@@ -2742,7 +2744,7 @@ public final class FileIO {
      * function application.
      */
     @SuppressWarnings("serial")
-    public @Nullable List<String> function_args = null;
+    public @Nullable @Growable List<String> function_args = null;
 
     /** The type of the variable as stored in the dtrace file (required) */
     public ProglangType rep_type = null;
@@ -2754,7 +2756,7 @@ public final class FileIO {
     public @Growable @Shrinkable EnumSet<VarFlags> flags = EnumSet.noneOf(VarFlags.class);
 
     /** Language specific variable flags (optional) */
-    public @Shrinkable EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
+    public @Shrinkable @Growable EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
 
     /** Comparability of this variable (required. */
     @SuppressWarnings("serial")
@@ -2762,7 +2764,7 @@ public final class FileIO {
 
     /** Parent program points in ppt hierarchy (optional) */
     @SuppressWarnings("serial")
-    public List<VarParent> parents;
+    public @Shrinkable List<VarParent> parents;
 
     /** Non-null if this 'variable' always has the same value (optional) */
     @SuppressWarnings("serial")

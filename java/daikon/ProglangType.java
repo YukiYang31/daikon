@@ -12,6 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.dataflow.qual.Pure;
@@ -55,7 +56,7 @@ public final @Interned class ProglangType implements Serializable {
    * a {@code @BinaryName}, but when Daikon is processing programs written in other languages, it
    * can be arbitrary.
    */
-  public static HashSet<String> list_implementors = new LinkedHashSet<>();
+  public static @Growable HashSet<String> list_implementors = new LinkedHashSet<>();
 
   /**
    * If true, treat 32 bit values whose high bit is on, as a negative number (rather than as a 32
@@ -227,7 +228,7 @@ public final @Interned class ProglangType implements Serializable {
     @SuppressWarnings("interning") // test above did not find one, so the new one is interned
     @Interned ProglangType result = new ProglangType(t_base, t_dims);
 
-    List<ProglangType> v =
+    @Growable List<ProglangType> v =
         all_known_types.computeIfAbsent(t_base, __ -> new ArrayList<ProglangType>());
 
     v.add(result);

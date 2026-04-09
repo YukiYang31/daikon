@@ -102,6 +102,8 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -271,7 +273,7 @@ public class PptTopLevel extends Ppt {
    * {@link #views_iterable}, or {@link #views_iterator}.
    */
   @SuppressWarnings("serial")
-  private Map<List<Integer>, PptSlice> views;
+  private @Growable @Replaceable Map<List<Integer>, PptSlice> views;
 
   /** List of all of the splitters for this ppt. */
   // Not List because List doesn't support the trimToSize() method.
@@ -404,11 +406,11 @@ public class PptTopLevel extends Ppt {
   // mark_implied_via_simplify.
   /** Redundant invariants, except for Equality invariants. */
   @SuppressWarnings("serial")
-  public Set<Invariant> redundant_invs = new LinkedHashSet<>(0);
+  public @Growable Set<Invariant> redundant_invs = new LinkedHashSet<>(0);
 
   /** The canonical VarInfo for the equality. */
   @SuppressWarnings("serial")
-  public Set<VarInfo> redundant_invs_equality = new LinkedHashSet<>(0);
+  public @Growable Set<VarInfo> redundant_invs_equality = new LinkedHashSet<>(0);
 
   @SuppressWarnings("fields.uninitialized") // todo: initialization and helper methods
   public PptTopLevel(
@@ -2979,9 +2981,9 @@ public class PptTopLevel extends Ppt {
     Invariant[] invs;
     {
       // Replace pairwise equality with an equivalence set
-      List<Invariant> all_noeq = invariants_vector();
+      @Replaceable List<Invariant> all_noeq = invariants_vector();
       Collections.sort(all_noeq, icfp);
-      List<Invariant> all = InvariantFilters.addEqualityInvariants(all_noeq);
+      @Replaceable List<Invariant> all = InvariantFilters.addEqualityInvariants(all_noeq);
       Collections.sort(all, icfp);
       List<Invariant> printing = new ArrayList<>();
       for (Invariant inv : all) {
@@ -3044,7 +3046,7 @@ public class PptTopLevel extends Ppt {
     // program points, and we don't necessarily want to lose the
     // unconditional version of the invariant at the conditional ppt.
     for (PptTopLevel ppt : closure) {
-      List<Invariant> invs_vec = ppt.invariants_vector();
+      @Replaceable List<Invariant> invs_vec = ppt.invariants_vector();
       Collections.sort(invs_vec, icfp);
       for (Invariant inv : InvariantFilters.addEqualityInvariants(invs_vec)) {
         if (inv instanceof Implication) {
@@ -3264,7 +3266,7 @@ public class PptTopLevel extends Ppt {
 
   /** Cached VarInfos that are parameter variables. */
   @SuppressWarnings("serial")
-  private @MonotonicNonNull Set<VarInfo> paramVars = null;
+  private @MonotonicNonNull @Growable Set<VarInfo> paramVars = null;
 
   /** Returns variables in this Ppt that are parameters. */
   @Pure

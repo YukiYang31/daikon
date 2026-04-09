@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -30,7 +31,7 @@ public class PptMap implements Serializable {
 
   /** The map that represents this PptMap. */
   @SuppressWarnings("serial")
-  private final Map<String, PptTopLevel> nameToPpt = new LinkedHashMap<>();
+  private final @Modifiable Map<String, PptTopLevel> nameToPpt = new LinkedHashMap<>();
 
   public void add(PptTopLevel ppt) {
     nameToPpt.put(ppt.name(), ppt);

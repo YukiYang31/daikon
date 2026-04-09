@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -84,7 +85,7 @@ public class DynamicConstants implements Serializable {
    * <p>Each element, c, has c.constant = true, c.count &gt; 0, elt.val != null.
    */
   @SuppressWarnings("serial")
-  List<Constant> con_list = new ArrayList<>();
+  @Modifiable List<Constant> con_list = new ArrayList<>();
 
   /**
    * List of variables that have always been missing.
@@ -92,7 +93,7 @@ public class DynamicConstants implements Serializable {
    * <p>For each element c, c.always_missing = true or con.vi.missingOutOfBounds().
    */
   @SuppressWarnings("serial")
-  List<Constant> missing_list = new ArrayList<>();
+  @Modifiable List<Constant> missing_list = new ArrayList<>();
 
   // Same contents in both.  Why two data structures?
   /** Array of all variables. Some may be non-constant. */
@@ -101,7 +102,7 @@ public class DynamicConstants implements Serializable {
   // Same contents in both.  Why two data structures?
   /** List of all variables. Some may be non-constant. */
   @SuppressWarnings("serial")
-  List<Constant> all_list = new ArrayList<>();
+  @Modifiable List<Constant> all_list = new ArrayList<>();
 
   /** Program point of these constants. */
   PptTopLevel ppt;

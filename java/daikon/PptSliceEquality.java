@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -204,7 +205,7 @@ public class PptSliceEquality extends PptSlice {
     Map<VarInfo, List<VarInfo>> varmap = new LinkedHashMap<>();
     Map<VarInfo, Integer> sample_cnt_map = new LinkedHashMap<>();
     for (VarInfo.Pair cp : eset) {
-      List<VarInfo> vlist = varmap.get(cp.v1);
+      @Growable List<VarInfo> vlist = varmap.get(cp.v1);
       if (vlist == null) {
         vlist = new ArrayList<VarInfo>();
         vlist.add(cp.v1);
@@ -445,7 +446,7 @@ public class PptSliceEquality extends PptSlice {
     if (key == null) {
       throw new IllegalArgumentException();
     }
-    List<VarInfo> elements = map.computeIfAbsent(key, __ -> new ArrayList<VarInfo>());
+    @Growable List<VarInfo> elements = map.computeIfAbsent(key, __ -> new ArrayList<VarInfo>());
     elements.add(value);
   }
 
@@ -560,7 +561,7 @@ public class PptSliceEquality extends PptSlice {
       VarInfo leader,
       List<VarInfo> newVis,
       PptSlice slice,
-      List<PptSlice> newSlices,
+      @Growable List<PptSlice> newSlices,
       int position,
       int loop,
       VarInfo[] soFar) {

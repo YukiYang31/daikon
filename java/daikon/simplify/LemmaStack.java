@@ -12,6 +12,8 @@ import java.util.TreeSet;
 import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.mustcall.qual.CreatesMustCallFor;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.mustcall.qual.Owning;
@@ -52,7 +54,7 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
    */
   public static boolean dkconfig_synchronous_errors = false;
 
-  private Stack<Lemma> lemmas;
+  private @Shrinkable Stack<Lemma> lemmas;
   private @Owning SessionManager session;
 
   /** Tell Simplify to assume a lemma, which should already be on our stack. */
@@ -307,8 +309,8 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
       String result,
       List<Lemma> lems,
       Set<Class<? extends Invariant>> exclude,
-      Set<Set<Class<? extends Invariant>>> black,
-      Set<Set<Class<? extends Invariant>>> gray,
+      @Growable Set<Set<Class<? extends Invariant>>> black,
+      @Growable Set<Set<Class<? extends Invariant>>> gray,
       Set<Set<Class<? extends Invariant>>> found)
       throws TimeoutException {
     for (Set<Class<? extends Invariant>> known : found) {
@@ -499,7 +501,7 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
     }
   }
 
-  private static NavigableSet<Long> ints_seen = new TreeSet<>();
+  private static @Growable NavigableSet<Long> ints_seen = new TreeSet<>();
 
   /** Keep track that we've seen this number in formulas, for the sake of pushOrdering. */
   public static void noticeInt(long i) {

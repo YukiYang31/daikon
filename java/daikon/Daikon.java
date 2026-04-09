@@ -193,6 +193,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -503,7 +504,7 @@ public final class Daikon {
   public static @Nullable Invariant current_inv = null;
 
   /* List of prototype invariants (one for each type of invariant) */
-  public static @Growable ArrayList<@Prototype Invariant> proto_invs = new ArrayList<>();
+  public static @Growable @Shrinkable ArrayList<@Prototype Invariant> proto_invs = new ArrayList<>();
 
   /** Debug tracer. */
   public static final Logger debugTrace = Logger.getLogger("daikon.Daikon");
@@ -1502,7 +1503,7 @@ public final class Daikon {
    * Invariants passed on the command line with the {@code --user_defined_invariant} option. A list
    * of class names in the format required by {@link Class#forName(String)}.
    */
-  private static List<@ClassGetName String> userDefinedInvariants =
+  private static @Growable List<@ClassGetName String> userDefinedInvariants =
       new ArrayList<@ClassGetName String>();
 
   /**
@@ -2611,7 +2612,7 @@ public final class Daikon {
     ppt.equality_view.instantiate_invariants();
   }
 
-  private static List<SpinfoFile> spinfoFiles = new ArrayList<>();
+  private static @Growable List<SpinfoFile> spinfoFiles = new ArrayList<>();
 
   /**
    * Create user-defined splitters. For each file in the input, add a SpinfoFile to the spinfoFiles

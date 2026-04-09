@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jtb.ParseException;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -168,7 +169,7 @@ public class SpinfoFile {
   private void readReplaceStatements(
       @UnknownInitialization SpinfoFile this,
       LineNumberReader spinfoFile,
-      List<ReplaceStatement> replaceStatements)
+      @Growable List<ReplaceStatement> replaceStatements)
       throws IOException, ParseException {
     String methodDeclaration = spinfoFile.readLine();
     while (!isBlank(methodDeclaration)) {
@@ -205,7 +206,7 @@ public class SpinfoFile {
   private void readPptStatements(
       @UnknownInitialization SpinfoFile this,
       LineNumberReader spinfoFile,
-      List<List<String>> pptSections,
+      @Growable List<List<String>> pptSections,
       String pptName)
       throws IOException {
     List<String> pptSection = new ArrayList<>();

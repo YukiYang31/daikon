@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -252,7 +253,7 @@ public class NISuppression {
    * @see #consider_inv (Invariant, NISuppressor, VarInfo[])
    */
   private void find_suppressed_invs(
-      Set<NIS.SupInv> unsuppressed_invs, List<Invariant> antecedents[], VarInfo vis[], int idx) {
+      @Growable Set<NIS.SupInv> unsuppressed_invs, List<Invariant> antecedents[], VarInfo vis[], int idx) {
 
     // Loop through each antecedent that matches the current suppressor
     NISuppressor s = suppressors[idx];

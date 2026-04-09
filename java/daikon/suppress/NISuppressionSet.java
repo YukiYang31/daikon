@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.plumelib.util.StringsPlume;
@@ -73,7 +74,7 @@ public class NISuppressionSet implements Iterable<NISuppression> {
 
         // Get the list of suppression sets for this suppressor.  Create it
         // if this is the first one.  Add this set to the list
-        List<NISuppressionSet> suppression_set_list =
+        @Growable List<NISuppressionSet> suppression_set_list =
             suppressor_map.computeIfAbsent(
                 suppressor.get_inv_class(), __ -> new ArrayList<NISuppressionSet>());
         suppression_set_list.add(this);
@@ -305,7 +306,7 @@ public class NISuppressionSet implements Iterable<NISuppression> {
    * removed the last valid suppression, then instantiates the suppressee.
    */
   private void check_falsified(
-      PptTopLevel ppt, VarInfo[] vis, Invariant inv, List<Invariant> new_invs) {
+      PptTopLevel ppt, VarInfo[] vis, Invariant inv, @Growable List<Invariant> new_invs) {
 
     // process each suppression in the set, marking each suppressor as
     // to whether it is true, false, or matches the falsified inv

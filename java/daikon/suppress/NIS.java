@@ -813,7 +813,7 @@ public class NIS {
    */
   @RequiresNonNull("suppressor_map")
   static void store_antecedents_by_comparability(
-      Iterator<PptSlice> slice_iterator, Map<VarComparability, Antecedents> comp_ants) {
+      Iterator<PptSlice> slice_iterator, @Growable Map<VarComparability, Antecedents> comp_ants) {
 
     for (Iterator<PptSlice> i = slice_iterator; i.hasNext(); ) {
       PptSlice slice = i.next();
@@ -859,7 +859,7 @@ public class NIS {
   @RequiresNonNull("suppressor_map")
   static int find_antecedents(
       Iterator<PptSlice> slice_iterator,
-      Map<Class<? extends Invariant>, List<Invariant>> antecedent_map) {
+      @Growable Map<Class<? extends Invariant>, @Growable List<Invariant>> antecedent_map) {
 
     int false_cnt = 0;
 
@@ -886,7 +886,7 @@ public class NIS {
 
     for (PptSlice slice : ppt.views_iterable()) {
       // Old-style for loop with Iterator because it will be side-effected
-      for (Iterator<Invariant> j = slice.invs.iterator(); j.hasNext(); ) {
+      for (@Shrinkable Iterator<Invariant> j = slice.invs.iterator(); j.hasNext(); ) {
         Invariant inv = j.next();
         if (inv.is_ni_suppressed()) {
           inv.log("Removed because suppressed %s", inv.format());
@@ -1071,7 +1071,7 @@ public class NIS {
      * Map from the antecedent invariants class to a list of the antecedent invariants of that
      * class. Allows fast access to invariants by type.
      */
-    Map<Class<? extends Invariant>, List<Invariant>> antecedent_map;
+    @Growable @Replaceable Map<Class<? extends Invariant>, List<Invariant>> antecedent_map;
 
     /** Number of antecedents that are false. */
     int false_cnt = 0;
@@ -1118,7 +1118,7 @@ public class NIS {
       }
 
       // Add the invariant to the map for its class
-      List<Invariant> antecedents = get(inv.getClass());
+      @Growable List<Invariant> antecedents = get(inv.getClass());
       if (antecedents == null) {
         antecedents = new ArrayList<Invariant>();
         antecedent_map.put(inv.getClass(), antecedents);

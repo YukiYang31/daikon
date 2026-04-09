@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -53,7 +55,7 @@ public class PptSlice0 extends PptSlice {
 
   // This should not be transient:  more implications can be created during
   // printing, for instance due to guarding.
-  private transient HashSet<ImplicationWrapper> invariantsSeen = new HashSet<>();
+  private transient @Growable @Shrinkable HashSet<ImplicationWrapper> invariantsSeen = new HashSet<>();
 
   // In lieu of a readResolve method.
   private void initInvariantsSeen() {

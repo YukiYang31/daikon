@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresKeyForIf;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.KeyFor;
@@ -168,7 +170,7 @@ public final class VarInfoAux implements Cloneable, Serializable {
     tok.ordinaryChars(',', ',');
     tok.ordinaryChars('=', '=');
     @SuppressWarnings("serial")
-    Map<@Interned String, @Interned String> map = theDefault.map;
+    @Growable @Replaceable Map<@Interned String, @Interned String> map = theDefault.map;
 
     String key = "";
     String value = "";
@@ -271,7 +273,7 @@ public final class VarInfoAux implements Cloneable, Serializable {
   }
 
   /** Map for interning. */
-  private static @MonotonicNonNull Map<VarInfoAux, @Interned VarInfoAux> interningMap =
+  private static @MonotonicNonNull @Growable @Replaceable Map<VarInfoAux, @Interned VarInfoAux> interningMap =
       // Static fields might not be initialized before static methods (which
       // call instance methods) are called, so don't bother to initialize here.
       null;

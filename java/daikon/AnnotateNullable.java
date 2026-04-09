@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.checkerframework.checker.interning.qual.Interned;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -43,7 +45,7 @@ public class AnnotateNullable {
   // static SimpleLog debug = new SimpleLog(/*enabled=*/ false);
 
   /** Map from a class name to the list of static functions for that class. */
-  static Map<String, List<PptTopLevel>> class_map = new LinkedHashMap<>();
+  static @Growable @Replaceable Map<String, List<PptTopLevel>> class_map = new LinkedHashMap<>();
 
   // The package for the previous class.  Used to reduce duplication in
   // output file.
@@ -121,7 +123,7 @@ public class AnnotateNullable {
       // @KeyFor because class_map has entry per class, and this method is in some class
       @KeyFor("class_map") String classname = name.substring(0, lastdot);
       // System.out.printf("classname for ppt %s is '%s'%n", name, classname);
-      @NonNull List<PptTopLevel> static_methods = class_map.get(classname);
+      @NonNull @Growable List<PptTopLevel> static_methods = class_map.get(classname);
       assert static_methods != null : classname;
       static_methods.add(ppt);
     }

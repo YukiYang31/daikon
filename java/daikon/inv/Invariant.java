@@ -39,6 +39,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.Identifier;
@@ -2173,7 +2174,7 @@ public abstract class Invariant implements Serializable, Cloneable // but don't 
   }
 
   /** Classes for which {@link #checkMergeOverridden} has been called. */
-  public static IdentityHashMap<Class<?>, Boolean> checkedMergeOverridden = new IdentityHashMap<>();
+  public static @Modifiable IdentityHashMap<Class<?>, Boolean> checkedMergeOverridden = new IdentityHashMap<>();
 
   /**
    * Throws an exception if the class directly defines fields but does not override {@link #merge}.
