@@ -59,6 +59,8 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.plumelib.util.ArraysPlume;
@@ -744,11 +746,11 @@ public final class PPTSLICE1 extends PptSlice {
     // invariants class) and add the invariant to that list.
     // Invariant.Match.equals() defines if two invariants are of the
     // same 'type' for the purpose of merging invariants.
-    Map<Invariant.Match, List<Invariant>> inv_map =
+    Map<Invariant.Match, @Growable @Replaceable List<Invariant>> inv_map =
         new LinkedHashMap<>();
     for (Invariant inv : all_invs) {
       Invariant.Match imatch = new Invariant.Match(inv);
-      List<Invariant> invs = inv_map.get(imatch);
+      @Replaceable @Growable List<Invariant> invs = inv_map.get(imatch);
       if (Invariant.logOn()) {
         inv.log("Adding %s to %s invs list %s", inv.format(), name(), invs);
       }

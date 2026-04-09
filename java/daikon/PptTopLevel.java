@@ -273,7 +273,7 @@ public class PptTopLevel extends Ppt {
    * {@link #views_iterable}, or {@link #views_iterator}.
    */
   @SuppressWarnings("serial")
-  private @Growable @Replaceable Map<List<Integer>, PptSlice> views;
+  private @Modifiable Map<List<Integer>, PptSlice> views;
 
   /** List of all of the splitters for this ppt. */
   // Not List because List doesn't support the trimToSize() method.

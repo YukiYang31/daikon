@@ -154,7 +154,7 @@ public class PptSliceEquality extends PptSlice {
     if (debug.isLoggable(Level.FINE)) {
       debug.fine("PptSliceEquality.instantiate_invariants: " + parent.name() + " vars:");
     }
-    LinkedHashMap<VarInfoAndComparability, List<VarInfo>> multiMap = new LinkedHashMap<>();
+    LinkedHashMap<VarInfoAndComparability, @Growable List<VarInfo>> multiMap = new LinkedHashMap<>();
     for (VarInfo vi : var_infos) {
       VarInfoAndComparability viac = new VarInfoAndComparability(vi);
       addToBindingList(multiMap, viac, vi);
@@ -202,7 +202,7 @@ public class PptSliceEquality extends PptSlice {
   public void instantiate_from_pairs(Set<VarInfo.Pair> eset) {
 
     // Build a map from each variable to all those that are equal to it
-    Map<VarInfo, List<VarInfo>> varmap = new LinkedHashMap<>();
+    Map<VarInfo, @Growable List<VarInfo>> varmap = new LinkedHashMap<>();
     Map<VarInfo, Integer> sample_cnt_map = new LinkedHashMap<>();
     for (VarInfo.Pair cp : eset) {
       @Growable List<VarInfo> vlist = varmap.get(cp.v1);
@@ -339,7 +339,7 @@ public class PptSliceEquality extends PptSlice {
   private List<Equality> createEqualityInvs(
       List<VarInfo> vis, ValueTuple vt, Equality leader, int count) {
     assert !vis.isEmpty();
-    HashMap<Object, List<VarInfo>> multiMap = new HashMap<>(); /* key is a value */
+    HashMap<Object, @Growable List<VarInfo>> multiMap = new HashMap<>(); /* key is a value */
     List<VarInfo> out_of_bounds = new ArrayList<>();
     for (VarInfo vi : vis) {
       if (vi.missingOutOfBounds()) {
@@ -442,7 +442,7 @@ public class PptSliceEquality extends PptSlice {
    *     create a new List associated with key and insert value.
    * @param value the value to insert into the List mapped to key
    */
-  private <T> void addToBindingList(Map<T, List<VarInfo>> map, T key, VarInfo value) {
+  private <T> void addToBindingList(@Growable Map<T, @Growable List<VarInfo>> map, T key, VarInfo value) {
     if (key == null) {
       throw new IllegalArgumentException();
     }

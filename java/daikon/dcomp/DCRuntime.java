@@ -49,6 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -150,7 +151,7 @@ public final class DCRuntime implements ComparabilityProvider {
   /** Class to hold per-thread comparability data. */
   private static class ThreadData {
     /** Tag stack. */
-    Deque<Object> tag_stack;
+    @Growable Deque<Object> tag_stack;
 
     /** Number of methods currently on tag_stack. */
     int tag_stack_call_depth;

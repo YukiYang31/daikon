@@ -1023,7 +1023,7 @@ public final class FileIO {
    * @see #read_data_trace_files(Collection,PptMap,Processor,boolean)
    * @see #read_data_trace_file(String,PptMap,Processor,boolean,boolean)
    */
-  public static void read_data_trace_files(Collection<String> files, PptMap all_ppts)
+  public static void read_data_trace_files(@Growable Collection<String> files, PptMap all_ppts)
       throws IOException {
 
     Processor processor = new Processor();
@@ -2764,7 +2764,7 @@ public final class FileIO {
 
     /** Parent program points in ppt hierarchy (optional) */
     @SuppressWarnings("serial")
-    public @Shrinkable List<VarParent> parents;
+    public @Shrinkable @Growable List<VarParent> parents;
 
     /** Non-null if this 'variable' always has the same value (optional) */
     @SuppressWarnings("serial")

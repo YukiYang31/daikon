@@ -51,7 +51,7 @@ public class NISuppressionSet implements Iterable<NISuppression> {
    * the same suppressor class appears more than once, the suppression is only added once.
    */
   public void add_to_suppressor_map(
-      Map<Class<? extends Invariant>, List<NISuppressionSet>> suppressor_map) {
+      @Growable Map<Class<? extends Invariant>, @Growable List<NISuppressionSet>> suppressor_map) {
 
     Set<Class<? extends Invariant>> all_suppressors =
         new LinkedHashSet<Class<? extends Invariant>>();
@@ -89,7 +89,7 @@ public class NISuppressionSet implements Iterable<NISuppression> {
    * <p>Note, this is no longer the preferred approach, but is kept for informational purposes. Use
    * NIS.process_falsified_invs() instead.
    */
-  public void falsified(Invariant inv, List<Invariant> new_invs) {
+  public void falsified(Invariant inv, @Growable List<Invariant> new_invs) {
 
     // Get the ppt we are working in
     PptTopLevel ppt = inv.ppt.parent;

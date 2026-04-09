@@ -135,7 +135,7 @@ public class NIS {
    * Map from invariant class to a list of all of the suppression sets that contain a suppressor of
    * that class.
    */
-  public static @MonotonicNonNull @Shrinkable Map<Class<? extends Invariant>, List<NISuppressionSet>>
+  public static @MonotonicNonNull @Shrinkable @Growable Map<Class<? extends Invariant>, @Growable List<NISuppressionSet>>
       suppressor_map;
 
   /**
@@ -1071,7 +1071,7 @@ public class NIS {
      * Map from the antecedent invariants class to a list of the antecedent invariants of that
      * class. Allows fast access to invariants by type.
      */
-    @Growable @Replaceable Map<Class<? extends Invariant>, List<Invariant>> antecedent_map;
+    @Growable @Replaceable Map<Class<? extends Invariant>, @Growable List<Invariant>> antecedent_map;
 
     /** Number of antecedents that are false. */
     int false_cnt = 0;
@@ -1145,7 +1145,7 @@ public class NIS {
      * Returns a list of all of the antecedent invariants of the specified class. Returns null if
      * there are none of that class.
      */
-    public @Nullable List<Invariant> get(Class<? extends Invariant> cls) {
+    public @Nullable @Growable List<Invariant> get(Class<? extends Invariant> cls) {
 
       return antecedent_map.get(cls);
     }

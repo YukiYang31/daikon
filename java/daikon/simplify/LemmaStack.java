@@ -311,7 +311,7 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
       Set<Class<? extends Invariant>> exclude,
       @Growable Set<Set<Class<? extends Invariant>>> black,
       @Growable Set<Set<Class<? extends Invariant>>> gray,
-      Set<Set<Class<? extends Invariant>>> found)
+      @Growable Set<Set<Class<? extends Invariant>>> found)
       throws TimeoutException {
     for (Set<Class<? extends Invariant>> known : found) {
       // If known and exclude are disjoint, return

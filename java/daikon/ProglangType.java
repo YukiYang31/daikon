@@ -49,7 +49,7 @@ public final @Interned class ProglangType implements Serializable {
   static final long serialVersionUID = 20020122L;
 
   /** Maps from a base type name to its ProglangTypes and arrays with that base. */
-  private static HashMap<@Interned String, List<ProglangType>> all_known_types = new HashMap<>();
+  private static @Growable HashMap<@Interned String, @Growable List<ProglangType>> all_known_types = new HashMap<>();
 
   /**
    * The set of (interned) names of classes that implement java.util.List. For a Java class, this is

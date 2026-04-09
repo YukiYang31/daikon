@@ -45,7 +45,7 @@ public class AnnotateNullable {
   // static SimpleLog debug = new SimpleLog(/*enabled=*/ false);
 
   /** Map from a class name to the list of static functions for that class. */
-  static @Growable @Replaceable Map<String, List<PptTopLevel>> class_map = new LinkedHashMap<>();
+  static @Growable @Replaceable Map<String, @Growable List<PptTopLevel>> class_map = new LinkedHashMap<>();
 
   // The package for the previous class.  Used to reduce duplication in
   // output file.

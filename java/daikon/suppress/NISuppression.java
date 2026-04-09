@@ -167,7 +167,7 @@ public class NISuppression {
    *     {@code ants} using this suppression are added to this set
    * @param ants antecedents organized by class
    */
-  public void find_suppressed_invs(Set<NIS.SupInv> suppressed_invs, NIS.Antecedents ants) {
+  public void find_suppressed_invs(@Growable Set<NIS.SupInv> suppressed_invs, NIS.Antecedents ants) {
 
     // debug = suppressee.sup_class.getName().indexOf("NonZero") != -1;
     if (debug) {
@@ -200,7 +200,7 @@ public class NISuppression {
    *     falsified
    * @param ants antecedents organized by class
    */
-  public void find_unsuppressed_invs(Set<NIS.SupInv> unsuppressed_invs, NIS.Antecedents ants) {
+  public void find_unsuppressed_invs(@Growable Set<NIS.SupInv> unsuppressed_invs, NIS.Antecedents ants) {
 
     // debug = suppressee.sup_class.getName().indexOf("SeqIntLessEqual") != -1;
 
@@ -324,7 +324,7 @@ public class NISuppression {
    * @see #consider_inv (Invariant, NISuppressor, VarInfo[])
    */
   private void find_unsuppressed_invs(
-      Set<NIS.SupInv> unsuppressed_invs,
+      @Growable Set<NIS.SupInv> unsuppressed_invs,
       List<Invariant> antecedents[],
       VarInfo vis[],
       int idx,
