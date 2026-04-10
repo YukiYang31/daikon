@@ -22,6 +22,8 @@ import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -55,7 +57,7 @@ public abstract class DaikonVariableInfo
   private final @Interned String name;
 
   /** The child nodes. */
-  public List<DaikonVariableInfo> children;
+  public @Growable List<DaikonVariableInfo> children;
 
   /** True iff this variable is an array. */
   protected final boolean isArray;
@@ -131,7 +133,7 @@ public abstract class DaikonVariableInfo
    * Set of fully qualified static variable names for this ppt. Used to ensure that each static is
    * only included once (regardless of how many other variables may include its declaring class).
    */
-  protected static Set<String> ppt_statics = new HashSet<>();
+  protected static @Growable @Shrinkable Set<String> ppt_statics = new HashSet<>();
 
   /**
    * Constructs a non-array-type DaikonVariableInfo object.

@@ -3303,7 +3303,7 @@ public class PptTopLevel extends Ppt {
   }
 
   /** ArrayList version of {@link #getInvariants()}. */
-  public List<Invariant> invariants_vector() {
+  public @Replaceable List<Invariant> invariants_vector() {
     return new ArrayList<Invariant>(getInvariants());
   }
 

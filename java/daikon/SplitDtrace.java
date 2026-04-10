@@ -19,6 +19,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.dataflow.qual.Pure;
 
@@ -216,7 +218,7 @@ public final class SplitDtrace {
    * @param res a list that will be filled with the lines of a .dtrace record
    * @throws IOException if there is a problem reading
    */
-  static void readRec(BufferedReader reader, List<String> res) throws IOException {
+  static void readRec(BufferedReader reader, @Shrinkable @Growable List<String> res) throws IOException {
     res.clear();
     String line;
     while ((line = reader.readLine()) != null) {

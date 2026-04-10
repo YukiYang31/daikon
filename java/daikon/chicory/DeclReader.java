@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.dataflow.qual.TerminatesExecution;
@@ -18,7 +21,7 @@ import org.checkerframework.dataflow.qual.TerminatesExecution;
 public class DeclReader {
 
   /** Map from ppt name to corresponding DeclPpt. */
-  public HashMap<String, DeclPpt> ppts = new LinkedHashMap<>();
+  public @Modifiable HashMap<String, DeclPpt> ppts = new LinkedHashMap<>();
 
   /** Information about variables within a program point. */
   public static class DeclVarInfo {
@@ -70,7 +73,7 @@ public class DeclReader {
     public String name;
 
     /** Map from variable name to corresponding DeclVarInfo. */
-    public HashMap<String, DeclVarInfo> vars = new LinkedHashMap<>();
+    public @Growable @Replaceable HashMap<String, DeclVarInfo> vars = new LinkedHashMap<>();
 
     /**
      * DeclPpt constructor.

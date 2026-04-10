@@ -26,6 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.JarFile;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -59,7 +61,7 @@ public class ChicoryPremain {
 
   /** Set of pure methods returned by Alexandru Salcianu's purity analysis. */
   // Non-null if doPurity == true
-  private static @MonotonicNonNull Set<String> pureMethods = null;
+  private static @MonotonicNonNull @Growable Set<String> pureMethods = null;
 
   /** True iff Chicory should add variables based on pure methods during instrumentation. */
   private static boolean doPurity = false;

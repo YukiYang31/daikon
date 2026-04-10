@@ -53,6 +53,8 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.mustcall.qual.Owning;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -89,7 +91,7 @@ public final class PrintInvariants {
   private static int varNameCounter = 0;
 
   // Maps prestate expressions to variable names (see See dkconfig_replace_prestate)>
-  private static Map<String, String> exprToVar = new HashMap<>();
+  private static @Growable @Replaceable Map<String, String> exprToVar = new HashMap<>();
 
   /**
    * See dkconfig_replace_prestate.
@@ -1281,7 +1283,7 @@ public final class PrintInvariants {
    * @param sort true to parse as group variables, false to parse as filtering variables
    */
   public static void get_csharp_invariant_variables(
-      VarInfo[] vars, Set<String> variables, boolean sort) {
+      VarInfo[] vars, @Growable Set<String> variables, boolean sort) {
     for (VarInfo v : vars) {
       String add = parse_csharp_invariant_variable(v, sort);
       variables.add(add);
@@ -1300,7 +1302,7 @@ public final class PrintInvariants {
    * @param group true to parse group variables, false to parse filtering variables
    */
   public static void get_csharp_invariant_variables(
-      Invariant invariant, Set<String> variables, boolean group) {
+      Invariant invariant, @Growable Set<String> variables, boolean group) {
 
     if (invariant instanceof GuardingImplication) {
       GuardingImplication gi = (GuardingImplication) invariant;
@@ -1643,11 +1645,11 @@ public final class PrintInvariants {
     Invariant[] invs_array = invs_vector.toArray(new Invariant[0]);
 
     // Not Map, because keys are nullable
-    HashMap<@Nullable Class<? extends InvariantFilter>, Map<Class<? extends Invariant>, Integer>>
+    @Growable HashMap<@Nullable Class<? extends InvariantFilter>, @Growable @Replaceable Map<Class<? extends Invariant>, Integer>>
         filter_map =
             new LinkedHashMap<
                 @Nullable Class<? extends InvariantFilter>,
-                Map<Class<? extends Invariant>, Integer>>();
+                @Growable @Replaceable Map<Class<? extends Invariant>, Integer>>();
 
     if (print_invs) {
       debug.fine(ppt.name());
@@ -1662,7 +1664,7 @@ public final class PrintInvariants {
       if (filter != null) {
         filter_class = filter.getClass();
       }
-      Map<Class<? extends Invariant>, Integer> inv_map =
+      @Growable @Replaceable Map<Class<? extends Invariant>, Integer> inv_map =
           filter_map.computeIfAbsent(filter_class, __ -> new LinkedHashMap<>());
       Integer cnt = inv_map.get(inv.getClass());
       if (cnt == null) {

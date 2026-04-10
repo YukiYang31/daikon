@@ -7,6 +7,8 @@ import daikon.inv.InvariantInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -18,7 +20,7 @@ public final class DiscReasonMap {
   //      e.g. "this.head, this.tail" (names appear in sorted order).
   //    Value:  list containing DiscardInfo's for all Invariants using
   //      those variable names in that PptTopLevel.
-  private static HashMap<String, HashMap<String, List<DiscardInfo>>> the_map;
+  private static @Growable @Replaceable HashMap<String, @Growable @Replaceable HashMap<String, List<DiscardInfo>>> the_map;
 
   // This seems to be a gross singleton pattern.
   static {
@@ -95,9 +97,9 @@ public final class DiscReasonMap {
       vars_result += temp_var + ",";
       }*/
 
-    HashMap<String, List<DiscardInfo>> ppt_hashmap = the_map.get(ppt);
+    @Growable @Replaceable HashMap<String, @Growable List<DiscardInfo>> ppt_hashmap = the_map.get(ppt);
     if (ppt_hashmap != null) {
-      List<DiscardInfo> disc_infos = ppt_hashmap.get(vars);
+      @Growable List<DiscardInfo> disc_infos = ppt_hashmap.get(vars);
       if (disc_infos != null) {
         // Check to see if this invariant already has a DiscInfo
         for (DiscardInfo di : disc_infos) {
@@ -112,7 +114,7 @@ public final class DiscReasonMap {
         }
         disc_infos.add(disc_info);
       } else {
-        List<DiscardInfo> temp = new ArrayList<>(1);
+        @Growable List<DiscardInfo> temp = new ArrayList<>(1);
         temp.add(disc_info);
         ppt_hashmap.put(vars, temp);
       }

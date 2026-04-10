@@ -991,11 +991,11 @@ public final class Daikon {
   // Return an array of {decls, dtrace, spinfo, map} files.
   public static class FileOptions {
     public Set<File> decls;
-    public Set<String> dtrace;
+    public @Growable Set<String> dtrace;
     public Set<File> spinfo;
     public Set<File> map;
 
-    public FileOptions(Set<File> decls, Set<String> dtrace, Set<File> spinfo, Set<File> map) {
+    public FileOptions(Set<File> decls, @Growable Set<String> dtrace, Set<File> spinfo, Set<File> map) {
       this.decls = decls;
       this.dtrace = dtrace;
       this.spinfo = spinfo;

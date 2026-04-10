@@ -3,6 +3,8 @@ package daikon.chicory;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
 /**
  * The DaikonClassInfo class is a subtype of DaikonVariableInfo used for variables which represent
  * the run-time type of a variable. They will have a VarType of CLASSNAME and their VarInfoName will
@@ -87,7 +89,7 @@ public class DaikonClassInfo extends DaikonVariableInfo {
 
   @Override
   public EnumSet<VarFlags> get_var_flags() {
-    EnumSet<VarFlags> flags = super.get_var_flags();
+    @Growable EnumSet<VarFlags> flags = super.get_var_flags();
     flags.add(VarFlags.SYNTHETIC);
     flags.add(VarFlags.CLASSNAME);
     flags.add(VarFlags.NON_NULL);

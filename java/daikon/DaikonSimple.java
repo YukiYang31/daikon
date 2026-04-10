@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.checkerframework.checker.interning.qual.Interned;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
@@ -379,7 +380,7 @@ public class DaikonSimple {
 
     /** {@code nonce -> List<Call,Call>} */
     // The first Call is the enter entry and the second is the object entry
-    Map<Integer, List<Call>> call_map = new LinkedHashMap<>();
+    @Modifiable Map<Integer, List<Call>> call_map = new LinkedHashMap<>();
 
     // Flag for whether there are out of order entries in the
     // dtrace file. For unterminated calls (enter but

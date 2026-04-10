@@ -34,6 +34,7 @@ import org.checkerframework.checker.interning.qual.InternMethod;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -795,7 +796,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitSimple(this);
     }
   }
@@ -1004,7 +1005,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitSizeOf(this);
     }
   }
@@ -1124,7 +1125,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitFunctionOf(this);
     }
   }
@@ -1260,7 +1261,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitFunctionOfN(this);
     }
   }
@@ -1539,7 +1540,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitField(this);
     }
   }
@@ -1627,7 +1628,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitTypeOf(this);
     }
   }
@@ -1727,7 +1728,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitPrestate(this);
     }
   }
@@ -1817,7 +1818,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitPoststate(this);
     }
   }
@@ -1898,7 +1899,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitAdd(this);
     }
 
@@ -2038,7 +2039,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitElements(this);
     }
 
@@ -2197,7 +2198,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitSubscript(this);
     }
   }
@@ -2382,7 +2383,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> @Shrinkable T accept(Visitor<T> v) {
       return v.visitSlice(this);
     }
 
@@ -2400,33 +2401,33 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
   }
 
   /** Accept the actions of a visitor. */
-  public abstract <T> T accept(Visitor<T> v);
+  public abstract <T> @Shrinkable T accept(Visitor<T> v);
 
   /** Visitor framework for processing of VarInfoNames. */
   public static interface Visitor<T> {
-    public T visitSimple(Simple o);
+    public @Shrinkable T visitSimple(Simple o);
 
-    public T visitSizeOf(SizeOf o);
+    public @Shrinkable T visitSizeOf(SizeOf o);
 
-    public T visitFunctionOf(FunctionOf o);
+    public @Shrinkable T visitFunctionOf(FunctionOf o);
 
-    public T visitFunctionOfN(FunctionOfN o);
+    public @Shrinkable T visitFunctionOfN(FunctionOfN o);
 
-    public T visitField(Field o);
+    public @Shrinkable T visitField(Field o);
 
-    public T visitTypeOf(TypeOf o);
+    public @Shrinkable T visitTypeOf(TypeOf o);
 
-    public T visitPrestate(Prestate o);
+    public @Shrinkable T visitPrestate(Prestate o);
 
-    public T visitPoststate(Poststate o);
+    public @Shrinkable T visitPoststate(Poststate o);
 
-    public T visitAdd(Add o);
+    public @Shrinkable T visitAdd(Add o);
 
-    public T visitElements(Elements o);
+    public @Shrinkable T visitElements(Elements o);
 
-    public T visitSubscript(Subscript o);
+    public @Shrinkable T visitSubscript(Subscript o);
 
-    public T visitSlice(Slice o);
+    public @Shrinkable T visitSlice(Slice o);
   }
 
   /**

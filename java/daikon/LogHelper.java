@@ -12,6 +12,9 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
+
 /**
  * Standard methods for setting up logging. Allows creation of Console writers using one method.
  * Logger methods should only be called in a shell class at setup, after which Logger calls should
@@ -108,7 +111,7 @@ public final class LogHelper {
     setupLogs(l, new DaikonLogFormatter());
   }
 
-  private static final Set<Logger> allLoggers = new HashSet<>();
+  private static final @Growable Set<Logger> allLoggers = new HashSet<>();
 
   /**
    * Changes the logging priority of a sub category. Also caches the logger to avoid

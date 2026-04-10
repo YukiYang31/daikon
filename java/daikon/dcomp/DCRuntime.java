@@ -50,6 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -89,7 +90,7 @@ public final class DCRuntime implements ComparabilityProvider {
   public static @Nullable Throwable exit_exception = null;
 
   /** Storage for each static tag. */
-  public static List<@Nullable Object> static_tags = new ArrayList<>();
+  public static @Growable List<@Nullable Object> static_tags = new ArrayList<>();
 
   /** Either "java.lang.DCompInstrumented" or "daikon.dcomp.DCompInstrumented". */
   static @BinaryName String instrumentation_interface;
@@ -324,7 +325,7 @@ public final class DCRuntime implements ComparabilityProvider {
    * Object's original super.equals call. Once the equals call terminates, whether by returning a
    * value or by throwing an exception, the corresponding key is removed from this map.
    */
-  static Map<Object, Class<?>> active_equals_calls = new HashMap<>();
+  static @Modifiable Map<Object, Class<?>> active_equals_calls = new HashMap<>();
 
   /**
    * Handles {@code super.equals(Object)} calls. Makes the arguments comparable, and returns true if
@@ -473,7 +474,7 @@ public final class DCRuntime implements ComparabilityProvider {
    *
    * @see active_equals_calls
    */
-  static Map<Object, Class<?>> active_clone_calls = new HashMap<>();
+  static @Modifiable Map<Object, Class<?>> active_clone_calls = new HashMap<>();
 
   /**
    * Handles {@code super.clone()} calls.

@@ -7,6 +7,8 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 import org.checkerframework.checker.signature.qual.ClassGetName;
@@ -101,7 +103,7 @@ public class MethodInfo {
 
   // Use reserved keyword for basic type rather than signature to
   // avoid conflicts with user defined types.
-  private static HashMap<String, Class<?>> primitive_classes = new HashMap<>(8);
+  private static @Growable @Replaceable HashMap<String, Class<?>> primitive_classes = new HashMap<>(8);
 
   static {
     primitive_classes.put("boolean", Boolean.TYPE);

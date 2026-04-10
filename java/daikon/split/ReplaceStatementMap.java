@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 
@@ -14,7 +16,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
 class ReplaceStatementMap {
 
   /** Contains the ReplaceStatements of this, indexed by their names. */
-  private Map<String, ReplaceStatement> map;
+  private @Growable @Replaceable Map<String, ReplaceStatement> map;
 
   /**
    * Creates a new instance of ReplaceStatementMap of the replaceStatements of replaceStatements.

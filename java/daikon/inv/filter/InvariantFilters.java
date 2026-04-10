@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -275,7 +276,7 @@ public class InvariantFilters {
    * are inserted into the beginning. Equality invariants are useful when it comes to displaying
    * invariants.
    */
-  public static List<Invariant> addEqualityInvariants(List<Invariant> invariants) {
+  public static @Replaceable List<Invariant> addEqualityInvariants(List<Invariant> invariants) {
 
     return invariants;
   }

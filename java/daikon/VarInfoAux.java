@@ -117,7 +117,7 @@ public final class VarInfoAux implements Cloneable, Serializable {
 
   /** Contains the actual hashMap for this. */
   @SuppressWarnings("serial")
-  private Map<@Interned String, @Interned String> map;
+  private @Growable @Replaceable Map<@Interned String, @Interned String> map;
 
   /** True if this is interned. */
   private boolean isInterned = false;
@@ -144,7 +144,7 @@ public final class VarInfoAux implements Cloneable, Serializable {
    *
    * @param map the map from property names to values
    */
-  private VarInfoAux(Map<@Interned String, @Interned String> map) {
+  private VarInfoAux(@Growable @Replaceable Map<@Interned String, @Interned String> map) {
     this.map = map;
     this.isInterned = false;
   }

@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.EnumSet;
 import java.util.List;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -198,7 +199,7 @@ public class FieldInfo extends DaikonVariableInfo {
   /** Static final fields are NOMOD. */
   @Override
   public EnumSet<VarFlags> get_var_flags() {
-    EnumSet<VarFlags> flags = super.get_var_flags();
+    @Growable EnumSet<VarFlags> flags = super.get_var_flags();
     int modbits = field.getModifiers();
     if (Modifier.isFinal(modbits) && Modifier.isStatic(modbits)) {
       flags.add(VarFlags.NOMOD);
