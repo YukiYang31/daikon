@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.StringTokenizer;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -22,11 +23,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class MatchCountVisitor extends PrintAllVisitor {
 
   // invariants found by the splitting
-  private HashSet<String> cnt = new HashSet<>();
+  private @Growable HashSet<String> cnt = new HashSet<>();
   // target set of invariants
-  private HashSet<String> targSet = new HashSet<>();
+  private @Growable HashSet<String> targSet = new HashSet<>();
   // invariants found matching
-  private HashSet<String> recall = new HashSet<>();
+  private @Growable HashSet<String> recall = new HashSet<>();
 
   private HashMap<String, HashSet<String>> goodMap = new HashMap<>();
 
@@ -85,7 +86,7 @@ public class MatchCountVisitor extends PrintAllVisitor {
       // Contest.smallestRoom(II)I:::EXIT;condition="not(max <= num)"
       String bucketKey = thisPptName1.substring(0, thisPptName1.lastIndexOf(";condition"));
       String predicate = extractPredicate(thisPptName1);
-      HashSet<String> bucket = goodMap.computeIfAbsent(bucketKey, __ -> new HashSet<String>());
+      @Growable HashSet<String> bucket = goodMap.computeIfAbsent(bucketKey, __ -> new HashSet<String>());
       bucket.add(predicate + " ==> " + inv1.format());
     }
   }

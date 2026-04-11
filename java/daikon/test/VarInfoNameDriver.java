@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+
+
 /**
  * This is called by VarInfoName to parse varInfoNameTest<em>foo</em> files and then apply various
  * transformation tests on them. To add your own test, follow directions in VarInfoNameTest.
@@ -41,7 +45,7 @@ public class VarInfoNameDriver {
     run(System.in, System.out);
   }
 
-  private static final Map<String, Handler> handlers = new HashMap<>();
+  private static final @Growable @Replaceable Map<String, Handler> handlers = new HashMap<>();
 
   public static void run(InputStream commands, PrintStream output) {
     try {
@@ -94,7 +98,7 @@ public class VarInfoNameDriver {
   // VarInfoName parse(String);
   private static class Parse implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(2, args.length);
       String var = args[0];
       String expr = args[1];

@@ -33,6 +33,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import org.checkerframework.checker.modifiability.qual.Growable;
+
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
@@ -688,7 +690,7 @@ class FormatTestCase {
   private static void getSamples(
       ProglangType[] types,
       LineNumberReader commands,
-      List<Object[]> samples,
+      @Growable List<Object[]> samples,
       boolean generateGoals,
       String firstLine) {
     String currentLine =

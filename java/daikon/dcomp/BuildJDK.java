@@ -37,6 +37,8 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ClassGen;
 import org.apache.bcel.generic.MethodGen;
 import org.apache.bcel.generic.Type;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.signature.qual.BinaryName;
 
@@ -77,7 +79,7 @@ public class BuildJDK {
    * Collects names of all methods that DCInstrument could not process. Should be empty. Format is
    * &lt;fully-qualified class name&gt;.&lt;method name&gt;
    */
-  private static List<String> skipped_methods = new ArrayList<>();
+  private static @Growable List<String> skipped_methods = new ArrayList<>();
 
   /**
    * A list of methods known to cause DCInstrument to fail. This is used to remove known problems
@@ -308,7 +310,7 @@ public class BuildJDK {
    */
   @SuppressWarnings("builder:required.method.not.called") // assignment into collection of @Owning
   void gather_runtime_from_modules_directory(
-      Path path, int modulePrefixLength, Map<String, InputStream> class_stream_map) {
+      Path path, int modulePrefixLength, @Growable @Replaceable Map<String, InputStream> class_stream_map) {
 
     if (Files.isDirectory(path)) {
       try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(path)) {

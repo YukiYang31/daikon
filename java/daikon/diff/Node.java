@@ -3,6 +3,7 @@ package daikon.diff;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.plumelib.util.IPair;
@@ -17,7 +18,7 @@ import org.plumelib.util.IPair;
 public abstract class Node<CONTENT extends @Nullable Object, CHILD> {
 
   /** The children of this node. */
-  private List<CHILD> children = new ArrayList<>();
+  private @Growable List<CHILD> children = new ArrayList<>();
 
   /** Nonsensical for RootNode. */
   private IPair<CONTENT, CONTENT> userObject;

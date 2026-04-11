@@ -88,7 +88,7 @@ public class DaikonClassInfo extends DaikonVariableInfo {
   }
 
   @Override
-  public EnumSet<VarFlags> get_var_flags() {
+  public @Growable EnumSet<VarFlags> get_var_flags() {
     @Growable EnumSet<VarFlags> flags = super.get_var_flags();
     flags.add(VarFlags.SYNTHETIC);
     flags.add(VarFlags.CLASSNAME);

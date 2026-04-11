@@ -92,6 +92,8 @@ import org.apache.bcel.generic.StoreInstruction;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.structurals.OperandStack;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -192,7 +194,7 @@ public class DCInstrument extends InstructionListUtils {
   protected static final boolean debugHandleInvoke = false;
 
   /** Keeps track of the methods that were not successfully instrumented. */
-  protected List<String> skipped_methods = new ArrayList<>();
+  protected @Growable List<String> skipped_methods = new ArrayList<>();
 
   /** Either "java.lang" or "daikon.dcomp". */
   protected @DotSeparatedIdentifiers String dcomp_prefix;
@@ -201,7 +203,7 @@ public class DCInstrument extends InstructionListUtils {
   protected @DotSeparatedIdentifiers String dcompRuntimeClassName = "daikon.dcomp.DCRuntime";
 
   /** Set of JUnit test classes. */
-  protected static Set<String> junitTestClasses = new HashSet<>();
+  protected static @Growable Set<String> junitTestClasses = new HashSet<>();
 
   /** Possible states of JUnit test discovery. */
   protected enum JUnitState {
@@ -224,13 +226,13 @@ public class DCInstrument extends InstructionListUtils {
    * in each subclass and each should return the same id. We thus will lookup the same name multiple
    * times.
    */
-  static Map<String, Integer> static_field_id = new LinkedHashMap<>();
+  static @Growable @Replaceable Map<String, Integer> static_field_id = new LinkedHashMap<>();
 
   /**
    * Map from class name to its access_flags. Used to cache the results of the lookup done in {@link
    * #getAccessFlags}. If a class is marked ACC_ANNOTATION then it will not have been instrumented.
    */
-  static Map<String, Integer> accessFlags = new HashMap<>();
+  static @Growable @Replaceable Map<String, Integer> accessFlags = new HashMap<>();
 
   /** Integer constant of access_flag value of ACC_ANNOTATION. */
   static Integer Integer_ACC_ANNOTATION = Integer.valueOf(Const.ACC_ANNOTATION);
@@ -2450,7 +2452,7 @@ public class DCInstrument extends InstructionListUtils {
   }
 
   /** Cache for {@link #getJavaClass} method. */
-  private static Map<String, JavaClass> javaClasses = new ConcurrentHashMap<String, JavaClass>();
+  private static @Growable @Replaceable Map<String, JavaClass> javaClasses = new ConcurrentHashMap<String, JavaClass>();
 
   /**
    * There are times when it is useful to inspect a class file other than the one we are currently
@@ -3799,7 +3801,7 @@ public class DCInstrument extends InstructionListUtils {
     } catch (Exception e) {
       throw new Error("can't get superclass for " + jc, e);
     }
-    Map<Field, Integer> field_map = build_field_map(super_jc);
+    @Growable @Replaceable Map<Field, Integer> field_map = build_field_map(super_jc);
     int offset = field_map.size();
 
     // Determine the offset for each primitive field in the class

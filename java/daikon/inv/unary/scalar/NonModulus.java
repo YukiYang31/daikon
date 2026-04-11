@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -34,7 +35,7 @@ public class NonModulus extends SingleScalar {
 
   /** The values to be tested for the non-modulus property. */
   @SuppressWarnings("serial")
-  NavigableSet<Long> elements = new TreeSet<>();
+  @Growable NavigableSet<Long> elements = new TreeSet<>();
 
   private long modulus = 0;
   private long remainder = 0;

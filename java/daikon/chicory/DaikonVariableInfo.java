@@ -1372,13 +1372,13 @@ public abstract class DaikonVariableInfo
   }
 
   /** Empty set of variable flags. */
-  private static EnumSet<VarFlags> empty_var_flags = EnumSet.noneOf(VarFlags.class);
+  private static @Growable EnumSet<VarFlags> empty_var_flags = EnumSet.noneOf(VarFlags.class);
 
   /**
    * Returns the variable flags for this variable. Subclasses should call super(), then add in any
    * flags that they add.
    */
-  public EnumSet<VarFlags> get_var_flags() {
+  public @Growable EnumSet<VarFlags> get_var_flags() {
     return empty_var_flags.clone();
   }
 

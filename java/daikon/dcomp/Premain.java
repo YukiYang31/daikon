@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
 /**
  * This class is the entry point for the DynComp instrumentation agent. It is the only code in
  * dcomp_premain.jar.
@@ -62,7 +64,7 @@ public class Premain {
   protected static boolean jdk_instrumented = true; // default to true for BuildJDK
 
   /** Set of pre-instrumented JDK classes. */
-  protected static Set<String> pre_instrumented = new HashSet<>();
+  protected static @Growable Set<String> pre_instrumented = new HashSet<>();
 
   /** Set of packages known to cause problems when instrumented. */
   protected static Set<String> problem_packages =

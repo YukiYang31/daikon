@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -23,10 +25,10 @@ public class ConsequentExtractorVisitor extends DepthFirstVisitor {
   private int nonce;
 
   // Gets rid of repeated reports
-  private HashSet<String> repeatFilter = new HashSet<>();
+  private @Shrinkable @Growable HashSet<String> repeatFilter = new HashSet<>();
 
   // Accumulation of extracted consequents
-  private List<Invariant> accum = new ArrayList<>();
+  private @Shrinkable @Growable List<Invariant> accum = new ArrayList<>();
 
   public ConsequentExtractorVisitor() {
     nonce = 0;

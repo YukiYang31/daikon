@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 import org.checkerframework.dataflow.qual.Pure;
@@ -35,7 +37,7 @@ public class InvMap implements Serializable {
 
   /** A map from program points to the invariants true at the program point. */
   @SuppressWarnings("serial")
-  private Map<PptTopLevel, List<Invariant>> pptToInvs = new HashMap<>();
+  private @Growable @Replaceable Map<PptTopLevel, List<Invariant>> pptToInvs = new HashMap<>();
 
   /**
    * The purpose of this field is apparently to permit the ppts to be extracted in the same order in
@@ -43,7 +45,7 @@ public class InvMap implements Serializable {
    * 1.4.
    */
   @SuppressWarnings("serial")
-  private List<PptTopLevel> ppts = new ArrayList<>();
+  private @Growable List<PptTopLevel> ppts = new ArrayList<>();
 
   public InvMap() {}
 

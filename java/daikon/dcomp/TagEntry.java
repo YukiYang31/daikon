@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.StringJoiner;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -343,7 +344,7 @@ class TagEntry extends WeakReference<Object> {
     // whose key is its root.
     for (Object obj : object_map.keySet()) {
       Object rep = find(obj);
-      List<Object> set = sets.computeIfAbsent(rep, __ -> new ArrayList<Object>());
+      @Growable List<Object> set = sets.computeIfAbsent(rep, __ -> new ArrayList<Object>());
       set.add(obj);
     }
 

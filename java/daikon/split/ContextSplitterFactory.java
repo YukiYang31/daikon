@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.plumelib.util.EntryReader;
@@ -248,7 +249,7 @@ public class ContextSplitterFactory {
       // Place the ID into the mapping
       Map<String, Set<Long>> caller2ids =
           callee2caller2ids.computeIfAbsent(callee_ppt_name, __ -> new LinkedHashMap<>());
-      Set<Long> ids = caller2ids.computeIfAbsent(caller_condition, __ -> new TreeSet<Long>());
+      @Growable Set<Long> ids = caller2ids.computeIfAbsent(caller_condition, __ -> new TreeSet<Long>());
       ids.add(entry.id);
     } // for all entries
 

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -53,8 +54,8 @@ public class InvariantFilters {
   // n) to O(n), but that functionality isn't used a whole lot and
   // there are only ~10 filters anyway.
 
-  List<InvariantFilter> propertyFilters = new ArrayList<>();
-  List<VariableFilter> variableFilters = new ArrayList<>();
+  @Growable List<InvariantFilter> propertyFilters = new ArrayList<>();
+  @Growable List<VariableFilter> variableFilters = new ArrayList<>();
 
   public InvariantFilters() {
 

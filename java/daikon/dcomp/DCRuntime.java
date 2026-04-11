@@ -50,6 +50,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -65,7 +67,7 @@ import org.checkerframework.dataflow.qual.Pure;
 public final class DCRuntime implements ComparabilityProvider {
 
   /** List of all instrumented methods. */
-  public static final List<MethodInfo> methods = new ArrayList<>();
+  public static final @Growable List<MethodInfo> methods = new ArrayList<>();
 
   /**
    * Keep track of whether or not we are already processing an enter/exit so we can avoid recursion.
@@ -90,7 +92,7 @@ public final class DCRuntime implements ComparabilityProvider {
   public static @Nullable Throwable exit_exception = null;
 
   /** Storage for each static tag. */
-  public static @Growable List<@Nullable Object> static_tags = new ArrayList<>();
+  public static @Growable @Replaceable List<@Nullable Object> static_tags = new ArrayList<>();
 
   /** Either "java.lang.DCompInstrumented" or "daikon.dcomp.DCompInstrumented". */
   static @BinaryName String instrumentation_interface;
@@ -152,7 +154,7 @@ public final class DCRuntime implements ComparabilityProvider {
   /** Class to hold per-thread comparability data. */
   private static class ThreadData {
     /** Tag stack. */
-    @Growable Deque<Object> tag_stack;
+    @Growable @Shrinkable Deque<Object> tag_stack;
 
     /** Number of methods currently on tag_stack. */
     int tag_stack_call_depth;
@@ -165,7 +167,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /** Map from Thread to ThreadData. */
-  private static Map<Thread, ThreadData> thread_to_data =
+  private static @Growable Map<Thread, ThreadData> thread_to_data =
       new ConcurrentHashMap<Thread, ThreadData>();
 
   /** Map from each object to the tags used for each primitive value in the object. */
@@ -173,10 +175,10 @@ public final class DCRuntime implements ComparabilityProvider {
       new WeakIdentityHashMap<Object, Object[]>();
 
   /** List of all classes encountered. These are the classes that will have comparability output. */
-  private static List<ClassInfo> all_classes = new ArrayList<>();
+  private static @Growable List<ClassInfo> all_classes = new ArrayList<>();
 
   /** Set of classes whose static initializer has run. */
-  private static Set<String> initialized_eclassses = new HashSet<>();
+  private static @Growable Set<String> initialized_eclassses = new HashSet<>();
 
   /**
    * Class used as a tag for primitive constants. Only different from Object for debugging purposes.
@@ -659,7 +661,7 @@ public final class DCRuntime implements ComparabilityProvider {
     return (obj1 != obj2);
   }
 
-  static Map<String, Integer> methodCountMap = new HashMap<>(64);
+  static @Growable @Replaceable Map<String, Integer> methodCountMap = new HashMap<>(64);
 
   /**
    * Create the tag frame for this method. Pop the tags for any primitive parameters off of the tag
@@ -1435,7 +1437,7 @@ public final class DCRuntime implements ComparabilityProvider {
    * @param dv DaikonVariable to process
    */
   static void merge_comparability(
-      IdentityHashMap<Object, DaikonVariableInfo> varmap,
+      @Growable @Replaceable IdentityHashMap<Object, DaikonVariableInfo> varmap,
       Object parent,
       Object obj,
       DaikonVariableInfo dv) {
@@ -1899,10 +1901,10 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /** Map from array name to comparability for its indices (if any). */
-  private static Map<String, Integer> arr_index_map;
+  private static @Growable @Replaceable Map<String, Integer> arr_index_map;
 
   /** Map from variable to its comparability. */
-  private static IdentityHashMap<DaikonVariableInfo, Integer> dv_comp_map;
+  private static @Growable @Replaceable IdentityHashMap<DaikonVariableInfo, Integer> dv_comp_map;
 
   /** Comparability value for a variable. */
   private static int base_comp;
@@ -2382,10 +2384,10 @@ public final class DCRuntime implements ComparabilityProvider {
     return sets;
   }
 
-  static void add_variable_traced(Map<DaikonVariableInfo, DVSet> sets, DaikonVariableInfo dv) {
+  static void add_variable_traced(@Growable Map<DaikonVariableInfo, @Growable DVSet> sets, DaikonVariableInfo dv) {
     try {
       DaikonVariableInfo parent = (DaikonVariableInfo) TagEntry.tracer_find(dv);
-      DVSet set = sets.computeIfAbsent(parent, __ -> new DVSet());
+      @Growable DVSet set = sets.computeIfAbsent(parent, __ -> new DVSet());
       set.add(dv);
     } catch (NullPointerException e) {
       throw new Error(e);
@@ -2534,12 +2536,12 @@ public final class DCRuntime implements ComparabilityProvider {
    * Adds this daikon variable and all of its children into their appropriate sets (those of their
    * leader) in sets.
    */
-  static void add_variable(Map<DaikonVariableInfo, DVSet> sets, DaikonVariableInfo dv) {
+  static void add_variable(Map<DaikonVariableInfo, @Growable DVSet> sets, DaikonVariableInfo dv) {
 
     // Add this variable into the set of its leader
     if (dv.declShouldPrint()) {
       DaikonVariableInfo leader = (DaikonVariableInfo) TagEntry.find(dv);
-      DVSet set = sets.computeIfAbsent(leader, __ -> new DVSet());
+      @Growable DVSet set = sets.computeIfAbsent(leader, __ -> new DVSet());
       set.add(dv);
     }
 

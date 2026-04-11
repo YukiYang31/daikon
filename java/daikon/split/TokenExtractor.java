@@ -7,6 +7,9 @@ import jtb.syntaxtree.Node;
 import jtb.syntaxtree.NodeToken;
 import jtb.visitor.DepthFirstVisitor;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
+
 /**
  * TokenExtractor is a visitor for a jtb syntax tree that returns all the tokens from a expression
  * in the order they appear in the expression. For example on "x &gt; someMethod(i[3])" would yield
@@ -15,7 +18,7 @@ import jtb.visitor.DepthFirstVisitor;
 class TokenExtractor extends DepthFirstVisitor {
 
   /** The tokens of expression. */
-  private List<NodeToken> tokens = new ArrayList<>();
+  private @Growable List<NodeToken> tokens = new ArrayList<>();
 
   /** blocks public constructor. */
   private TokenExtractor() {

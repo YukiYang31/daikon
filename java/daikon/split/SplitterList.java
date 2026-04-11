@@ -8,6 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.logging.Level;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 // SplitterList maps from a program point name to an array of Splitter
@@ -27,7 +30,7 @@ public abstract class SplitterList {
    */
   public static boolean dkconfig_all_splitters = true;
 
-  private static final HashMap<String, Splitter[]> ppt_splitters = new LinkedHashMap<>();
+  private static final @Growable @Replaceable HashMap<String, Splitter[]> ppt_splitters = new LinkedHashMap<>();
 
   /** Associate an array of splitters with the program point pptname. */
   public static void put(String pptname, Splitter[] splits) {

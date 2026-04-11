@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.StringTokenizer;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -25,9 +27,9 @@ import org.plumelib.util.MapsP;
 public class MultiDiffVisitor extends PrintNullDiffVisitor {
 
   protected PptMap currMap;
-  private HashSet<String> programPointsList;
-  private HashMap<String, Integer> freqList;
-  private HashSet<String> justifiedList;
+  private @Growable HashSet<String> programPointsList;
+  private @Growable @Replaceable HashMap<String, Integer> freqList;
+  private @Growable HashSet<String> justifiedList;
   private int total = 0;
   private static boolean spinfoMode = false;
   private static PrintStream out = System.out;
@@ -137,7 +139,7 @@ public class MultiDiffVisitor extends PrintNullDiffVisitor {
       String data = st.nextToken();
       try {
         @SuppressWarnings("nullness") // map
-        @NonNull ArrayList<String> formatAndFrequencyList = lastMap.get(key);
+        @NonNull @Growable ArrayList<String> formatAndFrequencyList = lastMap.get(key);
         formatAndFrequencyList.add(data);
       } catch (Exception e) {
         System.out.println(key + " error in MultiDiffVisitor");

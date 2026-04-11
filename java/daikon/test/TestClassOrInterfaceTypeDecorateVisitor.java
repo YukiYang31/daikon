@@ -15,12 +15,15 @@ import junit.framework.*;
 import org.junit.Test;
 import org.plumelib.util.StringsPlume;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
+
 public final class TestClassOrInterfaceTypeDecorateVisitor {
 
   public static class UngenerifiedTypeCollector extends DepthFirstVisitor {
     // These two lists have the same length.
-    List<ClassOrInterfaceType> generifieds = new ArrayList<>();
-    List<ClassOrInterfaceType> ungenerifieds = new ArrayList<>();
+    @Growable List<ClassOrInterfaceType> generifieds = new ArrayList<>();
+    @Growable List<ClassOrInterfaceType> ungenerifieds = new ArrayList<>();
 
     @Override
     public void visit(ClassOrInterfaceType n) {

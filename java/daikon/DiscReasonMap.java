@@ -20,7 +20,7 @@ public final class DiscReasonMap {
   //      e.g. "this.head, this.tail" (names appear in sorted order).
   //    Value:  list containing DiscardInfo's for all Invariants using
   //      those variable names in that PptTopLevel.
-  private static @Growable @Replaceable HashMap<String, @Growable @Replaceable HashMap<String, List<DiscardInfo>>> the_map;
+  private static @Growable @Replaceable HashMap<String, @Growable @Replaceable HashMap<String, @Growable List<DiscardInfo>>> the_map;
 
   // This seems to be a gross singleton pattern.
   static {

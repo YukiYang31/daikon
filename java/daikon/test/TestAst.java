@@ -15,6 +15,9 @@ import jtb.visitor.*;
 import junit.framework.*;
 import org.junit.Test;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
+
 /**
  * Tests functionality of some methods in daikon.tools.jtb.Ast.
  *
@@ -23,7 +26,7 @@ import org.junit.Test;
 public final class TestAst {
 
   public static class MethodDeclarationHarvester extends DepthFirstVisitor {
-    List<MethodDeclaration> decls = new ArrayList<>();
+    @Growable List<MethodDeclaration> decls = new ArrayList<>();
 
     @Override
     public void visit(MethodDeclaration m) {
