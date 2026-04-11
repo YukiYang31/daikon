@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import jtb.syntaxtree.*;
 import jtb.visitor.*;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -64,7 +66,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
   public static final String JML_START_COMMENT = "/*@" + lineSep;
   public static final String JML_END_COMMENT = "@*/" + lineSep;
 
-  public List<String> javaFileLines;
+  public @Replaceable List<String> javaFileLines;
 
   public PptMap ppts;
 
@@ -91,9 +93,9 @@ public class AnnotateVisitor extends DepthFirstVisitor {
    */
   public int maxInvariantsPP;
 
-  public List<NodeToken> addedComments = new ArrayList<>();
+  public @Growable List<NodeToken> addedComments = new ArrayList<>();
 
-  private Deque<ClassFieldInfo> cfis = new ArrayDeque<ClassFieldInfo>();
+  private @Growable Deque<ClassFieldInfo> cfis = new ArrayDeque<ClassFieldInfo>();
 
   private PptNameMatcher pptMatcher;
 

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 
 /**
@@ -36,7 +38,7 @@ public class InvTranslate {
   int quality = 0;
 
   /** Map of variables from inv to inv. */
-  Map<String, String> var_map = new LinkedHashMap<>();
+  @Growable @Replaceable Map<String, String> var_map = new LinkedHashMap<>();
 
   /** source invariant */
   Invariant inv1;

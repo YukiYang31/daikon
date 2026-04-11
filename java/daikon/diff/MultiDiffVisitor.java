@@ -199,7 +199,7 @@ public class MultiDiffVisitor extends PrintNullDiffVisitor {
       String data = st.nextToken();
       try {
         @SuppressWarnings("nullness") // map
-        @NonNull ArrayList<String> formatAndFrequencyList = lastMap.get(key);
+        @NonNull @Growable ArrayList<String> formatAndFrequencyList = lastMap.get(key);
         formatAndFrequencyList.add(data);
       } catch (Exception e) {
         out.println(key + " error in MultiDiffVisitor");

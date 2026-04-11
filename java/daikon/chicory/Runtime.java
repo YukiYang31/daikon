@@ -34,6 +34,8 @@ import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.lock.qual.GuardedBy;
 import org.checkerframework.checker.lock.qual.Holding;
 import org.checkerframework.checker.mustcall.qual.Owning;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -1083,7 +1085,7 @@ public final class Runtime {
   //
 
   /** A map from field descriptor (sach as "I") to Java primitive type (such as "int"). */
-  private static HashMap<String, String> fieldDescriptorToPrimitive = new HashMap<>(8);
+  private static @Growable @Replaceable HashMap<String, String> fieldDescriptorToPrimitive = new HashMap<>(8);
 
   static {
     fieldDescriptorToPrimitive.put("Z", "boolean");

@@ -101,6 +101,8 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.logging.Logger;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -177,7 +179,7 @@ public abstract class CLASSNAME extends SUPERCLASS {
    * Map from function name (eg, MultiplyLong, MinimumFloat) to an array of instances (one for each
    * valid permutation) for that function.
    */
-  private static Map<String,@Prototype CLASSNAME[]> functions = new LinkedHashMap<>();
+  private static @Growable @Replaceable Map<String,@Prototype CLASSNAME[]> functions = new LinkedHashMap<>();
 
   /**
    * A list indexed by function number to an array of instances (one for each valid permutation) for
@@ -185,7 +187,7 @@ public abstract class CLASSNAME extends SUPERCLASS {
    * faster access mechanism once we have the function id (which are calculated the first time
    * through).
    */
-  private static List<@Prototype CLASSNAME[]> func_list = new ArrayList<>();
+  private static @Growable List<@Prototype CLASSNAME[]> func_list = new ArrayList<>();
 
   private static void build_func_list() {
 

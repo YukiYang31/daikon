@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
@@ -70,7 +72,7 @@ public class ReadTrace {
    */
   public static class CollectDataProcessor extends FileIO.Processor {
 
-    public Map<PptTopLevel, List<ValueTuple>> samples = new LinkedHashMap<>();
+    public @Growable @Replaceable Map<PptTopLevel, List<ValueTuple>> samples = new LinkedHashMap<>();
 
     /** Process the sample, by adding it to the {@code samples} map. */
     @RequiresNonNull("daikon.FileIO.data_trace_state")

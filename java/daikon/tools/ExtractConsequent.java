@@ -31,6 +31,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.plumelib.util.StringsPlume;
@@ -77,7 +80,7 @@ public class ExtractConsequent {
   HashMaps whose keys are predicate names (Strings) and whose values are
    HashMaps whose keys are Strings (normalized java-format invariants)
      and whose values are HashedConsequent objects. */
-  private static Map<String, Map<String, Map<String, HashedConsequent>>> pptname_to_conditions =
+  private static @Growable @Replaceable Map<String, Map<String, Map<String, HashedConsequent>>> pptname_to_conditions =
       new HashMap<>();
 
   /** The usage message for this program. */
@@ -388,13 +391,13 @@ public class ExtractConsequent {
       pptname_to_conditions.put(pptname, new HashMap<>());
     }
 
-    Map<String, Map<String, HashedConsequent>> cluster_to_conditions =
+    @Growable @Replaceable Map<String, Map<String, HashedConsequent>> cluster_to_conditions =
         pptname_to_conditions.get(pptname);
     if (!cluster_to_conditions.containsKey(predicate)) {
       cluster_to_conditions.put(predicate, new HashMap<>());
     }
 
-    Map<String, HashedConsequent> conditions = cluster_to_conditions.get(predicate);
+    @Modifiable Map<String, HashedConsequent> conditions = cluster_to_conditions.get(predicate);
     if (conditions.containsKey(index)) {
       HashedConsequent old = conditions.get(index);
       if (old.fakeFor != null && consequent.fakeFor == null) {

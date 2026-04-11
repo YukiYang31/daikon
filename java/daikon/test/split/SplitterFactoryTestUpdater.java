@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import org.plumelib.util.FilesPlume;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
 /**
  * This class's main method can be used to update both the target files of SplitterFactoryTest and
  * the code of the SplitterFactoryTest itself.
@@ -33,9 +35,9 @@ public class SplitterFactoryTestUpdater {
   private static String targetDir = "daikon/test/split/targets/";
   private static String splitDir = "daikon/test/split/";
 
-  private static ArrayList<ArrayList<File>> spinfoFileLists = new ArrayList<>();
-  private static ArrayList<ArrayList<File>> declsFileLists = new ArrayList<>();
-  private static ArrayList<String> classNames = new ArrayList<>();
+  private static @Growable ArrayList<ArrayList<File>> spinfoFileLists = new ArrayList<>();
+  private static @Growable ArrayList<ArrayList<File>> declsFileLists = new ArrayList<>();
+  private static @Growable ArrayList<String> classNames = new ArrayList<>();
 
   private SplitterFactoryTestUpdater() {} // blocks public constructor
 

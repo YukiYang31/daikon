@@ -32,6 +32,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -80,7 +83,7 @@ public class InvariantChecker {
           "  --" + Daikon.track_SWITCH + " class<var1,var2,var3>@ppt",
           "      Print debug info on the specified invariant class, vars, and ppt");
 
-  public static List<String> dtrace_files = new ArrayList<>();
+  public static @Growable @Shrinkable List<String> dtrace_files = new ArrayList<>();
   static @Owning PrintStream output_stream = System.out;
   static int error_cnt = 0;
   static int sample_cnt = 0;
@@ -89,10 +92,10 @@ public class InvariantChecker {
   static boolean doFilter;
   static boolean doConf;
   static boolean quiet = true;
-  static HashSet<Invariant> failedInvariants = new HashSet<>(); // Yoav added
-  static HashSet<Invariant> testedInvariants = new HashSet<>(); // Yoav added
-  static HashSet<Invariant> activeInvariants = new HashSet<>(); // Yoav added
-  static LinkedHashSet<String> outputComma = new LinkedHashSet<>(); // Yoav added
+  static @Growable @Shrinkable HashSet<Invariant> failedInvariants = new HashSet<>(); // Yoav added
+  static @Growable @Shrinkable HashSet<Invariant> testedInvariants = new HashSet<>(); // Yoav added
+  static @Growable @Shrinkable HashSet<Invariant> activeInvariants = new HashSet<>(); // Yoav added
+  static @Growable LinkedHashSet<String> outputComma = new LinkedHashSet<>(); // Yoav added
 
   public static void main(String[] args)
       throws FileNotFoundException,
@@ -383,7 +386,7 @@ public class InvariantChecker {
 
   public static class InvariantCheckProcessor extends FileIO.Processor {
 
-    Map<Integer, EnterCall> call_map = new LinkedHashMap<>();
+    @Modifiable Map<Integer, EnterCall> call_map = new LinkedHashMap<>();
 
     /**
      * process the sample by checking it against each existing invariant and issuing an error if any

@@ -92,7 +92,7 @@ public class VarInfoNameDriver {
   }
 
   public static interface Handler {
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out);
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out);
   }
 
   // VarInfoName parse(String);
@@ -250,7 +250,7 @@ public class VarInfoNameDriver {
   // VarInfoName applySize();
   private static class Size implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(2, args.length);
       VarInfoName var = vars.get(args[1]);
       VarInfoName result = var.applySize();
@@ -266,7 +266,7 @@ public class VarInfoNameDriver {
   // VarInfoName applyFunction(String);
   private static class Function implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(3, args.length);
       String func = args[1];
       VarInfoName var = vars.get(args[2]);
@@ -283,7 +283,7 @@ public class VarInfoNameDriver {
   // VarInfoName applyTypeOf();
   private static class TypeOf implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(2, args.length);
       VarInfoName var = vars.get(args[1]);
       VarInfoName result = var.applyTypeOf();
@@ -299,7 +299,7 @@ public class VarInfoNameDriver {
   // VarInfoName applyPrestate();
   private static class Prestate implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(2, args.length);
       VarInfoName var = vars.get(args[1]);
       VarInfoName result = var.applyPrestate();
@@ -315,7 +315,7 @@ public class VarInfoNameDriver {
   // VarInfoName applyPoststate();
   private static class Poststate implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(2, args.length);
       VarInfoName var = vars.get(args[1]);
       VarInfoName result = var.applyPoststate();
@@ -333,7 +333,7 @@ public class VarInfoNameDriver {
     private static VarInfoName.PostPreConverter converter = new VarInfoName.PostPreConverter();
 
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       VarInfoName var = vars.get(args[0]);
       VarInfoName result = converter.replace(var);
       vars.put(args[0], result);
@@ -348,7 +348,7 @@ public class VarInfoNameDriver {
   // VarInfoName applyAdd(int);
   private static class Add implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(3, args.length);
       VarInfoName var = vars.get(args[1]);
       int amt = Integer.parseInt(args[2]);
@@ -365,7 +365,7 @@ public class VarInfoNameDriver {
   // VarInfoName applyElements();
   private static class Elements implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(2, args.length);
       VarInfoName var = vars.get(args[1]);
       VarInfoName result = var.applyElements();
@@ -381,7 +381,7 @@ public class VarInfoNameDriver {
   // VarInfoName applySubscript(VarInfoName);
   private static class Subscript implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(3, args.length);
       VarInfoName var = vars.get(args[1]);
       VarInfoName sub = vars.get(args[2]);
@@ -398,7 +398,7 @@ public class VarInfoNameDriver {
   // VarInfoName applySlice(VarInfoName, VarInfoName);
   private static class Slice implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(4, args.length);
       VarInfoName var = vars.get(args[1]);
       VarInfoName i = vars.get(args[2]);
@@ -432,7 +432,7 @@ public class VarInfoNameDriver {
   // VarInfoName applyFunctionOfN(String function, List vars)
   private static class FunctionOfN implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertTrue(args.length >= 4);
       String func = args[1];
       List<VarInfoName> function_vars = new ArrayList<>();
@@ -452,7 +452,7 @@ public class VarInfoNameDriver {
   // public VarInfoName applyField(String field)
   private static class Field implements Handler {
     @Override
-    public void handle(Map<String, VarInfoName> vars, String[] args, PrintStream out) {
+    public void handle(@Growable @Replaceable Map<String, VarInfoName> vars, String[] args, PrintStream out) {
       assertEquals(3, args.length);
       VarInfoName var = vars.get(args[1]);
       String fieldname = args[2];
