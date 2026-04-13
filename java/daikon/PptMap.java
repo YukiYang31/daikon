@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -265,7 +266,8 @@ public class PptMap implements Serializable {
 
   /** Blow away any PptTopLevels that never saw any samples (to reclaim space). */
   public void removeUnsampled() {
-    Iterator<PptTopLevel> iter = nameToPpt.values().iterator();
+    @SuppressWarnings("Shrinkable:assignment") // false positive, nameToPpt is a LinkedHashMap, its values() is shrinkable. 
+    @Shrinkable Iterator<PptTopLevel> iter = nameToPpt.values().iterator();
     while (iter.hasNext()) {
       PptTopLevel ppt = iter.next();
       if ((ppt.num_samples() == 0) && !FileIO.has_unmatched_procedure_entry(ppt)) {

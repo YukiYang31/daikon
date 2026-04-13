@@ -104,6 +104,7 @@ import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -629,7 +630,7 @@ public class PptTopLevel extends Ppt {
   }
 
   // Get the actual views from the HashMap
-  Collection<PptSlice> viewsAsCollection() {
+  @Shrinkable Collection<PptSlice> viewsAsCollection() {
     return views.values();
   }
 
@@ -1225,7 +1226,7 @@ public class PptTopLevel extends Ppt {
 
     // Remove slices from the list if all of their invariants have died.
     // (Removal requires use of old-style for loop and Iterator.)
-    for (Iterator<PptSlice> itor = views_iterator(); itor.hasNext(); ) {
+    for (@Shrinkable Iterator<PptSlice> itor = views_iterator(); itor.hasNext(); ) {
       PptSlice view = itor.next();
       if (view.invs.isEmpty()) {
         itor.remove();
@@ -2863,7 +2864,7 @@ public class PptTopLevel extends Ppt {
     }
 
     // Now pivot the other invariants
-    Collection<PptSlice> slices = viewsAsCollection();
+    @Shrinkable Collection<PptSlice> slices = viewsAsCollection();
     List<PptSlice> pivoted = new ArrayList<>();
 
     // PptSlice newSlice = slice.cloneAndInvs(leader, newLeader);
@@ -2873,7 +2874,8 @@ public class PptTopLevel extends Ppt {
     if (debugEqualTo.isLoggable(Level.FINE)) {
       debugEqualTo.fine("  Doing cloneAllPivots: ");
     }
-    for (Iterator<PptSlice> iSlices = slices.iterator(); iSlices.hasNext(); ) {
+    for (@SuppressWarnings("Shrinkable:assignment")
+      @Shrinkable Iterator<PptSlice> iSlices = slices.iterator(); iSlices.hasNext(); ) {
       PptSlice slice = iSlices.next();
       boolean needPivoting = false;
       for (int i = 0; i < slice.arity(); i++) {
@@ -3312,7 +3314,8 @@ public class PptTopLevel extends Ppt {
    *
    * @see #views_iterable()
    */
-  public Iterator<PptSlice> views_iterator() {
+  @SuppressWarnings("Shrinkable:return")
+  public @Shrinkable Iterator<PptSlice> views_iterator() {
     // assertion only true when guarding invariants
     // assert views.contains(joiner_view);
     return viewsAsCollection().iterator();
@@ -3740,7 +3743,8 @@ public class PptTopLevel extends Ppt {
 
     // Get all of the binary relationships from the first child's
     // equality sets.
-    Map<VarInfo.Pair, VarInfo.Pair> equalityPairs = null; // a set of pairs, represented as a map
+    // at run time, equalityPairs is a LinkedHashMap. 
+    @Shrinkable Map<VarInfo.Pair, VarInfo.Pair> equalityPairs = null; // a set of pairs, represented as a map
     int first_child = 0; // the index of the first child with num_samples() > 0
     for (first_child = 0; first_child < children.size(); first_child++) {
       PptRelation c1 = children.get(first_child);
@@ -3774,7 +3778,8 @@ public class PptTopLevel extends Ppt {
       }
       Map<VarInfo.Pair, VarInfo.Pair> eq_new = rel.get_child_equalities_as_parent();
       // Cannot use foreach loop, due to desire to remove from equalityPairs.
-      for (Iterator<VarInfo.@KeyFor("equalityPairs") Pair> j = equalityPairs.keySet().iterator();
+      for (@SuppressWarnings("Shrinkable:assignment") // equalityPairs is non-null when we get here
+        @Shrinkable Iterator<VarInfo.@KeyFor("equalityPairs") Pair> j = equalityPairs.keySet().iterator();
           j.hasNext(); ) {
         VarInfo.Pair curpair = j.next();
         VarInfo.Pair newpair = eq_new.get(curpair);

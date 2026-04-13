@@ -21,6 +21,7 @@ import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -237,7 +238,7 @@ public class PptRelation implements Serializable {
    * child variables themselves. The map is from the pair to itself, which allows the pair to be
    * looked up (which is not possible with a set).
    */
-  public Map<VarInfo.Pair, VarInfo.Pair> get_child_equalities_as_parent() {
+  public @Shrinkable Map<VarInfo.Pair, VarInfo.Pair> get_child_equalities_as_parent() {
 
     debug.fine(
         "get_child_equalities for "

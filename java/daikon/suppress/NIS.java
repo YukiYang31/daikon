@@ -12,6 +12,8 @@ import daikon.inv.InvariantStatus;
 import daikon.inv.ValueSet;
 import daikon.inv.binary.BinaryInvariant;
 import daikon.inv.binary.twoScalar.IntEqual;
+import daikon.suppress.NIS.Count;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -617,7 +619,7 @@ public class NIS {
     }
 
     // Find all antecedents and organize them by their variables comparability
-    Map<VarComparability, Antecedents> comp_ants = new LinkedHashMap<>();
+    @Shrinkable Map<VarComparability, Antecedents> comp_ants = new LinkedHashMap<>();
     store_antecedents_by_comparability(ppt.views_iterator(), comp_ants);
 
     if (ppt.constants != null) {
@@ -668,7 +670,9 @@ public class NIS {
 
     // Remove any Antecedents without any falsified invariants.  They can't
     // possibly create any newly unsuppressed invariants
-    for (Iterator<Antecedents> i = comp_ants.values().iterator(); i.hasNext(); ) {
+    for (
+      @SuppressWarnings("Shrinkable:assignment") // false positive, comp_ants is LinkedHashMap at runtime and its .values().iterator() is shrinkable
+      @Shrinkable Iterator<Antecedents> i = comp_ants.values().iterator(); i.hasNext(); ) {
       Antecedents ants = i.next();
       if (ants.false_cnt == 0) {
         i.remove();
