@@ -2536,7 +2536,7 @@ public final class DCRuntime implements ComparabilityProvider {
    * Adds this daikon variable and all of its children into their appropriate sets (those of their
    * leader) in sets.
    */
-  static void add_variable(Map<DaikonVariableInfo, @Growable DVSet> sets, DaikonVariableInfo dv) {
+  static void add_variable(@Growable Map<DaikonVariableInfo, @Growable DVSet> sets, DaikonVariableInfo dv) {
 
     // Add this variable into the set of its leader
     if (dv.declShouldPrint()) {

@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -307,8 +308,8 @@ public class PptSplitter implements Serializable {
       // Each element of invs[i] is an invariant from the i-th child, permuted to
       // the parent (and with a parent slice as its ppt slot).
       @SuppressWarnings({"unchecked", "rawtypes"})
-      /*NNC:@MonotonicNonNull*/ List<Invariant> invs[] =
-          (ArrayList<Invariant>[]) new @Nullable ArrayList[num_children];
+      /*NNC:@MonotonicNonNull*/ @Growable List<Invariant> invs[] =
+          (@Growable ArrayList<Invariant>[]) new @Nullable ArrayList[num_children];
 
       // find the parent slice
       PptSlice pslice = parent.get_or_instantiate_slice(vis);

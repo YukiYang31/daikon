@@ -3,6 +3,8 @@ package daikon.chicory;
 import java.util.EnumSet;
 import org.checkerframework.dataflow.qual.Pure;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
 /**
  * The ParameterInfo class is a subtype of DaikonVariableInfo used for variable types which are
  * arguments to procedures.
@@ -88,7 +90,7 @@ public class ParameterInfo extends DaikonVariableInfo {
 
   /** Add IS_PARM to list of variable flags. */
   @Override
-  public EnumSet<VarFlags> get_var_flags() {
+  public @Growable EnumSet<VarFlags> get_var_flags() {
     // System.out.printf("%s is a parameter%n", this);
     EnumSet<VarFlags> var_flags = super.get_var_flags();
     var_flags.add(VarFlags.IS_PARAM);

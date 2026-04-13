@@ -50,6 +50,7 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.KeyFor;
@@ -89,7 +90,7 @@ public class LogicalCompare {
   // method should create an instance.
 
   /** key = ppt name */
-  private static @MonotonicNonNull @Growable @Replaceable Map<String, List<Lemma>> extra_assumptions;
+  private static @MonotonicNonNull @Growable @Replaceable Map<String, @Growable List<Lemma>> extra_assumptions;
 
   private static @Owning @MonotonicNonNull LemmaStack lemmas;
 
@@ -308,8 +309,8 @@ public class LogicalCompare {
 
       if (opt_minimize_classes) {
         if (result == 'T' && !identical) {
-          List<Set<Class<? extends Invariant>>> sets = lemmas.minimizeClasses(inv.formula);
-          for (Set<Class<? extends Invariant>> classes : sets) {
+          List<@Shrinkable Set<Class<? extends Invariant>>> sets = lemmas.minimizeClasses(inv.formula);
+          for (@Shrinkable Set<Class<? extends Invariant>> classes : sets) {
             @SuppressWarnings(
                 "nullness") // application invariant: context; might be able to rewrite types to
             // make consequences a List<InvariantLemma>"

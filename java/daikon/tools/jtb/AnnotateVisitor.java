@@ -30,6 +30,7 @@ import jtb.syntaxtree.*;
 import jtb.visitor.*;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -66,7 +67,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
   public static final String JML_START_COMMENT = "/*@" + lineSep;
   public static final String JML_END_COMMENT = "@*/" + lineSep;
 
-  public @Replaceable List<String> javaFileLines;
+  public @Replaceable @Growable  List<String> javaFileLines;
 
   public PptMap ppts;
 
@@ -95,7 +96,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
 
   public @Growable List<NodeToken> addedComments = new ArrayList<>();
 
-  private @Growable Deque<ClassFieldInfo> cfis = new ArrayDeque<ClassFieldInfo>();
+  private @Growable @Shrinkable Deque<ClassFieldInfo> cfis = new ArrayDeque<ClassFieldInfo>();
 
   private PptNameMatcher pptMatcher;
 

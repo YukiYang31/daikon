@@ -195,7 +195,7 @@ public class CreateSpinfo {
     ConditionExtractor extractor = new ConditionExtractor();
     root.accept(extractor);
     // conditions: method name (String) to conditional expressions (String)
-    Map<String, List<String>> conditions = extractor.getConditionMap();
+    Map<String, @Growable @Replaceable List<String>> conditions = extractor.getConditionMap();
     // replaceStatements: method declaration (String) to method body (String)
     Map<String, String> replaceStatements = extractor.getReplaceStatements();
     String packageName = extractor.getPackageName();

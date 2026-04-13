@@ -6,6 +6,7 @@ import jtb.syntaxtree.*;
 import jtb.visitor.*;
 import org.checkerframework.checker.initialization.qual.Initialized;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
@@ -27,16 +28,16 @@ class CollectFieldsVisitor extends DepthFirstVisitor {
   private boolean include_nested_classes;
 
   /** All FieldDeclarations declared in this class or in nested/inner classes. */
-  private List<FieldDeclaration> fieldDecls = new ArrayList<>();
+  private @Growable List<FieldDeclaration> fieldDecls = new ArrayList<>();
 
   /** Names of all fields. */
-  private List<String> allNames;
+  private @Growable List<String> allNames;
 
   /** Names of all fields with owner annotations. */
-  private List<String> ownedNames;
+  private @Growable List<String> ownedNames;
 
   /** Names of all final fields. */
-  private List<String> finalNames;
+  private @Growable List<String> finalNames;
 
   /**
    * True if the fields {@code allNames}, {@code ownedNames}, and {@code finalNames} are up-to-date.

@@ -42,7 +42,7 @@ public final class TestAst {
   }
 
   public static class ClassOrInterfaceDeclarationHarvester extends DepthFirstVisitor {
-    List<ClassOrInterfaceDeclaration> decls = new ArrayList<>();
+    @Growable List<ClassOrInterfaceDeclaration> decls = new ArrayList<>();
 
     @Override
     public void visit(ClassOrInterfaceDeclaration m) {

@@ -46,6 +46,7 @@ The correct way to build the system is to run 'make'.
 
 package daikon.derive.ternary;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import daikon.*;
 import daikon.inv.binary.twoScalar.*; // for IntComparison
@@ -118,14 +119,14 @@ public final class SEQUENCESCALARSUBSCRIPTFACTORY extends TernaryDerivationFacto
       return null;
     }
 
-    List<TernaryDerivation> results1 = instantiateWithOrder(seqvar, sclvar1, sclvar2);
+    @Growable List<TernaryDerivation> results1 = instantiateWithOrder(seqvar, sclvar1, sclvar2);
     List<TernaryDerivation> results2 = instantiateWithOrder(seqvar, sclvar2, sclvar1);
 
     results1.addAll(results2);
     return results1.toArray(new TernaryDerivation[0]);
   }
 
-  private List<TernaryDerivation> instantiateWithOrder(
+  private @Growable List<TernaryDerivation> instantiateWithOrder(
       VarInfo seqvar, VarInfo startvar, VarInfo endvar) {
     List<TernaryDerivation> results = new ArrayList<>();
     VarInfo seqsize = seqvar.sequenceSize();

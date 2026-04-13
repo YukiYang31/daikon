@@ -36,6 +36,7 @@ import org.checkerframework.checker.lock.qual.Holding;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -136,7 +137,7 @@ public final class Runtime {
    * Which static initializers have been run. Each element of the Set is a fully qualified class
    * name.
    */
-  private static Set<String> initSet = new HashSet<>();
+  private static @Growable Set<String> initSet = new HashSet<>();
 
   /** Class of information about each active call. */
   private static class CallInfo {
@@ -154,7 +155,7 @@ public final class Runtime {
   }
 
   /** Stack of active methods. */
-  private static @GuardedBy("Runtime.class") Map<Thread, Deque<CallInfo>> thread_to_callstack =
+  private static @GuardedBy("Runtime.class") @Growable Map<Thread, @Growable @Shrinkable Deque<CallInfo>> thread_to_callstack =
       new LinkedHashMap<>();
 
   /**
@@ -276,7 +277,7 @@ public final class Runtime {
         }
         Thread t = Thread.currentThread();
         @SuppressWarnings("lock:method.invocation") // CF bug: inference failed
-        Deque<CallInfo> callstack =
+        @Growable Deque<CallInfo> callstack =
             thread_to_callstack.computeIfAbsent(t, __ -> new ArrayDeque<CallInfo>());
         callstack.push(new CallInfo(nonce, capture));
       }
@@ -357,7 +358,7 @@ public final class Runtime {
       if (sample_start > 0) {
         CallInfo ci = null;
         @SuppressWarnings("nullness") // map: key was put in map by enter()
-        @NonNull Deque<CallInfo> callstack = thread_to_callstack.get(Thread.currentThread());
+        @NonNull @Shrinkable Deque<CallInfo> callstack = thread_to_callstack.get(Thread.currentThread());
         while (!callstack.isEmpty()) {
           ci = callstack.pop();
           if (ci.nonce == nonce) {

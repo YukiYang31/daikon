@@ -80,7 +80,9 @@ public class ExtractConsequent {
   HashMaps whose keys are predicate names (Strings) and whose values are
    HashMaps whose keys are Strings (normalized java-format invariants)
      and whose values are HashedConsequent objects. */
-  private static @Growable @Replaceable Map<String, Map<String, Map<String, HashedConsequent>>> pptname_to_conditions =
+  private static @Growable @Replaceable Map<String, 
+                        @Growable @Replaceable Map<String, 
+                                         @Modifiable Map<String, HashedConsequent>>> pptname_to_conditions =
       new HashMap<>();
 
   /** The usage message for this program. */
@@ -391,7 +393,7 @@ public class ExtractConsequent {
       pptname_to_conditions.put(pptname, new HashMap<>());
     }
 
-    @Growable @Replaceable Map<String, Map<String, HashedConsequent>> cluster_to_conditions =
+    @Growable @Replaceable Map<String, @Modifiable Map<String, HashedConsequent>> cluster_to_conditions =
         pptname_to_conditions.get(pptname);
     if (!cluster_to_conditions.containsKey(predicate)) {
       cluster_to_conditions.put(predicate, new HashMap<>());

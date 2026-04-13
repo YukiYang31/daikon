@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import jtb.syntaxtree.*;
 import jtb.visitor.*;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 
 /** Replaces uses of generic type parameters with versions that do not use generics. */
@@ -16,7 +17,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
   // A map from token images to "ungenerified" versions of the classes
   // or interfaces that the given identifiers extend.
-  HashMap<String, Deque<ClassOrInterfaceType>> shadowingMap = new HashMap<>();
+  @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> shadowingMap = new HashMap<>();
 
   // For debugging purposes.
   @SuppressWarnings("UnusedMethod") // debugging code is currently commented out
@@ -101,7 +102,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
   public void visit(ClassOrInterfaceDeclaration n) {
 
     // A shallow clone, which is what we want.
-    HashMap<String, Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
+    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
 
     n.f0.accept(this);
     n.f1.accept(this);
@@ -159,7 +160,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
       assert b.f1.unGenerifiedVersionOfThis != null;
 
-      Deque<ClassOrInterfaceType> s =
+      @Growable Deque<ClassOrInterfaceType> s =
           shadowingMap.computeIfAbsent(
               n.f0.tokenImage, __ -> new ArrayDeque<ClassOrInterfaceType>());
       s.push(b.f1.unGenerifiedVersionOfThis);
@@ -168,7 +169,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
       // No explicit bound means that bound is java.lang.Object.
 
-      Deque<ClassOrInterfaceType> s =
+      @Growable Deque<ClassOrInterfaceType> s =
           shadowingMap.computeIfAbsent(
               n.f0.tokenImage, __ -> new ArrayDeque<ClassOrInterfaceType>());
 
@@ -211,7 +212,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
     // Drop all type arguments.
     n.f1 = new NodeOptional(); // This removes optional node, if present.
-    List<Node> nodeSequenceList = n.f2.nodes;
+    @Growable List<Node> nodeSequenceList = n.f2.nodes;
     for (int i = 0; i < nodeSequenceList.size(); i++) {
       NodeSequence oldSequence = (NodeSequence) nodeSequenceList.get(i);
       NodeSequence newSequence = new NodeSequence(3);

@@ -72,7 +72,7 @@ public class ReadTrace {
    */
   public static class CollectDataProcessor extends FileIO.Processor {
 
-    public @Growable @Replaceable Map<PptTopLevel, List<ValueTuple>> samples = new LinkedHashMap<>();
+    public @Growable @Replaceable Map<PptTopLevel, @Growable List<ValueTuple>> samples = new LinkedHashMap<>();
 
     /** Process the sample, by adding it to the {@code samples} map. */
     @RequiresNonNull("daikon.FileIO.data_trace_state")

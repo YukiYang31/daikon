@@ -2413,7 +2413,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitSimple(Simple o) {
+      public @Shrinkable List<VarInfo> visitSimple(Simple o) {
         List<VarInfo> result = new ArrayList<>();
         // No recursion:  no children
         if (!o.name.equals("this")) {
@@ -2439,7 +2439,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitFunctionOf(FunctionOf o) {
+      public @Shrinkable List<VarInfo> visitFunctionOf(FunctionOf o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.argument.accept(this));
@@ -2453,7 +2453,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitFunctionOfN(FunctionOfN o) {
+      public @Shrinkable List<VarInfo> visitFunctionOfN(FunctionOfN o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           for (VarInfoName arg : o.args) {
@@ -2486,7 +2486,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitTypeOf(TypeOf o) {
+      public @Shrinkable List<VarInfo> visitTypeOf(TypeOf o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.term.accept(this));
@@ -2499,7 +2499,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitPrestate(Prestate o) {
+      public @Shrinkable List<VarInfo> visitPrestate(Prestate o) {
         assert inPre == false;
         inPre = true;
         List<VarInfo> result = o.term.accept(this);
@@ -2512,7 +2512,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitPoststate(Poststate o) {
+      public @Shrinkable List<VarInfo> visitPoststate(Poststate o) {
         assert inPre == true;
         inPre = false;
         List<VarInfo> result = o.term.accept(this);
@@ -2525,7 +2525,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitAdd(Add o) {
+      public @Shrinkable List<VarInfo> visitAdd(Add o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.term.accept(this));
@@ -2538,7 +2538,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitElements(Elements o) {
+      public @Shrinkable List<VarInfo> visitElements(Elements o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.term.accept(this));
@@ -2551,7 +2551,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitSubscript(Subscript o) {
+      public @Shrinkable List<VarInfo> visitSubscript(Subscript o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.sequence.accept(this));
@@ -2565,7 +2565,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitSlice(Slice o) {
+      public @Shrinkable List<VarInfo> visitSlice(Slice o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.sequence.accept(this));

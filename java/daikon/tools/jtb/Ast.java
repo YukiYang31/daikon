@@ -23,6 +23,7 @@ import jtb.JavaParser;
 import jtb.ParseException;
 import jtb.syntaxtree.*;
 import jtb.visitor.*;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.ClassGetName;
@@ -1070,7 +1071,7 @@ public class Ast {
   // parameters.
   public static List<FormalParameter> getParameters(MethodDeclaration m) {
     class GetParametersVisitor extends DepthFirstVisitor {
-      List<FormalParameter> parameters = new ArrayList<>();
+      @Growable List<FormalParameter> parameters = new ArrayList<>();
 
       @Override
       public void visit(FormalParameter p) {
@@ -1088,7 +1089,7 @@ public class Ast {
   // inner classes.
   public static List<FormalParameter> getParametersNoImplicit(ConstructorDeclaration cd) {
     class GetParametersVisitor extends DepthFirstVisitor {
-      List<FormalParameter> parameters = new ArrayList<>();
+      @Growable List<FormalParameter> parameters = new ArrayList<>();
 
       @Override
       public void visit(FormalParameter p) {
@@ -1106,7 +1107,7 @@ public class Ast {
   // parameters.
   public static List<FormalParameter> getParameters(ConstructorDeclaration cd) {
     class GetParametersVisitor extends DepthFirstVisitor {
-      List<FormalParameter> parameters = new ArrayList<>();
+      @Growable List<FormalParameter> parameters = new ArrayList<>();
 
       @Override
       public void visit(FormalParameter p) {
@@ -1174,7 +1175,7 @@ public class Ast {
   public static Set<String> getVariableNames(Node expr) {
 
     class GetSymbolNamesVisitor extends DepthFirstVisitor {
-      Set<String> symbolNames = new HashSet<>();
+      @Growable Set<String> symbolNames = new HashSet<>();
 
       @Override
       public void visit(Name n) {

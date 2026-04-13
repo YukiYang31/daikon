@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -60,7 +62,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
 public class Annotation {
 
   // Maps into all the Annotation objects created.
-  private static HashMap<Integer, Annotation> annotationsMap = new HashMap<>();
+  private static @Growable @Replaceable HashMap<Integer, Annotation> annotationsMap = new HashMap<>();
 
   /** Daikon representation (as output by Daikon's default output format). */
   private final String daikonRep;
