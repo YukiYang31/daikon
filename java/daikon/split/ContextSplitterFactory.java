@@ -214,7 +214,7 @@ public class ContextSplitterFactory {
     // (~pptname) for the callee.  Second key is an idenfier for the
     // caller (based on granularity).  The value is a set of Integers
     // giving the ids that are associated with that callgraph edge.
-    Map<String, Map<String, Set<Long>>> callee2caller2ids = new HashMap<>();
+    @Growable Map<String, @Growable Map<String, @Growable Set<Long>>> callee2caller2ids = new HashMap<>();
 
     // For each entry
     for (int i = 0; i < entries.length; i++) {
@@ -247,7 +247,7 @@ public class ContextSplitterFactory {
       }
 
       // Place the ID into the mapping
-      Map<String, Set<Long>> caller2ids =
+      @Growable Map<String, @Growable Set<Long>> caller2ids =
           callee2caller2ids.computeIfAbsent(callee_ppt_name, __ -> new LinkedHashMap<>());
       @Growable Set<Long> ids = caller2ids.computeIfAbsent(caller_condition, __ -> new TreeSet<Long>());
       ids.add(entry.id);

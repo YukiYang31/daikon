@@ -2426,7 +2426,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitSizeOf(SizeOf o) {
+      public @Shrinkable List<VarInfo> visitSizeOf(SizeOf o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.sequence.accept(this));
@@ -2469,7 +2469,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public List<VarInfo> visitField(Field o) {
+      public @Shrinkable List<VarInfo> visitField(Field o) {
         List<VarInfo> result = new ArrayList<>();
         if (Invariant.debugGuarding.isLoggable(Level.FINE)) {
           Invariant.debugGuarding.fine(

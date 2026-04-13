@@ -2437,24 +2437,24 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
    */
   public abstract static class AbstractVisitor<T> implements Visitor<T> {
     @Override
-    public T visitSimple(Simple o) {
+    public @Shrinkable T visitSimple(Simple o) {
       // nothing to do; leaf node
       return null;
     }
 
     @Override
-    public T visitSizeOf(SizeOf o) {
+    public @Shrinkable T visitSizeOf(SizeOf o) {
       return o.sequence.accept(this);
     }
 
     @Override
-    public T visitFunctionOf(FunctionOf o) {
+    public @Shrinkable T visitFunctionOf(FunctionOf o) {
       return o.argument.accept(this);
     }
 
     /** By default, return effect on first argument, but traverse all, backwards. */
     @Override
-    public T visitFunctionOfN(FunctionOfN o) {
+    public @Shrinkable T visitFunctionOfN(FunctionOfN o) {
       T retval = null;
       for (ListIterator<VarInfoName> i = o.args.listIterator(o.args.size()); i.hasPrevious(); ) {
         VarInfoName vin = i.previous();
@@ -2464,42 +2464,42 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public T visitField(Field o) {
+    public @Shrinkable T visitField(Field o) {
       return o.term.accept(this);
     }
 
     @Override
-    public T visitTypeOf(TypeOf o) {
+    public @Shrinkable T visitTypeOf(TypeOf o) {
       return o.term.accept(this);
     }
 
     @Override
-    public T visitPrestate(Prestate o) {
+    public @Shrinkable T visitPrestate(Prestate o) {
       return o.term.accept(this);
     }
 
     @Override
-    public T visitPoststate(Poststate o) {
+    public @Shrinkable T visitPoststate(Poststate o) {
       return o.term.accept(this);
     }
 
     @Override
-    public T visitAdd(Add o) {
+    public @Shrinkable T visitAdd(Add o) {
       return o.term.accept(this);
     }
 
     @Override
-    public T visitElements(Elements o) {
+    public @Shrinkable T visitElements(Elements o) {
       return o.term.accept(this);
     }
 
     // leave abstract; traversal order and return values matter
     @Override
-    public abstract T visitSubscript(Subscript o);
+    public abstract @Shrinkable T visitSubscript(Subscript o);
 
     // leave abstract; traversal order and return values matter
     @Override
-    public abstract T visitSlice(Slice o);
+    public abstract @Shrinkable T visitSlice(Slice o);
   }
 
   /**

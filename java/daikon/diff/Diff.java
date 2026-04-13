@@ -27,6 +27,7 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
@@ -646,7 +647,7 @@ public final class Diff {
     assert ppt1 == null || ppt2 == null || PPT_COMPARATOR.compare(ppt1, ppt2) == 0
         : "Program points do not correspond";
 
-    List<Invariant> invs1;
+    @Replaceable List<Invariant> invs1;
     if (ppt1 != null) {
       invs1 = map1.get(ppt1);
       Collections.sort(invs1, invSortComparator1);
@@ -654,7 +655,7 @@ public final class Diff {
       invs1 = new ArrayList<Invariant>();
     }
 
-    List<Invariant> invs2;
+    @Replaceable List<Invariant> invs2;
     if (ppt2 != null) {
       invs2 = map2.get(ppt2);
       Collections.sort(invs2, invSortComparator2);

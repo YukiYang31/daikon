@@ -126,7 +126,7 @@ public class MultiDiffVisitor extends PrintNullDiffVisitor {
     // mapping:  program point names ->
     //                      ArrayList of inv.format_java() with frequency
 
-    HashMap<String, ArrayList<String>> lastMap = new HashMap<>();
+    HashMap<String, @Growable ArrayList<String>> lastMap = new HashMap<>();
     // One pass to fill each mapping with an empty ArrayList
     for (String key : programPointsList) {
       lastMap.put(key, new ArrayList<String>());
@@ -186,7 +186,7 @@ public class MultiDiffVisitor extends PrintNullDiffVisitor {
     // mapping:  program point names ->
     //                      ArrayList of inv.format_java() with frequency
 
-    HashMap<String, ArrayList<String>> lastMap = new HashMap<>();
+    HashMap<String, @Growable ArrayList<String>> lastMap = new HashMap<>();
     // One pass to fill each mapping with an empty ArrayList
     for (String key : programPointsList) {
       lastMap.put(key, new ArrayList<String>());

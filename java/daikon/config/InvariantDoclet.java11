@@ -25,6 +25,9 @@ import javax.tools.Diagnostic;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -88,7 +91,7 @@ public class InvariantDoclet implements Doclet {
   private Reporter reporter;
 
   /** Map from a class name to its ClassInfo. */
-  private Map<String, ClassInfo> cmap;
+  private @Growable @Replaceable Map<String, ClassInfo> cmap;
 
   /**
    * This method mimics the JDK 8 com.sun.javadoc.Doc.name() method. It returned a 'non-qualified
@@ -290,7 +293,7 @@ public class InvariantDoclet implements Doclet {
         } else {
           // System.out.println ("   SUPER: " + te + " s: " + superName);
           cmap.get(te.toString()).setSuperClass(superName);
-          Set<TypeElement> derived = cmap.get(superName).derivedClasses();
+          @Growable Set<TypeElement> derived = cmap.get(superName).derivedClasses();
           derived.add(te);
         }
       } else {
@@ -455,7 +458,7 @@ public class InvariantDoclet implements Doclet {
       }
 
       // get a list of any other configuration variables
-      List<Element> config_vars = find_fields(dc, Configuration.PREFIX);
+      @Shrinkable List<Element> config_vars = find_fields(dc, Configuration.PREFIX);
       for (int i = 0; i < config_vars.size(); i++) {
         Element f = config_vars.get(i);
         if (f.getSimpleName().toString().equals(Configuration.PREFIX + "enabled")) {
@@ -493,7 +496,7 @@ public class InvariantDoclet implements Doclet {
    * @param cd the base class from which to start the search
    * @param set the set to add classes to. Should start out empty.
    */
-  public void gather_derived_classes(@KeyFor("this.cmap") ClassInfo cd, Set<TypeElement> set) {
+  public void gather_derived_classes(@KeyFor("this.cmap") ClassInfo cd, @Growable Set<TypeElement> set) {
     assert cmap.containsKey(cd.classInfo().toString());
 
     // System.out.println("Processing " + cd.classInfo());

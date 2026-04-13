@@ -338,7 +338,7 @@ class TagEntry extends WeakReference<Object> {
    */
   public static String dump() {
 
-    LinkedHashMap<Object, List<Object>> sets = new LinkedHashMap<>();
+    LinkedHashMap<Object, @Growable List<Object>> sets = new LinkedHashMap<>();
 
     // Fill sets from object_map by placing every object in an ArrayList
     // whose key is its root.

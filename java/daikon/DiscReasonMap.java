@@ -20,7 +20,9 @@ public final class DiscReasonMap {
   //      e.g. "this.head, this.tail" (names appear in sorted order).
   //    Value:  list containing DiscardInfo's for all Invariants using
   //      those variable names in that PptTopLevel.
-  private static @Growable @Replaceable HashMap<String, @Growable @Replaceable HashMap<String, @Growable List<DiscardInfo>>> the_map;
+  private static @Growable @Replaceable HashMap<String, 
+                        @Growable @Replaceable HashMap<String, 
+                                              @Growable List<DiscardInfo>>> the_map;
 
   // This seems to be a gross singleton pattern.
   static {
@@ -120,7 +122,7 @@ public final class DiscReasonMap {
       }
     } else {
       // In case where nothing from this inv's PptTopLevel has been discarded yet
-      HashMap<String, List<DiscardInfo>> new_map = new HashMap<>();
+      HashMap<String, @Growable List<DiscardInfo>> new_map = new HashMap<>();
       List<DiscardInfo> temp = new ArrayList<>();
       temp.add(disc_info);
       new_map.put(vars, temp);
@@ -138,7 +140,7 @@ public final class DiscReasonMap {
    */
   public static List<DiscardInfo> returnMatches_from_ppt(InvariantInfo invInfo) {
     ArrayList<DiscardInfo> result = new ArrayList<>();
-    HashMap<String, List<DiscardInfo>> vars_map_from_ppt = the_map.get(invInfo.ppt());
+    HashMap<String, @Growable List<DiscardInfo>> vars_map_from_ppt = the_map.get(invInfo.ppt());
 
     if (vars_map_from_ppt == null) {
       return result;
@@ -178,7 +180,7 @@ public final class DiscReasonMap {
   // least 1 DiscardInfo associated with it.
   private static List<DiscardInfo> all_vars_tied_from_ppt(String ppt) {
     @SuppressWarnings("nullness") // map:  method precondition
-    @NonNull HashMap<String, List<DiscardInfo>> vars_map = the_map.get(ppt);
+    @NonNull @Growable @Replaceable HashMap<String, @Growable List<DiscardInfo>> vars_map = the_map.get(ppt);
     assert vars_map != null;
 
     ArrayList<DiscardInfo> result = new ArrayList<>();
@@ -193,7 +195,7 @@ public final class DiscReasonMap {
     System.out.println();
     System.out.println();
     System.out.println("DEBUGGING PPT: " + ppt);
-    HashMap<String, List<DiscardInfo>> vars_map = the_map.get(ppt);
+    @Growable HashMap<String, @Growable List<DiscardInfo>> vars_map = the_map.get(ppt);
     if (vars_map == null) {
       System.out.println("No reasons for this ppt");
       return;
