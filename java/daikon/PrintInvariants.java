@@ -1683,7 +1683,7 @@ public final class PrintInvariants {
 
     for (Map.Entry<
             @Nullable @KeyFor("filter_map") Class<? extends InvariantFilter>,
-            Map<Class<? extends Invariant>, Integer>>
+            @Growable @Replaceable Map<Class<? extends Invariant>, Integer>>
         entry : filter_map.entrySet()) {
       Class<? extends InvariantFilter> filter_class = entry.getKey();
       Map<Class<? extends Invariant>, Integer> inv_map = entry.getValue();

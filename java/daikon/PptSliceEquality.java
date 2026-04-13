@@ -231,6 +231,7 @@ public class PptSliceEquality extends PptSlice {
       if (v.equalitySet != null) {
         continue;
       }
+      @SuppressWarnings("Growable:methodref.return") // false positive
       List<VarInfo> vlist = varmap.computeIfAbsent(v, Collections::singletonList);
       Equality eq = new Equality(vlist, this);
       Integer sample_cnt = sample_cnt_map.get(v);
@@ -363,7 +364,7 @@ public class PptSliceEquality extends PptSlice {
     /*NNC:@MonotonicNonNull*/ Equality[] resultArray =
         new Equality[multiMap.values().size() + out_of_bounds.size()];
     int resultCount = 0;
-    for (Map.Entry<@KeyFor("multiMap") Object, List<VarInfo>> entry : multiMap.entrySet()) {
+    for (Map.Entry<@KeyFor("multiMap") Object, @Growable List<VarInfo>> entry : multiMap.entrySet()) {
       Object key = entry.getKey();
       List<VarInfo> list = entry.getValue();
       assert !list.isEmpty();

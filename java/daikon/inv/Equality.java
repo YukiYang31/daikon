@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -77,7 +78,7 @@ public final /*(at)Interned*/ class Equality extends Invariant {
    * The Set of VarInfos that this represents equality for. Can change over time as this invariant
    * weakens. Sorted by index until pivoting.
    */
-  private TreeSet<VarInfo> vars;
+  private @Shrinkable TreeSet<VarInfo> vars;
 
   /** Returns the number of variables in the set. */
   @Pure
@@ -408,7 +409,7 @@ public final /*(at)Interned*/ class Equality extends Invariant {
     if (debug.isLoggable(Level.FINE)) {
       debug.fine("Doing add at " + this.ppt.parent.name() + " for " + this);
     }
-    for (Iterator<VarInfo> i = vars.iterator(); i.hasNext(); ) {
+    for (@Shrinkable Iterator<VarInfo> i = vars.iterator(); i.hasNext(); ) {
       VarInfo vi = i.next();
       if (vi == leader) {
         continue;
