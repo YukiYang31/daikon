@@ -25,6 +25,8 @@ import javax.tools.Diagnostic;
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
@@ -152,7 +154,7 @@ public class ParameterDoclet implements Doclet {
     public String blurb;
 
     /** A map from a field name to its description. */
-    public Map<String, String> fields;
+    public @Growable @Replaceable Map<String, String> fields;
 
     /**
      * Create a new DocCategory.

@@ -180,7 +180,7 @@ public class InvariantDoclet implements Doclet {
     String superClass;
 
     /** Set of classInfo's derived classes. */
-    final Set<TypeElement> derivedClasses;
+    final @Growable Set<TypeElement> derivedClasses;
 
     /**
      * Constructor for ClassInfo.
@@ -188,7 +188,7 @@ public class InvariantDoclet implements Doclet {
      * @param classInfo initial value
      * @param derivedClasses initial value
      */
-    public ClassInfo(TypeElement classInfo, Set<TypeElement> derivedClasses) {
+    public ClassInfo(TypeElement classInfo, @Growable Set<TypeElement> derivedClasses) {
       this.classInfo = classInfo;
       this.superClass = null;
       this.derivedClasses = derivedClasses;
@@ -226,7 +226,7 @@ public class InvariantDoclet implements Doclet {
      *
      * @return derivedClasses
      */
-    Set<TypeElement> derivedClasses() {
+    @Growable Set<TypeElement> derivedClasses() {
       return derivedClasses;
     }
   }
@@ -557,7 +557,7 @@ public class InvariantDoclet implements Doclet {
    * @return vector of FieldDoc entries for each field that matches. If no fields are found, a zero
    *     length vector is returned (not null).
    */
-  public List<Element> find_fields(TypeElement cd, String prefix) {
+  public @Shrinkable List<Element> find_fields(TypeElement cd, String prefix) {
 
     List<Element> list = new ArrayList<>();
 

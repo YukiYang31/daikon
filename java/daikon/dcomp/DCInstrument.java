@@ -3787,7 +3787,7 @@ public class DCInstrument extends InstructionListUtils {
    * @param jc class to check for fields
    * @return field offset map
    */
-  Map<Field, Integer> build_field_map(JavaClass jc) {
+  @Growable @Replaceable Map<Field, Integer> build_field_map(JavaClass jc) {
 
     // Object doesn't have any primitive fields
     if (jc.getClassName().equals("java.lang.Object")) {

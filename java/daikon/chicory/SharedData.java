@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import org.checkerframework.checker.lock.qual.GuardedBy;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 
 /**
  * Data that is shared across Chicory. The primary users are Instrument.java and Runtime.java. As
@@ -21,11 +23,11 @@ public class SharedData {
    */
   // The order of this list depends on the order of loading by the JVM.
   // Declared as Deque instead of List to permit use of removeFirst().
-  public static final @GuardedBy("<self>") Deque<ClassInfo> new_classes = new ArrayDeque<>();
+  public static final @GuardedBy("<self>") @Growable @Shrinkable Deque<ClassInfo> new_classes = new ArrayDeque<>();
 
   /** List of all instrumented classes. */
-  public static final @GuardedBy("<self>") List<ClassInfo> all_classes = new ArrayList<>();
+  public static final @GuardedBy("<self>") @Growable List<ClassInfo> all_classes = new ArrayList<>();
 
   /** List of all instrumented methods. */
-  public static final @GuardedBy("<self>") List<MethodInfo> methods = new ArrayList<>();
+  public static final @GuardedBy("<self>") @Growable List<MethodInfo> methods = new ArrayList<>();
 }

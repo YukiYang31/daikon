@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -32,7 +34,7 @@ public class ClassInfo {
   // Does not include class initializers, so each element's .member field
   // is non-null.
   /** list of methods in the class. */
-  public List<MethodInfo> method_infos = new ArrayList<>();
+  public @Growable List<MethodInfo> method_infos = new ArrayList<>();
 
   /** This class's classloader. */
   private @Nullable ClassLoader loader;
@@ -50,7 +52,7 @@ public class ClassInfo {
   /** Mapping from field name to string representation of its value* */
   // only for static final primitives
   // which are declared by a CONSTANT VALUE in the code
-  public Map<String, String> staticMap = new HashMap<>();
+  public @Growable @Replaceable Map<String, String> staticMap = new HashMap<>();
 
   /** Create ClassInfo with specified name. */
   public ClassInfo(@BinaryName String class_name, @Nullable ClassLoader theLoader) {
@@ -60,7 +62,7 @@ public class ClassInfo {
   }
 
   /** Set the list of methods. */
-  public void set_method_infos(List<MethodInfo> method_infos) {
+  public void set_method_infos(@Growable List<MethodInfo> method_infos) {
     this.method_infos = method_infos;
   }
 
