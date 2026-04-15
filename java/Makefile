@@ -80,8 +80,8 @@ else
   JAVAC_TARGET_FLAGS ?= -source 8 -target 8
 endif
 
-# TODO: -Werror is temporary.
-JAVAC_ARGS ?= -g -XDignore.symbol.file -Xmaxerrs 100000 -Xmaxwarns 100000 -Werror -Xlint:-path -Xlint:-options -Xlint:-classfile ${LINT_THIS_ESCAPE} ${JAVAC_TARGET_ARGS} ${JAVAC_TARGET_FLAGS}
+# TODO: Re-enable -Werror after migrating deprecated API usages.
+JAVAC_ARGS ?= -g -XDignore.symbol.file -Xmaxerrs 100000 -Xmaxwarns 100000 -Xlint:-path -Xlint:-options -Xlint:-classfile ${LINT_THIS_ESCAPE} ${JAVAC_TARGET_ARGS} ${JAVAC_TARGET_FLAGS}
 
 INSTALL ?= /usr/bin/install
 

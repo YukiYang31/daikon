@@ -6,6 +6,8 @@ package jtb.syntaxtree;
 
 import java.util.*;
 
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+
 // Represents a sequence of nodes nested within a choice, list,
 // optional list, or optional, e.g. ( A B )+ or [ C D E ]
 public class NodeSequence implements NodeListInterface {
@@ -46,6 +48,6 @@ public class NodeSequence implements NodeListInterface {
    public Node getParent()       { return parent; }
 
    private Node parent;
-   public Vector<Node> nodes;
+   public @Replaceable Vector<Node> nodes;
 }
 

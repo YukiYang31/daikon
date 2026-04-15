@@ -256,16 +256,16 @@ public class ContextSplitterFactory {
     ArrayList<PptNameAndSplitters> result = new ArrayList<>();
 
     // For each callee
-    for (Map.Entry<@KeyFor("callee2caller2ids") String, Map<String, Set<Long>>> ipair :
+    for (Map.Entry<@KeyFor("callee2caller2ids") String, @Growable Map<String, @Growable Set<Long>>> ipair :
         callee2caller2ids.entrySet()) {
       String callee_ppt_name = ipair.getKey();
-      Map<String, Set<Long>> caller2ids = ipair.getValue();
+      Map<String, @Growable Set<Long>> caller2ids = ipair.getValue();
 
       // 'splitters' collects all splitters for one callee_ppt_name
       Collection<Splitter> splitters = new ArrayList<Splitter>();
 
       // For each caller of that callee
-      for (Map.Entry<@KeyFor("caller2ids") String, Set<Long>> jpair : caller2ids.entrySet()) {
+      for (Map.Entry<@KeyFor("caller2ids") String, @Growable Set<Long>> jpair : caller2ids.entrySet()) {
         String caller_condition = jpair.getKey();
         List<Long> ids = new ArrayList<>(jpair.getValue());
 

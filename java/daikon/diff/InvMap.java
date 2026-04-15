@@ -37,7 +37,7 @@ public class InvMap implements Serializable {
 
   /** A map from program points to the invariants true at the program point. */
   @SuppressWarnings("serial")
-  private @Growable @Replaceable Map<PptTopLevel, @Growable List<Invariant>> pptToInvs = new HashMap<>();
+  private @Growable @Replaceable Map<PptTopLevel, @Growable @Replaceable List<Invariant>> pptToInvs = new HashMap<>();
 
   /**
    * The purpose of this field is apparently to permit the ppts to be extracted in the same order in
@@ -53,7 +53,7 @@ public class InvMap implements Serializable {
     put(ppt, new ArrayList<Invariant>());
   }
 
-  public void put(PptTopLevel ppt, List<Invariant> invs) {
+  public void put(PptTopLevel ppt, @Growable @Replaceable List<Invariant> invs) {
     if (ppts.contains(ppt)) {
       throw new Error("Tried to add duplicate PptTopLevel " + ppt.name());
     }
@@ -68,7 +68,7 @@ public class InvMap implements Serializable {
     get(ppt).add(inv);
   }
 
-  public @Growable List<Invariant> get(@GuardSatisfied InvMap this, PptTopLevel ppt) {
+  public @Growable @Replaceable List<Invariant> get(@GuardSatisfied InvMap this, PptTopLevel ppt) {
     if (!pptToInvs.containsKey(ppt)) {
       throw new Error("ppt has not yet been added: " + ppt.name());
     }

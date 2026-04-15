@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
@@ -545,12 +546,12 @@ public final class Diff {
       }
 
       // List<Invariant> invs = ppt.getInvariants();
-      List<Invariant> invs = CollectionsPlume.sorted(ppt.getInvariants(), PptTopLevel.icfp);
+      @Growable @Replaceable List<Invariant> invs = CollectionsPlume.sorted(ppt.getInvariants(), PptTopLevel.icfp);
       map.put(ppt, invs);
       if (examineAllPpts) {
         // Add conditional ppts
         for (PptConditional pptCond : ppt.cond_iterable()) {
-          List<Invariant> invsCond =
+          @Growable @Replaceable List<Invariant> invsCond =
               CollectionsPlume.sorted(pptCond.getInvariants(), PptTopLevel.icfp);
           // List<Invariant> invsCond = pptCond.getInvariants();
           map.put(pptCond, invsCond);

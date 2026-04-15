@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -55,7 +56,7 @@ public class InvariantFilters {
   // there are only ~10 filters anyway.
 
   @Growable List<InvariantFilter> propertyFilters = new ArrayList<>();
-  @Growable List<VariableFilter> variableFilters = new ArrayList<>();
+  @Growable @Shrinkable List<VariableFilter> variableFilters = new ArrayList<>();
 
   public InvariantFilters() {
 
@@ -238,7 +239,7 @@ public class InvariantFilters {
 
   public void removeVariableFilter(String variable) {
     boolean foundOnce = false;
-    for (Iterator<VariableFilter> iter = variableFilters.iterator(); iter.hasNext(); ) {
+    for (@Shrinkable Iterator<VariableFilter> iter = variableFilters.iterator(); iter.hasNext(); ) {
       VariableFilter vf = iter.next();
       if (vf.getVariable().equals(variable)) {
         iter.remove();
@@ -277,7 +278,7 @@ public class InvariantFilters {
    * are inserted into the beginning. Equality invariants are useful when it comes to displaying
    * invariants.
    */
-  public static @Replaceable List<Invariant> addEqualityInvariants(List<Invariant> invariants) {
+  public static @Replaceable List<Invariant> addEqualityInvariants(@Replaceable List<Invariant> invariants) {
 
     return invariants;
   }

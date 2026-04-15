@@ -29,7 +29,7 @@ public class MatchCountVisitor extends PrintAllVisitor {
   // invariants found matching
   private @Growable HashSet<String> recall = new HashSet<>();
 
-  private HashMap<String, @Growable HashSet<String>> goodMap = new HashMap<>();
+  private @Growable HashMap<String, @Growable HashSet<String>> goodMap = new HashMap<>();
 
   public MatchCountVisitor(PrintStream ps, boolean verbose, boolean printEmptyPpts) {
     super(ps, verbose, printEmptyPpts);
