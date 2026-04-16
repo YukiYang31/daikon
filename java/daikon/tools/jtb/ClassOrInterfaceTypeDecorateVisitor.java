@@ -23,7 +23,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
   @SuppressWarnings("UnusedMethod") // debugging code is currently commented out
   private void printShadowingMap() {
     System.out.println("Shadowing map:");
-    for (Map.Entry<@KeyFor("shadowingMap") String, Deque<ClassOrInterfaceType>> e :
+    for (Map.Entry<@KeyFor("shadowingMap") String, @Growable Deque<ClassOrInterfaceType>> e :
         shadowingMap.entrySet()) {
       System.out.print("  " + e.getKey() + " stack: ");
       for (ClassOrInterfaceType t : e.getValue()) {
@@ -45,7 +45,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
   public void visit(MethodDeclaration n) {
 
     // A shallow clone, which is what we want.
-    HashMap<String, Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
+    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
 
     if (n.f0.present()) {
       augmentShadowingMap((TypeParameters) n.f0.node);
@@ -73,7 +73,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
   public void visit(ConstructorDeclaration n) {
 
     // A shallow clone, which is what we want.
-    HashMap<String, Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
+    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
 
     if (n.f0.present()) {
       augmentShadowingMap((TypeParameters) n.f0.node);
@@ -225,7 +225,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
     // 2. Only the first <IDENTIFIER> may possibly be associated
     //    with a type argument. If we find it in typeParametersInScope,
     //    we replace t with [...]
-    for (Map.Entry<@KeyFor("shadowingMap") String, Deque<ClassOrInterfaceType>> entry :
+    for (Map.Entry<@KeyFor("shadowingMap") String, @Growable Deque<ClassOrInterfaceType>> entry :
         shadowingMap.entrySet()) {
       if (entry.getKey().equals(n.f0.tokenImage)) {
         ClassOrInterfaceType c = entry.getValue().getFirst();
@@ -268,15 +268,15 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
    * @return a copy of the map
    */
   @SuppressWarnings("NonApiType") // https://errorprone.info/bugpattern/NonApiType
-  private static HashMap<String, Deque<ClassOrInterfaceType>> copy(
-      HashMap<String, Deque<ClassOrInterfaceType>> m) {
+  private static @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> copy(
+      HashMap<String, @Growable Deque<ClassOrInterfaceType>> m) {
 
-    HashMap<String, Deque<ClassOrInterfaceType>> newMap = new HashMap<>();
+    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> newMap = new HashMap<>();
 
-    for (Map.Entry<@KeyFor("m") String, Deque<ClassOrInterfaceType>> e : m.entrySet()) {
+    for (Map.Entry<@KeyFor("m") String, @Growable Deque<ClassOrInterfaceType>> e : m.entrySet()) {
       String key = e.getKey();
-      Deque<ClassOrInterfaceType> oldStack = e.getValue();
-      Deque<ClassOrInterfaceType> newStack =
+      @Growable Deque<ClassOrInterfaceType> oldStack = e.getValue();
+      @Growable Deque<ClassOrInterfaceType> newStack =
           new ArrayDeque<ClassOrInterfaceType>(oldStack); // clone
       newMap.put(key, newStack);
     }

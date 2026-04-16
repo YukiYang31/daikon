@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -48,7 +49,9 @@ public class ReadTrace {
     CollectDataProcessor processor = new CollectDataProcessor();
     PptMap ppts = new PptMap();
     try {
-      FileIO.read_data_trace_files(Arrays.asList(args), ppts, processor, false);
+      @SuppressWarnings("Growable:assignment")
+      @Growable Collection<String> files = Arrays.asList(args);
+      FileIO.read_data_trace_files(files, ppts, processor, false);
     } catch (Exception e) {
       throw new Error(e);
     }

@@ -4,6 +4,8 @@
 
 package jtb.syntaxtree;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+
 import java.util.*;
 // Represents a single token in the grammar.  If the "-tk" option
 // is used, also contains a Vector of preceding special tokens.
@@ -81,7 +83,7 @@ public class NodeToken implements Node {
    public String tokenImage;
 
    // Stores a list of NodeTokens
-   public Vector<NodeToken> specialTokens;
+   public @Growable Vector<NodeToken> specialTokens;
 
    // -1 for these ints means no position info is available.
    public int beginLine, beginColumn, endLine, endColumn;

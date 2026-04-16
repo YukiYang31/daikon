@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import daikon.*;
 import java.util.Arrays;
+import java.util.List;
+
 import junit.framework.*;
 import org.junit.Test;
 
@@ -1015,10 +1017,11 @@ public final class TestQuant {
     b5a.y = new Baz3a();
     b5a.y.z = 9;
     Foo3a f3a = new Foo3a();
-    f3a.x = new java.util.ArrayList<Bar3a>();
-    f3a.x.add(b3a);
-    f3a.x.add(b4a);
-    f3a.x.add(b5a);
+    List<Bar3a> list_temp = new java.util.ArrayList<Bar3a>();
+    list_temp.add(b3a);
+    list_temp.add(b4a);
+    list_temp.add(b5a);
+    f3a.x = list_temp;
     assert_arrays_equals(Quant.collectint(f3a, "x.y.z"), new int[] {7, 8, 9});
 
     Baz4 z1 = new Baz4();

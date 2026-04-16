@@ -14,6 +14,7 @@ import jtb.visitor.*;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 // CreateSpinfo extracts the following expressions from the Java source:
@@ -61,7 +62,7 @@ class ConditionExtractor extends DepthFirstVisitor {
   private @Growable @Shrinkable  Deque<Object> resultTypes = new ArrayDeque<Object>();
 
   /** key = method declaration (as String); value = conditional expressions (as Strings) */
-  private @Growable @Replaceable HashMap<String, @Growable List<String>> conditions = new HashMap<>();
+  private @Growable @Replaceable HashMap<String, @Modifiable List<String>> conditions = new HashMap<>();
 
   /** key = method declaration (String); value = method bodies (String) */
   @Growable @Replaceable HashMap<String, String> replaceStatements = new HashMap<>();
@@ -354,7 +355,7 @@ class ConditionExtractor extends DepthFirstVisitor {
     }
   }
 
-  public Map<String, List<String>> getConditionMap() {
+  public @Replaceable Map<String, @Modifiable List<String>> getConditionMap() {
     return conditions;
   }
 

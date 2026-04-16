@@ -311,7 +311,7 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
       Set<Class<? extends Invariant>> exclude,
       @Growable Set<Set<Class<? extends Invariant>>> black,
       @Growable Set<Set<Class<? extends Invariant>>> gray,
-      @Growable Set<Set<Class<? extends Invariant>>> found)
+      @Growable Set<@Shrinkable Set<Class<? extends Invariant>>> found)
       throws TimeoutException {
     for (Set<Class<? extends Invariant>> known : found) {
       // If known and exclude are disjoint, return
@@ -328,7 +328,8 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
     popToMark(mark);
     if (holds) {
       List<Lemma> mini = minimizeAssumptions(filtered.toArray(new Lemma[0]), result);
-      Set<Class<? extends Invariant>> used = new HashSet<Class<? extends Invariant>>();
+      @Shrinkable Set<Class<? extends Invariant>> used =
+          new HashSet<Class<? extends Invariant>>();
       for (Lemma mlem : mini) {
         Class<? extends Invariant> c = mlem.invClass();
         if (c != null) {
@@ -356,17 +357,17 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
     black.add(exclude);
   }
 
-  public List<Set<Class<? extends Invariant>>> minimizeClasses(String result) {
+  public List<@Shrinkable Set<Class<? extends Invariant>>> minimizeClasses(String result) {
     List<Lemma> assumptions = new ArrayList<>(lemmas);
-    List<Set<Class<? extends Invariant>>> found = new ArrayList<>();
+    List<@Shrinkable Set<Class<? extends Invariant>>> found = new ArrayList<>();
     try {
       unAssumeAll(lemmas);
       if (checkString(result) == 'F') {
         Set<Class<? extends Invariant>> exclude = new HashSet<Class<? extends Invariant>>();
         Set<Set<Class<? extends Invariant>>> black = new HashSet<Set<Class<? extends Invariant>>>();
         Set<Set<Class<? extends Invariant>>> gray = new HashSet<Set<Class<? extends Invariant>>>();
-        Set<Set<Class<? extends Invariant>>> found_set =
-            new HashSet<Set<Class<? extends Invariant>>>();
+        Set<@Shrinkable Set<Class<? extends Invariant>>> found_set =
+            new HashSet<@Shrinkable Set<Class<? extends Invariant>>>();
         minimizeClasses_rec(result, assumptions, exclude, black, gray, found_set);
         found.addAll(found_set);
       }

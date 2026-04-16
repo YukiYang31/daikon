@@ -4,6 +4,9 @@
 
 package jtb.syntaxtree;
 
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+
 import java.util.*;
 
 // Represents an optional grammar list, e.g. ( A )*
@@ -46,6 +49,6 @@ public class NodeListOptional implements NodeListInterface {
    public Node getParent()       { return parent; }
 
    private Node parent;
-   public Vector<Node> nodes;
+   public @Growable @Replaceable Vector<Node> nodes;
 }
 

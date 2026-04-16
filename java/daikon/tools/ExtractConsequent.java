@@ -188,9 +188,9 @@ public class ExtractConsequent {
     // deterministic output.
     TreeSet<String> allConds = new TreeSet<>();
     for (String pptname : pptname_to_conditions.keySet()) {
-      Map<String, Map<String, HashedConsequent>> cluster_to_conditions =
+      Map<String, @Modifiable Map<String, HashedConsequent>> cluster_to_conditions =
           pptname_to_conditions.get(pptname);
-      for (Map.Entry<@KeyFor("cluster_to_conditions") String, Map<String, HashedConsequent>> entry :
+      for (Map.Entry<@KeyFor("cluster_to_conditions") String, @Modifiable Map<String, HashedConsequent>> entry :
           cluster_to_conditions.entrySet()) {
         Map<String, HashedConsequent> conditions = entry.getValue();
         StringBuilder conjunctionJava = new StringBuilder();
