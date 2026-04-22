@@ -49,7 +49,7 @@ public class ReadTrace {
     CollectDataProcessor processor = new CollectDataProcessor();
     PptMap ppts = new PptMap();
     try {
-      @SuppressWarnings("Growable:assignment")
+      @SuppressWarnings("growable:assignment") // true positive
       @Growable Collection<String> files = Arrays.asList(args);
       FileIO.read_data_trace_files(files, ppts, processor, false);
     } catch (Exception e) {

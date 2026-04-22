@@ -2874,7 +2874,7 @@ public class PptTopLevel extends Ppt {
     if (debugEqualTo.isLoggable(Level.FINE)) {
       debugEqualTo.fine("  Doing cloneAllPivots: ");
     }
-    for (@SuppressWarnings("Shrinkable:assignment")
+    for (@SuppressWarnings("shrinkable:assignment")
       @Shrinkable Iterator<PptSlice> iSlices = slices.iterator(); iSlices.hasNext(); ) {
       PptSlice slice = iSlices.next();
       boolean needPivoting = false;
@@ -3314,7 +3314,7 @@ public class PptTopLevel extends Ppt {
    *
    * @see #views_iterable()
    */
-  @SuppressWarnings("Shrinkable:return")
+  @SuppressWarnings("shrinkable:return")
   public @Shrinkable Iterator<PptSlice> views_iterator() {
     // assertion only true when guarding invariants
     // assert views.contains(joiner_view);
@@ -3778,7 +3778,7 @@ public class PptTopLevel extends Ppt {
       }
       Map<VarInfo.Pair, VarInfo.Pair> eq_new = rel.get_child_equalities_as_parent();
       // Cannot use foreach loop, due to desire to remove from equalityPairs.
-      for (@SuppressWarnings("Shrinkable:assignment") // equalityPairs is non-null when we get here
+      for (@SuppressWarnings("shrinkable:assignment") // equalityPairs is non-null when we get here
         @Shrinkable Iterator<VarInfo.@KeyFor("equalityPairs") Pair> j = equalityPairs.keySet().iterator();
           j.hasNext(); ) {
         VarInfo.Pair curpair = j.next();

@@ -266,7 +266,7 @@ public class PptMap implements Serializable {
 
   /** Blow away any PptTopLevels that never saw any samples (to reclaim space). */
   public void removeUnsampled() {
-    @SuppressWarnings("Shrinkable:assignment") // false positive, nameToPpt is a LinkedHashMap, its values() is shrinkable. 
+    @SuppressWarnings("shrinkable:assignment") // false positive, nameToPpt is a LinkedHashMap, its values() is shrinkable. 
     @Shrinkable Iterator<PptTopLevel> iter = nameToPpt.values().iterator();
     while (iter.hasNext()) {
       PptTopLevel ppt = iter.next();
