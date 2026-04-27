@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.modifiability.qual.IteratorPreserveRemove;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
@@ -56,7 +57,7 @@ public class InvariantFilters {
   // there are only ~10 filters anyway.
 
   @Growable List<InvariantFilter> propertyFilters = new ArrayList<>();
-  @Growable @Shrinkable List<VariableFilter> variableFilters = new ArrayList<>();
+  @Growable @Shrinkable @IteratorPreserveRemove List<VariableFilter> variableFilters = new ArrayList<>();
 
   public InvariantFilters() {
 

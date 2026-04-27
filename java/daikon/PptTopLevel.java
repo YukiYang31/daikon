@@ -102,6 +102,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.IteratorPreserveRemove;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
@@ -630,7 +631,7 @@ public class PptTopLevel extends Ppt {
   }
 
   // Get the actual views from the HashMap
-  @Shrinkable Collection<PptSlice> viewsAsCollection() {
+  @Shrinkable @IteratorPreserveRemove Collection<PptSlice> viewsAsCollection() {
     return views.values();
   }
 
@@ -2864,7 +2865,7 @@ public class PptTopLevel extends Ppt {
     }
 
     // Now pivot the other invariants
-    @Shrinkable Collection<PptSlice> slices = viewsAsCollection();
+    @Shrinkable @IteratorPreserveRemove Collection<PptSlice> slices = viewsAsCollection();
     List<PptSlice> pivoted = new ArrayList<>();
 
     // PptSlice newSlice = slice.cloneAndInvs(leader, newLeader);
@@ -2874,7 +2875,8 @@ public class PptTopLevel extends Ppt {
     if (debugEqualTo.isLoggable(Level.FINE)) {
       debugEqualTo.fine("  Doing cloneAllPivots: ");
     }
-    for (@SuppressWarnings("shrinkable:assignment")
+    for (
+      // @SuppressWarnings("shrinkable:assignment")
       @Shrinkable Iterator<PptSlice> iSlices = slices.iterator(); iSlices.hasNext(); ) {
       PptSlice slice = iSlices.next();
       boolean needPivoting = false;
@@ -3314,7 +3316,7 @@ public class PptTopLevel extends Ppt {
    *
    * @see #views_iterable()
    */
-  @SuppressWarnings("shrinkable:return")
+  // @SuppressWarnings("shrinkable:return")
   public @Shrinkable Iterator<PptSlice> views_iterator() {
     // assertion only true when guarding invariants
     // assert views.contains(joiner_view);
@@ -3778,7 +3780,8 @@ public class PptTopLevel extends Ppt {
       }
       Map<VarInfo.Pair, VarInfo.Pair> eq_new = rel.get_child_equalities_as_parent();
       // Cannot use foreach loop, due to desire to remove from equalityPairs.
-      for (@SuppressWarnings("shrinkable:assignment") // equalityPairs is non-null when we get here
+      for (
+        // @SuppressWarnings("shrinkable:assignment") 
         @Shrinkable Iterator<VarInfo.@KeyFor("equalityPairs") Pair> j = equalityPairs.keySet().iterator();
           j.hasNext(); ) {
         VarInfo.Pair curpair = j.next();

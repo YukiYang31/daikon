@@ -31,6 +31,7 @@ import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.IteratorPreserveRemove;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
@@ -157,7 +158,7 @@ public class NIS {
    * {@link #process_falsified_invs} methods add created invariants to this list. This list is
    * cleared by {@link #apply_samples}.
    */
-  public static @Modifiable List<Invariant> new_invs = new ArrayList<>();
+  public static @Modifiable @IteratorPreserveRemove List<Invariant> new_invs = new ArrayList<>();
 
   /**
    * List of invariants that are unsuppressed and then falsified by the current sample. This list is
@@ -671,7 +672,7 @@ public class NIS {
     // Remove any Antecedents without any falsified invariants.  They can't
     // possibly create any newly unsuppressed invariants
     for (
-      @SuppressWarnings("shrinkable:assignment") // false positive, comp_ants is LinkedHashMap at runtime and its .values().iterator() is shrinkable
+      // @SuppressWarnings("shrinkable:assignment") // false positive, comp_ants is LinkedHashMap at runtime and its .values().iterator() is shrinkable
       @Shrinkable Iterator<Antecedents> i = comp_ants.values().iterator(); i.hasNext(); ) {
       Antecedents ants = i.next();
       if (ants.false_cnt == 0) {
