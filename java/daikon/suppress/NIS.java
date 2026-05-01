@@ -31,7 +31,7 @@ import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
-import org.checkerframework.checker.modifiability.qual.IteratorPreserveRemove;
+import org.checkerframework.checker.modifiability.qual.IteratorPreservesRemove;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
@@ -158,7 +158,7 @@ public class NIS {
    * {@link #process_falsified_invs} methods add created invariants to this list. This list is
    * cleared by {@link #apply_samples}.
    */
-  public static @Modifiable @IteratorPreserveRemove List<Invariant> new_invs = new ArrayList<>();
+  public static @Modifiable @IteratorPreservesRemove List<Invariant> new_invs = new ArrayList<>();
 
   /**
    * List of invariants that are unsuppressed and then falsified by the current sample. This list is

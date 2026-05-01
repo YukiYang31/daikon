@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.IteratorPreserveRemove;
+import org.checkerframework.checker.modifiability.qual.IteratorPreservesRemove;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
@@ -61,7 +61,7 @@ public abstract class PptSlice extends Ppt {
    * it should be manipulated via {@link #addInvariant} and {@link #removeInvariant}.
    */
   @SuppressWarnings("serial")
-  public @Shrinkable @Growable @IteratorPreserveRemove List<Invariant> invs;
+  public @Shrinkable @Growable @IteratorPreservesRemove List<Invariant> invs;
 
   PptSlice(PptTopLevel parent, VarInfo[] var_infos) {
     super(var_infos);
