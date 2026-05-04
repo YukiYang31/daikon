@@ -107,7 +107,7 @@ public final class DCRuntime implements ComparabilityProvider {
   /** Control debug printing. */
   public static boolean debug = false;
 
-  /** Log comparability tage stack operations. */
+  /** Log comparability tag stack operations. */
   public static boolean debug_tag_frame = false;
 
   /** Log object compare operations. */
@@ -125,13 +125,13 @@ public final class DCRuntime implements ComparabilityProvider {
   /** Log comparability merges. */
   public static SimpleLog debug_merge_comp = new SimpleLog(false);
 
-  /** Log excution time. */
+  /** Log execution time. */
   public static SimpleLog debug_timing = new SimpleLog(false);
 
   /** Log decl output. */
   public static SimpleLog debug_decl_print = new SimpleLog(false);
 
-  /** Log excution time. */
+  /** Log execution time. */
   public static SimpleLog time_decl = new SimpleLog(false);
 
   /** Log internal data structure sizes. */
@@ -452,7 +452,7 @@ public final class DCRuntime implements ComparabilityProvider {
             System.out.println("NoSuchMethod " + target_class.getName());
           }
 
-          // Should never reach top of class heirarchy without finding a clone() method.
+          // Should never reach top of class hierarchy without finding a clone() method.
           assert !target_class.getName().equals("java.lang.Object");
 
           // We didn't find a clone method, get next higher super and try again.
@@ -526,7 +526,7 @@ public final class DCRuntime implements ComparabilityProvider {
             System.out.println("NoSuchMethod " + target_class.getName());
           }
 
-          // Should never reach top of class heirarchy without finding a clone() method.
+          // Should never reach top of class hierarchy without finding a clone() method.
           assert !target_class.getName().equals("java.lang.Object");
 
           // We didn't find a clone method, get next higher super and try again.
@@ -1027,7 +1027,7 @@ public final class DCRuntime implements ComparabilityProvider {
       debug_primitive.log("array store %s[%d] = %s%n", obj_str(arr_ref), index, obj_tags[index]);
     }
 
-    // Mark the arry and its index as comparable
+    // Mark the array and its index as comparable
     assert td.tag_stack.peek() != method_marker;
     Object index_tag = td.tag_stack.pop();
     if (debug_arr_index.enabled()) {
@@ -2907,7 +2907,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /**
-   * Handles the aaload instruction. The arry and its index are made comparable. The tag for the
+   * Handles the aaload instruction. The array and its index are made comparable. The tag for the
    * index is removed from the tag stack.
    *
    * @param arr_ref array reference

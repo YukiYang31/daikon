@@ -211,7 +211,7 @@ public class ContextSplitterFactory {
    */
   public static PptNameAndSplitters[] make_context_splitters(MapfileEntry[] entries, int grain) {
     // Use a 2-deep map structure.  First key is an identifier
-    // (~pptname) for the callee.  Second key is an idenfier for the
+    // (~pptname) for the callee.  Second key is an identifier for the
     // caller (based on granularity).  The value is a set of Integers
     // giving the ids that are associated with that callgraph edge.
     @Growable Map<String, @Growable Map<String, @Growable Set<Long>>> callee2caller2ids = new HashMap<>();
