@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -4252,7 +4253,7 @@ public class DCInstrument extends InstructionListUtils {
     try (EntryReader er =
         new EntryReader(
             FilesPlume.newFileInputStream(file),
-            "UTF-8",
+            StandardCharsets.UTF_8,
             file.toString(),
             EntryFormat.DEFAULT,
             CommentFormat.NONE,
