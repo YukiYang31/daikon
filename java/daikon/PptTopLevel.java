@@ -102,7 +102,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.IteratorPreservesRemove;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
@@ -631,7 +631,7 @@ public class PptTopLevel extends Ppt {
   }
 
   // Get the actual views from the HashMap
-  @Shrinkable @IteratorPreservesRemove Collection<PptSlice> viewsAsCollection() {
+  @Shrinkable @IteratorPolyMod Collection<PptSlice> viewsAsCollection() {
     return views.values();
   }
 
@@ -2865,7 +2865,7 @@ public class PptTopLevel extends Ppt {
     }
 
     // Now pivot the other invariants
-    @Shrinkable @IteratorPreservesRemove Collection<PptSlice> slices = viewsAsCollection();
+    @Shrinkable @IteratorPolyMod Collection<PptSlice> slices = viewsAsCollection();
     List<PptSlice> pivoted = new ArrayList<>();
 
     // PptSlice newSlice = slice.cloneAndInvs(leader, newLeader);

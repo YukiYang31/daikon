@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.IteratorPreservesRemove;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -86,7 +86,7 @@ public class DynamicConstants implements Serializable {
    * <p>Each element, c, has c.constant = true, c.count &gt; 0, elt.val != null.
    */
   @SuppressWarnings("serial")
-  @Modifiable @IteratorPreservesRemove List<Constant> con_list = new ArrayList<>();
+  @Modifiable @IteratorPolyMod List<Constant> con_list = new ArrayList<>();
 
   /**
    * List of variables that have always been missing.
@@ -94,7 +94,7 @@ public class DynamicConstants implements Serializable {
    * <p>For each element c, c.always_missing = true or con.vi.missingOutOfBounds().
    */
   @SuppressWarnings("serial")
-  @Modifiable @IteratorPreservesRemove List<Constant> missing_list = new ArrayList<>();
+  @Modifiable @IteratorPolyMod List<Constant> missing_list = new ArrayList<>();
 
   // Same contents in both.  Why two data structures?
   /** Array of all variables. Some may be non-constant. */
