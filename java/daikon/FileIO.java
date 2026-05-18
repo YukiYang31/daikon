@@ -58,6 +58,7 @@ import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
@@ -2753,10 +2754,10 @@ public final class FileIO {
     public ProglangType declared_type = null;
 
     /** Variable flags (optional) */
-    public @Growable @Shrinkable EnumSet<VarFlags> flags = EnumSet.noneOf(VarFlags.class);
+    public @Growable @Shrinkable @IteratorPolyMod EnumSet<VarFlags> flags = EnumSet.noneOf(VarFlags.class);
 
     /** Language specific variable flags (optional) */
-    public @Shrinkable @Growable EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
+    public @Shrinkable @Growable @IteratorPolyMod EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
 
     /** Comparability of this variable (required. */
     @SuppressWarnings("serial")

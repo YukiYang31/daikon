@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import junit.framework.*;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -25,9 +26,9 @@ public class InvMapTester {
   private PptTopLevel pptA = new PptTopLevel("A:::OBJECT", new VarInfo[0]);
   private PptTopLevel pptB = new PptTopLevel("A:::OBJECT", new VarInfo[0]);
   private PptTopLevel pptC = new PptTopLevel("A:::OBJECT", new VarInfo[0]);
-  private @Growable @Replaceable List<Invariant> invsA = new ArrayList<>();
-  private @Growable @Replaceable List<Invariant> invsB = new ArrayList<>();
-  private @Growable @Replaceable List<Invariant> invsC = new ArrayList<>();
+  private @Growable @Replaceable @IteratorPolyMod List<Invariant> invsA = new ArrayList<>();
+  private @Growable @Replaceable @IteratorPolyMod List<Invariant> invsB = new ArrayList<>();
+  private @Growable @Replaceable @IteratorPolyMod List<Invariant> invsC = new ArrayList<>();
 
   /** prepare for tests */
   @BeforeClass

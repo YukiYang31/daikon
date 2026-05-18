@@ -279,7 +279,7 @@ public class InvariantFilters {
    * are inserted into the beginning. Equality invariants are useful when it comes to displaying
    * invariants.
    */
-  public static @Replaceable List<Invariant> addEqualityInvariants(@Replaceable List<Invariant> invariants) {
+  public static @Replaceable @IteratorPolyMod List<Invariant> addEqualityInvariants(@Replaceable @IteratorPolyMod List<Invariant> invariants) {
 
     return invariants;
   }

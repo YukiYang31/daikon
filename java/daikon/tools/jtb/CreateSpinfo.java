@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import jtb.JavaParser;
 import jtb.ParseException;
 import jtb.syntaxtree.*;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
@@ -195,7 +196,7 @@ public class CreateSpinfo {
     ConditionExtractor extractor = new ConditionExtractor();
     root.accept(extractor);
     // conditions: method name (String) to conditional expressions (String)
-    @Replaceable Map<String, @Modifiable List<String>> conditions = extractor.getConditionMap();
+    @Replaceable Map<String, @Modifiable @IteratorPolyMod List<String>> conditions = extractor.getConditionMap();
     // replaceStatements: method declaration (String) to method body (String)
     Map<String, String> replaceStatements = extractor.getReplaceStatements();
     String packageName = extractor.getPackageName();
@@ -209,9 +210,9 @@ public class CreateSpinfo {
    *
    * @param conditionMap the map from which to remove redundant and trivial conditions
    */
-  private static void filterConditions(@Replaceable Map<String, @Modifiable List<String>> conditionMap) {
-    for (Map.@Replaceable Entry<String, @Modifiable List<String>> entry : conditionMap.entrySet()) {
-      @Modifiable List<String> conditions = entry.getValue();
+  private static void filterConditions(@Replaceable Map<String, @Modifiable @IteratorPolyMod List<String>> conditionMap) {
+    for (Map.@Replaceable Entry<String, @Modifiable @IteratorPolyMod List<String>> entry : conditionMap.entrySet()) {
+      @Modifiable @IteratorPolyMod List<String> conditions = entry.getValue();
       conditions = CollectionsPlume.withoutDuplicates(conditions);
       conditions.remove("true");
       conditions.remove("false");
@@ -223,8 +224,8 @@ public class CreateSpinfo {
    * For each condition in conditionMap, an additional condition is added which is identical to the
    * initial condition with the exception that it is prefixed with "orig(" and suffixed with ")".
    */
-  private static void addOrigConditions(Map<String, @Modifiable List<String>> conditionMap) {
-    for (@Modifiable List<String> conditions : conditionMap.values()) {
+  private static void addOrigConditions(Map<String, @Modifiable @IteratorPolyMod List<String>> conditionMap) {
+    for (@Modifiable @IteratorPolyMod List<String> conditions : conditionMap.values()) {
       int size = conditions.size();
       for (int i = 0; i < size; i++) {
         conditions.add(addOrig(conditions.get(i)));
@@ -250,7 +251,7 @@ public class CreateSpinfo {
    */
   private static void printSpinfoFile(
       PrintWriter output,
-      Map<String, @Modifiable List<String>> conditions,
+      Map<String, @Modifiable @IteratorPolyMod List<String>> conditions,
       Map<String, String> replaceStatements,
       @Nullable String packageName)
       throws IOException {
@@ -265,7 +266,7 @@ public class CreateSpinfo {
       output.println();
     }
     for (@KeyFor("conditions") String method : MapsP.sortedKeySet(conditions)) {
-      @Replaceable List<String> method_conds = conditions.get(method);
+      @Replaceable @IteratorPolyMod List<String> method_conds = conditions.get(method);
       Collections.sort(method_conds);
       if (!method_conds.isEmpty()) {
         String qualifiedMethod = (packageName == null) ? method : packageName + "." + method;

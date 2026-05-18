@@ -2985,9 +2985,9 @@ public class PptTopLevel extends Ppt {
     Invariant[] invs;
     {
       // Replace pairwise equality with an equivalence set
-      @Replaceable List<Invariant> all_noeq = invariants_vector();
+      @Replaceable @IteratorPolyMod List<Invariant> all_noeq = invariants_vector();
       Collections.sort(all_noeq, icfp);
-      @Replaceable List<Invariant> all = InvariantFilters.addEqualityInvariants(all_noeq);
+      @Replaceable @IteratorPolyMod List<Invariant> all = InvariantFilters.addEqualityInvariants(all_noeq);
       Collections.sort(all, icfp);
       List<Invariant> printing = new ArrayList<>();
       for (Invariant inv : all) {
@@ -3050,7 +3050,7 @@ public class PptTopLevel extends Ppt {
     // program points, and we don't necessarily want to lose the
     // unconditional version of the invariant at the conditional ppt.
     for (PptTopLevel ppt : closure) {
-      @Replaceable List<Invariant> invs_vec = ppt.invariants_vector();
+      @Replaceable @IteratorPolyMod List<Invariant> invs_vec = ppt.invariants_vector();
       Collections.sort(invs_vec, icfp);
       for (Invariant inv : InvariantFilters.addEqualityInvariants(invs_vec)) {
         if (inv instanceof Implication) {
@@ -3307,7 +3307,7 @@ public class PptTopLevel extends Ppt {
   }
 
   /** ArrayList version of {@link #getInvariants()}. */
-  public @Replaceable List<Invariant> invariants_vector() {
+  public @Replaceable @IteratorPolyMod List<Invariant> invariants_vector() {
     return new ArrayList<Invariant>(getInvariants());
   }
 

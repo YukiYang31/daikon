@@ -27,6 +27,7 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -546,12 +547,12 @@ public final class Diff {
       }
 
       // List<Invariant> invs = ppt.getInvariants();
-      @Growable @Replaceable List<Invariant> invs = CollectionsPlume.sorted(ppt.getInvariants(), PptTopLevel.icfp);
+      @Growable @Replaceable @IteratorPolyMod List<Invariant> invs = CollectionsPlume.sorted(ppt.getInvariants(), PptTopLevel.icfp);
       map.put(ppt, invs);
       if (examineAllPpts) {
         // Add conditional ppts
         for (PptConditional pptCond : ppt.cond_iterable()) {
-          @Growable @Replaceable List<Invariant> invsCond =
+          @Growable @Replaceable @IteratorPolyMod List<Invariant> invsCond =
               CollectionsPlume.sorted(pptCond.getInvariants(), PptTopLevel.icfp);
           // List<Invariant> invsCond = pptCond.getInvariants();
           map.put(pptCond, invsCond);
@@ -648,7 +649,7 @@ public final class Diff {
     assert ppt1 == null || ppt2 == null || PPT_COMPARATOR.compare(ppt1, ppt2) == 0
         : "Program points do not correspond";
 
-    @Replaceable List<Invariant> invs1;
+    @Replaceable @IteratorPolyMod List<Invariant> invs1;
     if (ppt1 != null) {
       invs1 = map1.get(ppt1);
       Collections.sort(invs1, invSortComparator1);
@@ -656,7 +657,7 @@ public final class Diff {
       invs1 = new ArrayList<Invariant>();
     }
 
-    @Replaceable List<Invariant> invs2;
+    @Replaceable @IteratorPolyMod List<Invariant> invs2;
     if (ppt2 != null) {
       invs2 = map2.get(ppt2);
       Collections.sort(invs2, invSortComparator2);

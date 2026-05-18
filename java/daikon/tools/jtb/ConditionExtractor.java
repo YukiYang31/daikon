@@ -11,6 +11,7 @@ import java.util.Map;
 import jtb.syntaxtree.*;
 import jtb.visitor.*;
 
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Growable;
@@ -62,7 +63,7 @@ class ConditionExtractor extends DepthFirstVisitor {
   private @Growable @Shrinkable  Deque<Object> resultTypes = new ArrayDeque<Object>();
 
   /** key = method declaration (as String); value = conditional expressions (as Strings) */
-  private @Growable @Replaceable HashMap<String, @Modifiable List<String>> conditions = new HashMap<>();
+  private @Growable @Replaceable HashMap<String, @Modifiable @IteratorPolyMod List<String>> conditions = new HashMap<>();
 
   /** key = method declaration (String); value = method bodies (String) */
   @Growable @Replaceable HashMap<String, String> replaceStatements = new HashMap<>();
@@ -355,7 +356,7 @@ class ConditionExtractor extends DepthFirstVisitor {
     }
   }
 
-  public @Replaceable Map<String, @Modifiable List<String>> getConditionMap() {
+  public @Replaceable Map<String, @Modifiable @IteratorPolyMod List<String>> getConditionMap() {
     return conditions;
   }
 

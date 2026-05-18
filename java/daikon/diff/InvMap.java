@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -37,7 +38,7 @@ public class InvMap implements Serializable {
 
   /** A map from program points to the invariants true at the program point. */
   @SuppressWarnings("serial")
-  private @Growable @Replaceable Map<PptTopLevel, @Growable @Replaceable List<Invariant>> pptToInvs = new HashMap<>();
+  private @Growable @Replaceable Map<PptTopLevel, @Growable @Replaceable @IteratorPolyMod List<Invariant>> pptToInvs = new HashMap<>();
 
   /**
    * The purpose of this field is apparently to permit the ppts to be extracted in the same order in
@@ -45,7 +46,7 @@ public class InvMap implements Serializable {
    * 1.4.
    */
   @SuppressWarnings("serial")
-  private @Growable List<PptTopLevel> ppts = new ArrayList<>();
+  private @Growable @IteratorPolyMod List<PptTopLevel> ppts = new ArrayList<>();
 
   public InvMap() {}
 
@@ -53,7 +54,7 @@ public class InvMap implements Serializable {
     put(ppt, new ArrayList<Invariant>());
   }
 
-  public void put(PptTopLevel ppt, @Growable @Replaceable List<Invariant> invs) {
+  public void put(PptTopLevel ppt, @Growable @Replaceable @IteratorPolyMod List<Invariant> invs) {
     if (ppts.contains(ppt)) {
       throw new Error("Tried to add duplicate PptTopLevel " + ppt.name());
     }
@@ -68,7 +69,7 @@ public class InvMap implements Serializable {
     get(ppt).add(inv);
   }
 
-  public @Growable @Replaceable List<Invariant> get(@GuardSatisfied InvMap this, PptTopLevel ppt) {
+  public @Growable @Replaceable @IteratorPolyMod List<Invariant> get(@GuardSatisfied InvMap this, PptTopLevel ppt) {
     if (!pptToInvs.containsKey(ppt)) {
       throw new Error("ppt has not yet been added: " + ppt.name());
     }

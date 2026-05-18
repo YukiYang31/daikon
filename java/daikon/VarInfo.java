@@ -62,6 +62,7 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.formatter.qual.FormatMethod;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
@@ -249,8 +250,8 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
 
   public @Nullable RefType ref_type;
   public VarKind var_kind;
-  public @Shrinkable @Growable EnumSet<VarFlags> var_flags = EnumSet.noneOf(VarFlags.class);
-  public @Shrinkable EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
+  public @Shrinkable @Growable @IteratorPolyMod EnumSet<VarFlags> var_flags = EnumSet.noneOf(VarFlags.class);
+  public @Shrinkable @IteratorPolyMod EnumSet<LangFlags> lang_flags = EnumSet.noneOf(LangFlags.class);
 
   public VarDefinition vardef;
 
