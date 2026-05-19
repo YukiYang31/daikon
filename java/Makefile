@@ -505,6 +505,8 @@ daikon/Daikon.class: daikon/Daikon.java ${AUTO_GENERATED_FILES} ${JAVA_FILES_FOR
 	${MAKE} rename-dcruntime ${AUTO_GENERATED_CLASSES_2}
 # on some systems chmod with symbolic arguments pays attention to umask.  so use 444 instead of -w
 	@chmod 444 ${AUTO_GENERATED_FILES}
+# These can't be prerequisites because they depend on .class files from Daikon itself.
+	${MAKE} ChicoryPremain.jar dcomp_premain.jar
 
 .PHONY: rename-dcruntime
 rename-dcruntime:
@@ -642,14 +644,13 @@ dyncomp-jdk-only dcomp-jdk-only :
 
 ## These two rules create the directories if absent but don't update them.
 ${PLUME_SCRIPTS}:
-	${MAKE} -C .. update-plume-scripts-in-utils
-
+	${MAKE} -C .. update-plume-scripts
 ../.utils/html-tools:
 	${MAKE} -C .. update-html-tools
 
-.PHONY: update-plume-scripts-in-utils
-update-plume-scripts-in-utils:
-	${MAKE} -C .. update-plume-scripts-in-utils
+.PHONY: update-plume-scripts
+update-plume-scripts:
+	${MAKE} -C .. update-plume-scripts
 
 # Checks that daikon.plumelib, rather than plume, is imported by source files
 # that do instrumentation.  Should also check that daikon.plumelib is never

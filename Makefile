@@ -286,6 +286,9 @@ clean-kvasir:
 ### Testing the code
 # Note that these do NOT compile the code, even if compilation is necessary.
 
+smoke-test:
+	${MAKE} -C java smoke-test
+
 test:
 	${MAKE} -C tests all
 
@@ -377,7 +380,7 @@ test-staged-dist: ${STAGING_DIR}
 	## Make sure that all of the class files are 1.8 (version 52) or earlier.
 	(cd ${DISTTESTDIRJAVA} && find . \( -name '*.class' \) -print0 | xargs -0 -n 1 ${PLUME_SCRIPTS}/classfile_check_version 52)
 	## Test that we can rebuild the .class files from the .java files.
-	(cd ${DISTTESTDIRJAVA}/daikon; rm `find . -name '*.class'`; ${MAKE} all_javac)
+	(cd ${DISTTESTDIRJAVA}/daikon/java; rm `find . -name '*.class'`; ${MAKE} JAVAC='javac' compile)
 	## Test that these new .class files work properly.
 	${MAKE} -C ${DISTTESTDIR}/daikon/java junit
 	## Test the main target of the makefile.
@@ -744,13 +747,13 @@ showvars::
 	@echo "NEW_RELEASE_NAME =" ${NEW_RELEASE_NAME}
 	${MAKE} -C java showvars
 
-update-libs:        update-bibtex2web update-checklink update-git-scripts update-html-tools update-plume-scripts-in-utils update-run-google-java-format
+update-libs:        update-bibtex2web update-checklink update-git-scripts update-html-tools update-plume-scripts update-run-google-java-format
 # If .git does not exist, then the directory was created from a Daikon archive file.
 ifneq ($(shell ls ../.git 2>/dev/null),)
 	${MAKE} -C .. git-hooks
 endif
 
-.PHONY: update-libs update-bibtex2web update-checklink update-git-scripts update-html-tools update-plume-scripts-in-utils update-run-google-java-format
+.PHONY: update-libs update-bibtex2web update-checklink update-git-scripts update-html-tools update-plume-scripts update-run-google-java-format
 
 # Unfortunately, I don't see a way for the below not to output lots of "remote:" lines to the log.
 # But, I can avoid doing local output.
@@ -791,7 +794,7 @@ ifndef NONETWORK
 	fi
 endif
 
-update-plume-scripts-in-utils:
+update-plume-scripts:
 ifndef NONETWORK
 	if test -d ${PLUME_SCRIPTS}/.git ; then \
 	  (cd ${PLUME_SCRIPTS} && (git pull -q || (sleep 1m && (git pull || true)))) \
