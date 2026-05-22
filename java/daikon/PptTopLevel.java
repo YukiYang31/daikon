@@ -285,6 +285,7 @@ public class PptTopLevel extends Ppt {
    * Iterator for all of the conditional ppts. Returns each PptConditional from each entry in
    * splitters.
    */
+  @SuppressWarnings("modifiability:annotation.unverified")
   public class CondIterator implements java.util.Iterator<PptConditional> {
 
     int splitter_index = 0;
@@ -3345,6 +3346,7 @@ public class PptTopLevel extends Ppt {
   }
 
   /** An iterator whose elements are themselves iterators that return invariants. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   public static final class ViewsIteratorIterator implements Iterator<Iterator<Invariant>> {
     Iterator<PptSlice> vitor;
     @Nullable Iterator<Invariant> implication_iterator;

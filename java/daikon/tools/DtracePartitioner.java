@@ -23,6 +23,7 @@ import org.plumelib.util.Partitioner;
  * This class partitions Daikon trace files so that invocations of the same program point are
  * grouped together for use with random selection.
  */
+@SuppressWarnings("modifiability:annotation.unverified")
 public class DtracePartitioner implements Closeable, Partitioner<String, String>, Iterator<String> {
 
   /** The system-specific line separator. */

@@ -2244,6 +2244,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /** Set of Daikon variables. Implements comparable on first DaikonVariable in each set. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   private static class DVSet extends ArrayList<DaikonVariableInfo> implements Comparable<DVSet> {
     static final long serialVersionUID = 20050923L;
 

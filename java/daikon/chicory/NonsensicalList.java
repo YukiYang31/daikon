@@ -11,6 +11,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
  * nonsensical.
  */
 // It's problematic to make this generic:  what would "get" return?
+@SuppressWarnings("modifiability:annotation.unverified")
 public final class NonsensicalList extends AbstractList<Object> implements List<Object> {
 
   /** Creates a new NonsensicalList. */
