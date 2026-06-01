@@ -112,7 +112,8 @@ public class PptMap implements Serializable {
   // https://bugs.openjdk.java.net/browse/JDK-8195646
   @SuppressWarnings({
     "lock", // JLS bug: can't write receiver annotation on method of anonymous class
-    "modifiability:annotation.unverified"
+    "modifiability:annotation.unverified", // cannot type-check Iterator<PptTopLevel>
+    "modifiability:override.receiver", // JLS bug: can't write receiver annotation on method of anonymous class
   }) 
   public Iterator<PptTopLevel> pptIterator() {
     TreeSet<PptTopLevel> sorted = new TreeSet<>(new Ppt.NameComparator());
@@ -136,7 +137,7 @@ public class PptMap implements Serializable {
       }
 
       @Override
-      public void remove(/*! >>>@GuardSatisfied Iterator<PptTopLevel> this*/ ) {
+      public void remove(/*! >>>@Shrinkable @GuardSatisfied Iterator<PptTopLevel> this*/ ) {
         throw new UnsupportedOperationException();
       }
     };
@@ -169,7 +170,8 @@ public class PptMap implements Serializable {
   // https://bugs.openjdk.java.net/browse/JDK-8195646
   @SuppressWarnings({
     "lock", // JLS bug: can't write receiver annotation on method of anonymous class
-    "modifiability:annotation.unverified"
+    "modifiability:annotation.unverified", // cannot type-check Iterator<PptTopLevel>
+    "modifiability:override.receiver", // JLS bug: can't write receiver annotation on method of anonymous class
   })
   public Iterator<PptTopLevel> ppt_all_iterator() {
     TreeSet<PptTopLevel> sorted = new TreeSet<>(new Ppt.NameComparator());
@@ -205,7 +207,7 @@ public class PptMap implements Serializable {
       }
 
       @Override
-      public void remove(/*! >>>@GuardSatisfied Iterator<PptTopLevel> this*/ ) {
+      public void remove(/*! >>>@Shrinkable @GuardSatisfied Iterator<PptTopLevel> this*/ ) {
         throw new UnsupportedOperationException();
       }
     };

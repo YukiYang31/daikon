@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.mustcall.qual.CreatesMustCallFor;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.plumelib.util.FilesPlume;
@@ -69,7 +70,7 @@ public class DtracePartitioner implements Closeable, Partitioner<String, String>
 
   /** Not implemented, because this class does not modify the underlying trace file. */
   @Override
-  public void remove(@GuardSatisfied DtracePartitioner this) {
+  public void remove(@Shrinkable @GuardSatisfied DtracePartitioner this) {
     throw new UnsupportedOperationException("Can not remove");
   }
 

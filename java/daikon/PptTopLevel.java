@@ -325,7 +325,7 @@ public class PptTopLevel extends Ppt {
     }
 
     @Override
-    public void remove(@GuardSatisfied CondIterator this) {
+    public void remove(@Shrinkable @GuardSatisfied CondIterator this) {
       throw new UnsupportedOperationException("Remove unsupported in CondIterator");
     }
   }
@@ -3376,7 +3376,7 @@ public class PptTopLevel extends Ppt {
     }
 
     @Override
-    public void remove(@GuardSatisfied ViewsIteratorIterator this) {
+    public void remove(@Shrinkable @GuardSatisfied ViewsIteratorIterator this) {
       throw new UnsupportedOperationException();
     }
   }
