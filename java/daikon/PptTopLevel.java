@@ -3315,7 +3315,6 @@ public class PptTopLevel extends Ppt {
    *
    * @see #views_iterable()
    */
-  // @SuppressWarnings("shrinkable:return")
   public @Shrinkable Iterator<PptSlice> views_iterator() {
     // assertion only true when guarding invariants
     // assert views.contains(joiner_view);

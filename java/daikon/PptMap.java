@@ -112,7 +112,6 @@ public class PptMap implements Serializable {
   // https://bugs.openjdk.java.net/browse/JDK-8195646
   @SuppressWarnings({
     "lock", // JLS bug: can't write receiver annotation on method of anonymous class
-    "modifiability:annotation.unverified", // cannot type-check Iterator<PptTopLevel>
     "modifiability:override.receiver", // JLS bug: can't write receiver annotation on method of anonymous class
   }) 
   public Iterator<PptTopLevel> pptIterator() {
@@ -170,7 +169,6 @@ public class PptMap implements Serializable {
   // https://bugs.openjdk.java.net/browse/JDK-8195646
   @SuppressWarnings({
     "lock", // JLS bug: can't write receiver annotation on method of anonymous class
-    "modifiability:annotation.unverified", // cannot type-check Iterator<PptTopLevel>
     "modifiability:override.receiver", // JLS bug: can't write receiver annotation on method of anonymous class
   })
   public Iterator<PptTopLevel> ppt_all_iterator() {
