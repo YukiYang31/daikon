@@ -672,7 +672,6 @@ public class NIS {
     // Remove any Antecedents without any falsified invariants.  They can't
     // possibly create any newly unsuppressed invariants
     for (
-      // @SuppressWarnings("shrinkable:assignment") // false positive, comp_ants is LinkedHashMap at runtime and its .values().iterator() is shrinkable
       @Shrinkable Iterator<Antecedents> i = comp_ants.values().iterator(); i.hasNext(); ) {
       Antecedents ants = i.next();
       if (ants.false_cnt == 0) {

@@ -2876,7 +2876,6 @@ public class PptTopLevel extends Ppt {
       debugEqualTo.fine("  Doing cloneAllPivots: ");
     }
     for (
-      // @SuppressWarnings("shrinkable:assignment")
       @Shrinkable Iterator<PptSlice> iSlices = slices.iterator(); iSlices.hasNext(); ) {
       PptSlice slice = iSlices.next();
       boolean needPivoting = false;
@@ -3781,7 +3780,6 @@ public class PptTopLevel extends Ppt {
       Map<VarInfo.Pair, VarInfo.Pair> eq_new = rel.get_child_equalities_as_parent();
       // Cannot use foreach loop, due to desire to remove from equalityPairs.
       for (
-        // @SuppressWarnings("shrinkable:assignment") 
         @Shrinkable Iterator<VarInfo.@KeyFor("equalityPairs") Pair> j = equalityPairs.keySet().iterator();
           j.hasNext(); ) {
         VarInfo.Pair curpair = j.next();
