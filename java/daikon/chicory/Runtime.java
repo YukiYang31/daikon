@@ -35,6 +35,7 @@ import org.checkerframework.checker.lock.qual.GuardedBy;
 import org.checkerframework.checker.lock.qual.Holding;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.SeqGrowable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -155,7 +156,7 @@ public final class Runtime {
   }
 
   /** Stack of active methods. */
-  private static @GuardedBy("Runtime.class") @Growable Map<Thread, @Growable @Shrinkable Deque<CallInfo>> thread_to_callstack =
+  private static @GuardedBy("Runtime.class") @Growable Map<Thread, @SeqGrowable @Shrinkable Deque<CallInfo>> thread_to_callstack =
       new LinkedHashMap<>();
 
   /**
@@ -277,7 +278,7 @@ public final class Runtime {
         }
         Thread t = Thread.currentThread();
         @SuppressWarnings("lock:method.invocation") // CF bug: inference failed
-        @Growable Deque<CallInfo> callstack =
+        @SeqGrowable Deque<CallInfo> callstack =
             thread_to_callstack.computeIfAbsent(t, __ -> new ArrayDeque<CallInfo>());
         callstack.push(new CallInfo(nonce, capture));
       }

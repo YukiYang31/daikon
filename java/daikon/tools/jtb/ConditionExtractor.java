@@ -15,6 +15,7 @@ import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.SeqGrowable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -60,7 +61,7 @@ class ConditionExtractor extends DepthFirstVisitor {
    * statements are included as conditionals iff the return type is "boolean" Must be a stack rather
    * than a single variable for the case of helper classes.
    */
-  private @Growable @Shrinkable  Deque<Object> resultTypes = new ArrayDeque<Object>();
+  private @SeqGrowable @Shrinkable  Deque<Object> resultTypes = new ArrayDeque<Object>();
 
   /** key = method declaration (as String); value = conditional expressions (as Strings) */
   private @Growable @Replaceable HashMap<String, @Modifiable @IteratorPolyMod List<String>> conditions = new HashMap<>();

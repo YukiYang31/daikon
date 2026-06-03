@@ -50,6 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
+import org.checkerframework.checker.modifiability.qual.SeqGrowable;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
@@ -155,7 +156,7 @@ public final class DCRuntime implements ComparabilityProvider {
   /** Class to hold per-thread comparability data. */
   private static class ThreadData {
     /** Tag stack. */
-    @Growable @Shrinkable Deque<Object> tag_stack;
+    @SeqGrowable @Shrinkable Deque<Object> tag_stack;
 
     /** Number of methods currently on tag_stack. */
     int tag_stack_call_depth;

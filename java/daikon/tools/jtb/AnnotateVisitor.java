@@ -30,6 +30,7 @@ import jtb.syntaxtree.*;
 import jtb.visitor.*;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.SeqGrowable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -96,7 +97,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
 
   public @Growable List<NodeToken> addedComments = new ArrayList<>();
 
-  private @Growable @Shrinkable Deque<ClassFieldInfo> cfis = new ArrayDeque<ClassFieldInfo>();
+  private @SeqGrowable @Shrinkable Deque<ClassFieldInfo> cfis = new ArrayDeque<ClassFieldInfo>();
 
   private PptNameMatcher pptMatcher;
 

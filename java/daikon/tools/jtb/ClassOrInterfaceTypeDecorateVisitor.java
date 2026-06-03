@@ -10,6 +10,7 @@ import java.util.Map;
 import jtb.syntaxtree.*;
 import jtb.visitor.*;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.SeqGrowable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 
 /** Replaces uses of generic type parameters with versions that do not use generics. */
@@ -17,13 +18,13 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
   // A map from token images to "ungenerified" versions of the classes
   // or interfaces that the given identifiers extend.
-  @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> shadowingMap = new HashMap<>();
+  @Growable HashMap<String, @SeqGrowable Deque<ClassOrInterfaceType>> shadowingMap = new HashMap<>();
 
   // For debugging purposes.
   @SuppressWarnings("UnusedMethod") // debugging code is currently commented out
   private void printShadowingMap() {
     System.out.println("Shadowing map:");
-    for (Map.Entry<@KeyFor("shadowingMap") String, @Growable Deque<ClassOrInterfaceType>> e :
+    for (Map.Entry<@KeyFor("shadowingMap") String, @SeqGrowable Deque<ClassOrInterfaceType>> e :
         shadowingMap.entrySet()) {
       System.out.print("  " + e.getKey() + " stack: ");
       for (ClassOrInterfaceType t : e.getValue()) {
@@ -45,7 +46,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
   public void visit(MethodDeclaration n) {
 
     // A shallow clone, which is what we want.
-    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
+    @Growable HashMap<String, @SeqGrowable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
 
     if (n.f0.present()) {
       augmentShadowingMap((TypeParameters) n.f0.node);
@@ -73,7 +74,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
   public void visit(ConstructorDeclaration n) {
 
     // A shallow clone, which is what we want.
-    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
+    @Growable HashMap<String, @SeqGrowable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
 
     if (n.f0.present()) {
       augmentShadowingMap((TypeParameters) n.f0.node);
@@ -102,7 +103,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
   public void visit(ClassOrInterfaceDeclaration n) {
 
     // A shallow clone, which is what we want.
-    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
+    @Growable HashMap<String, @SeqGrowable Deque<ClassOrInterfaceType>> oldShadowingMap = copy(shadowingMap);
 
     n.f0.accept(this);
     n.f1.accept(this);
@@ -160,7 +161,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
       assert b.f1.unGenerifiedVersionOfThis != null;
 
-      @Growable Deque<ClassOrInterfaceType> s =
+      @SeqGrowable Deque<ClassOrInterfaceType> s =
           shadowingMap.computeIfAbsent(
               n.f0.tokenImage, __ -> new ArrayDeque<ClassOrInterfaceType>());
       s.push(b.f1.unGenerifiedVersionOfThis);
@@ -169,7 +170,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
       // No explicit bound means that bound is java.lang.Object.
 
-      @Growable Deque<ClassOrInterfaceType> s =
+      @SeqGrowable Deque<ClassOrInterfaceType> s =
           shadowingMap.computeIfAbsent(
               n.f0.tokenImage, __ -> new ArrayDeque<ClassOrInterfaceType>());
 
@@ -225,7 +226,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
     // 2. Only the first <IDENTIFIER> may possibly be associated
     //    with a type argument. If we find it in typeParametersInScope,
     //    we replace t with [...]
-    for (Map.Entry<@KeyFor("shadowingMap") String, @Growable Deque<ClassOrInterfaceType>> entry :
+    for (Map.Entry<@KeyFor("shadowingMap") String, @SeqGrowable Deque<ClassOrInterfaceType>> entry :
         shadowingMap.entrySet()) {
       if (entry.getKey().equals(n.f0.tokenImage)) {
         ClassOrInterfaceType c = entry.getValue().getFirst();
@@ -268,15 +269,15 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
    * @return a copy of the map
    */
   @SuppressWarnings("NonApiType") // https://errorprone.info/bugpattern/NonApiType
-  private static @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> copy(
-      HashMap<String, @Growable Deque<ClassOrInterfaceType>> m) {
+  private static @Growable HashMap<String, @SeqGrowable Deque<ClassOrInterfaceType>> copy(
+      HashMap<String, @SeqGrowable Deque<ClassOrInterfaceType>> m) {
 
-    @Growable HashMap<String, @Growable Deque<ClassOrInterfaceType>> newMap = new HashMap<>();
+    @Growable HashMap<String, @SeqGrowable Deque<ClassOrInterfaceType>> newMap = new HashMap<>();
 
-    for (Map.Entry<@KeyFor("m") String, @Growable Deque<ClassOrInterfaceType>> e : m.entrySet()) {
+    for (Map.Entry<@KeyFor("m") String, @SeqGrowable Deque<ClassOrInterfaceType>> e : m.entrySet()) {
       String key = e.getKey();
-      @Growable Deque<ClassOrInterfaceType> oldStack = e.getValue();
-      @Growable Deque<ClassOrInterfaceType> newStack =
+      @SeqGrowable Deque<ClassOrInterfaceType> oldStack = e.getValue();
+      @SeqGrowable Deque<ClassOrInterfaceType> newStack =
           new ArrayDeque<ClassOrInterfaceType>(oldStack); // clone
       newMap.put(key, newStack);
     }
