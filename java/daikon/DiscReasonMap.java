@@ -141,7 +141,7 @@ public final class DiscReasonMap {
    */
   public static List<DiscardInfo> returnMatches_from_ppt(InvariantInfo invInfo) {
     ArrayList<DiscardInfo> result = new ArrayList<>();
-    HashMap<String, @Growable List<DiscardInfo>> vars_map_from_ppt = the_map.get(invInfo.ppt());
+    HashMap<String, @Growable @IteratorPolyMod List<DiscardInfo>> vars_map_from_ppt = the_map.get(invInfo.ppt());
 
     if (vars_map_from_ppt == null) {
       return result;

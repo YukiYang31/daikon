@@ -2416,8 +2416,8 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitSimple(Simple o) {
-        List<VarInfo> result = new ArrayList<>();
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitSimple(Simple o) {
+        @IteratorPolyMod List<VarInfo> result = new ArrayList<>();
         // No recursion:  no children
         if (!o.name.equals("this")) {
           result = addVar(result, o);
@@ -2429,7 +2429,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitSizeOf(SizeOf o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitSizeOf(SizeOf o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.sequence.accept(this));
@@ -2442,7 +2442,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitFunctionOf(FunctionOf o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitFunctionOf(FunctionOf o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.argument.accept(this));
@@ -2456,7 +2456,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitFunctionOfN(FunctionOfN o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitFunctionOfN(FunctionOfN o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           for (VarInfoName arg : o.args) {
@@ -2472,7 +2472,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitField(Field o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitField(Field o) {
         List<VarInfo> result = new ArrayList<>();
         if (Invariant.debugGuarding.isLoggable(Level.FINE)) {
           Invariant.debugGuarding.fine(
@@ -2489,7 +2489,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitTypeOf(TypeOf o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitTypeOf(TypeOf o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.term.accept(this));
@@ -2502,7 +2502,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitPrestate(Prestate o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitPrestate(Prestate o) {
         assert inPre == false;
         inPre = true;
         List<VarInfo> result = o.term.accept(this);
@@ -2515,7 +2515,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitPoststate(Poststate o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitPoststate(Poststate o) {
         assert inPre == true;
         inPre = false;
         List<VarInfo> result = o.term.accept(this);
@@ -2528,7 +2528,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitAdd(Add o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitAdd(Add o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.term.accept(this));
@@ -2541,7 +2541,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitElements(Elements o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitElements(Elements o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.term.accept(this));
@@ -2554,7 +2554,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitSubscript(Subscript o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitSubscript(Subscript o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.sequence.accept(this));
@@ -2568,7 +2568,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
       }
 
       @Override
-      public @Shrinkable List<VarInfo> visitSlice(Slice o) {
+      public @Shrinkable @IteratorPolyMod List<VarInfo> visitSlice(Slice o) {
         List<VarInfo> result = new ArrayList<>();
         if (shouldBeGuarded(o)) {
           result.addAll(o.sequence.accept(this));
@@ -2595,7 +2595,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
         }
       }
 
-      private @Shrinkable List<VarInfo> addVar(@Growable @Shrinkable @IteratorPolyMod List<VarInfo> result, VarInfoName vin) {
+      private @Shrinkable @IteratorPolyMod List<VarInfo> addVar(@Growable @Shrinkable @IteratorPolyMod List<VarInfo> result, VarInfoName vin) {
         VarInfo vi = ppt.find_var_by_name(applyPreMaybe(vin).name());
         // vi could be null because some variable's prefix is not a
         // variable.  Example: for static variable "Class.staticvar",
@@ -2627,7 +2627,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
        */
       // Should this operate by side effect on a global variable?
       // (Then what is the type of the visitor; what does everything return?)
-      private @Shrinkable List<VarInfo> addVarInfo(@Growable @Shrinkable @IteratorPolyMod List<VarInfo> result, VarInfo vi) {
+      private @Shrinkable @IteratorPolyMod List<VarInfo> addVarInfo(@Growable @Shrinkable @IteratorPolyMod List<VarInfo> result, VarInfo vi) {
         assert vi != null;
         assert !vi.isDerived() || vi.isDerived() : "addVar on derived variable: " + vi;
         // Don't guard primitives

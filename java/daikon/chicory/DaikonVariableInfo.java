@@ -58,7 +58,7 @@ public abstract class DaikonVariableInfo
   private final @Interned String name;
 
   /** The child nodes. */
-  public @Growable List<DaikonVariableInfo> children;
+  public @Growable @IteratorPolyMod List<DaikonVariableInfo> children;
 
   /** True iff this variable is an array. */
   protected final boolean isArray;

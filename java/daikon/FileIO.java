@@ -527,7 +527,7 @@ public final class FileIO {
   }
 
   /** Parses a program point flag record. Adds any specified flags to to flags. */
-  private static void parse_ppt_flags(ParseState state, Scanner scanner, @Growable EnumSet<PptFlags> flags) {
+  private static void parse_ppt_flags(ParseState state, Scanner scanner, @Growable @IteratorPolyMod EnumSet<PptFlags> flags) {
 
     flags.add(parse_enum_val(state, scanner, PptFlags.class, "ppt flags"));
     while (scanner.hasNext()) {
@@ -1027,7 +1027,7 @@ public final class FileIO {
    * @see #read_data_trace_files(Collection,PptMap,Processor,boolean)
    * @see #read_data_trace_file(String,PptMap,Processor,boolean,boolean)
    */
-  public static void read_data_trace_files(@Growable Collection<String> files, PptMap all_ppts)
+  public static void read_data_trace_files(@Growable @IteratorPolyMod Collection<String> files, PptMap all_ppts)
       throws IOException {
 
     Processor processor = new Processor();
@@ -1047,7 +1047,7 @@ public final class FileIO {
    * @see #read_data_trace_file(String,PptMap,Processor,boolean,boolean)
    */
   public static void read_data_trace_files(
-      @Growable Collection<String> files, PptMap all_ppts, Processor processor, boolean ppts_may_be_new)
+      @Growable @IteratorPolyMod Collection<String> files, PptMap all_ppts, Processor processor, boolean ppts_may_be_new)
       throws IOException {
 
     for (String filename : files) {

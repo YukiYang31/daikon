@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -83,7 +84,7 @@ public class InvariantChecker {
           "  --" + Daikon.track_SWITCH + " class<var1,var2,var3>@ppt",
           "      Print debug info on the specified invariant class, vars, and ppt");
 
-  public static @Growable @Shrinkable List<String> dtrace_files = new ArrayList<>();
+  public static @Growable @Shrinkable @IteratorPolyMod List<String> dtrace_files = new ArrayList<>();
   static @Owning PrintStream output_stream = System.out;
   static int error_cnt = 0;
   static int sample_cnt = 0;

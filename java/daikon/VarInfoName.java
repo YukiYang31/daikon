@@ -1006,7 +1006,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitSizeOf(this);
     }
   }
@@ -1126,7 +1126,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitFunctionOf(this);
     }
   }
@@ -1262,7 +1262,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitFunctionOfN(this);
     }
   }
@@ -1542,7 +1542,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitField(this);
     }
   }
@@ -1630,7 +1630,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitTypeOf(this);
     }
   }
@@ -1730,7 +1730,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitPrestate(this);
     }
   }
@@ -1820,7 +1820,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitPoststate(this);
     }
   }
@@ -1901,7 +1901,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitAdd(this);
     }
 
@@ -2041,7 +2041,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitElements(this);
     }
 
@@ -2200,7 +2200,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitSubscript(this);
     }
   }
@@ -2385,7 +2385,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitSlice(this);
     }
 
@@ -2403,33 +2403,33 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
   }
 
   /** Accept the actions of a visitor. */
-  public abstract <T> @Shrinkable T accept(Visitor<T> v);
+  public abstract <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v);
 
   /** Visitor framework for processing of VarInfoNames. */
   public static interface Visitor<T> {
-    public @Shrinkable T visitSimple(Simple o);
+    public @Shrinkable @IteratorPolyMod T visitSimple(Simple o);
 
-    public @Shrinkable T visitSizeOf(SizeOf o);
+    public @Shrinkable @IteratorPolyMod T visitSizeOf(SizeOf o);
 
-    public @Shrinkable T visitFunctionOf(FunctionOf o);
+    public @Shrinkable @IteratorPolyMod T visitFunctionOf(FunctionOf o);
 
-    public @Shrinkable T visitFunctionOfN(FunctionOfN o);
+    public @Shrinkable @IteratorPolyMod T visitFunctionOfN(FunctionOfN o);
 
-    public @Shrinkable T visitField(Field o);
+    public @Shrinkable @IteratorPolyMod T visitField(Field o);
 
-    public @Shrinkable T visitTypeOf(TypeOf o);
+    public @Shrinkable @IteratorPolyMod T visitTypeOf(TypeOf o);
 
-    public @Shrinkable T visitPrestate(Prestate o);
+    public @Shrinkable @IteratorPolyMod T visitPrestate(Prestate o);
 
-    public @Shrinkable T visitPoststate(Poststate o);
+    public @Shrinkable @IteratorPolyMod T visitPoststate(Poststate o);
 
-    public @Shrinkable T visitAdd(Add o);
+    public @Shrinkable @IteratorPolyMod T visitAdd(Add o);
 
-    public @Shrinkable T visitElements(Elements o);
+    public @Shrinkable @IteratorPolyMod T visitElements(Elements o);
 
-    public @Shrinkable T visitSubscript(Subscript o);
+    public @Shrinkable @IteratorPolyMod T visitSubscript(Subscript o);
 
-    public @Shrinkable T visitSlice(Slice o);
+    public @Shrinkable @IteratorPolyMod T visitSlice(Slice o);
   }
 
   /**
@@ -2439,24 +2439,24 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
    */
   public abstract static class AbstractVisitor<T> implements Visitor<T> {
     @Override
-    public @Shrinkable T visitSimple(Simple o) {
+    public @Shrinkable @IteratorPolyMod T visitSimple(Simple o) {
       // nothing to do; leaf node
       return null;
     }
 
     @Override
-    public @Shrinkable T visitSizeOf(SizeOf o) {
+    public @Shrinkable @IteratorPolyMod T visitSizeOf(SizeOf o) {
       return o.sequence.accept(this);
     }
 
     @Override
-    public @Shrinkable T visitFunctionOf(FunctionOf o) {
+    public @Shrinkable @IteratorPolyMod T visitFunctionOf(FunctionOf o) {
       return o.argument.accept(this);
     }
 
     /** By default, return effect on first argument, but traverse all, backwards. */
     @Override
-    public @Shrinkable T visitFunctionOfN(FunctionOfN o) {
+    public @Shrinkable @IteratorPolyMod T visitFunctionOfN(FunctionOfN o) {
       T retval = null;
       for (ListIterator<VarInfoName> i = o.args.listIterator(o.args.size()); i.hasPrevious(); ) {
         VarInfoName vin = i.previous();
@@ -2466,42 +2466,42 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public @Shrinkable T visitField(Field o) {
+    public @Shrinkable @IteratorPolyMod T visitField(Field o) {
       return o.term.accept(this);
     }
 
     @Override
-    public @Shrinkable T visitTypeOf(TypeOf o) {
+    public @Shrinkable @IteratorPolyMod T visitTypeOf(TypeOf o) {
       return o.term.accept(this);
     }
 
     @Override
-    public @Shrinkable T visitPrestate(Prestate o) {
+    public @Shrinkable @IteratorPolyMod T visitPrestate(Prestate o) {
       return o.term.accept(this);
     }
 
     @Override
-    public @Shrinkable T visitPoststate(Poststate o) {
+    public @Shrinkable @IteratorPolyMod T visitPoststate(Poststate o) {
       return o.term.accept(this);
     }
 
     @Override
-    public @Shrinkable T visitAdd(Add o) {
+    public @Shrinkable @IteratorPolyMod T visitAdd(Add o) {
       return o.term.accept(this);
     }
 
     @Override
-    public @Shrinkable T visitElements(Elements o) {
+    public @Shrinkable @IteratorPolyMod T visitElements(Elements o) {
       return o.term.accept(this);
     }
 
     // leave abstract; traversal order and return values matter
     @Override
-    public abstract @Shrinkable T visitSubscript(Subscript o);
+    public abstract @Shrinkable @IteratorPolyMod T visitSubscript(Subscript o);
 
     // leave abstract; traversal order and return values matter
     @Override
-    public abstract @Shrinkable T visitSlice(Slice o);
+    public abstract @Shrinkable @IteratorPolyMod T visitSlice(Slice o);
   }
 
   /**

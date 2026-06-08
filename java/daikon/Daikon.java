@@ -740,7 +740,7 @@ public final class Daikon {
     // Read command line options
     FileOptions files = read_options(args, usage);
     Set<File> decls_files = files.decls;
-    @Growable Set<String> dtrace_files = files.dtrace;
+    @Growable @IteratorPolyMod Set<String> dtrace_files = files.dtrace;
     Set<File> spinfo_files = files.spinfo;
     Set<File> map_files = files.map;
     if (server_dir == null && decls_files.isEmpty() && dtrace_files.isEmpty()) {
@@ -992,11 +992,11 @@ public final class Daikon {
   // Return an array of {decls, dtrace, spinfo, map} files.
   public static class FileOptions {
     public Set<File> decls;
-    public @Growable Set<String> dtrace;
+    public @Growable @IteratorPolyMod Set<String> dtrace;
     public Set<File> spinfo;
     public Set<File> map;
 
-    public FileOptions(Set<File> decls, @Growable Set<String> dtrace, Set<File> spinfo, Set<File> map) {
+    public FileOptions(Set<File> decls, @Growable @IteratorPolyMod Set<String> dtrace, Set<File> spinfo, Set<File> map) {
       this.decls = decls;
       this.dtrace = dtrace;
       this.spinfo = spinfo;
@@ -1504,7 +1504,7 @@ public final class Daikon {
    * Invariants passed on the command line with the {@code --user_defined_invariant} option. A list
    * of class names in the format required by {@link Class#forName(String)}.
    */
-  private static @Growable List<@ClassGetName String> userDefinedInvariants =
+  private static @Growable @IteratorPolyMod List<@ClassGetName String> userDefinedInvariants =
       new ArrayList<@ClassGetName String>();
 
   /**
@@ -2308,7 +2308,7 @@ public final class Daikon {
    */
   @RequiresNonNull("fileio_progress")
   // set in mainHelper
-  private static void process_data(PptMap all_ppts, @Growable Set<String> dtrace_files) {
+  private static void process_data(PptMap all_ppts, @Growable @IteratorPolyMod Set<String> dtrace_files) {
     MemMonitor monitor = null;
     if (use_mem_monitor) {
       monitor = new MemMonitor("stat.out");

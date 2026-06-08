@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -154,7 +155,7 @@ public class PptSliceEquality extends PptSlice {
     if (debug.isLoggable(Level.FINE)) {
       debug.fine("PptSliceEquality.instantiate_invariants: " + parent.name() + " vars:");
     }
-    LinkedHashMap<VarInfoAndComparability, @Growable List<VarInfo>> multiMap = new LinkedHashMap<>();
+    LinkedHashMap<VarInfoAndComparability, @Growable @IteratorPolyMod List<VarInfo>> multiMap = new LinkedHashMap<>();
     for (VarInfo vi : var_infos) {
       VarInfoAndComparability viac = new VarInfoAndComparability(vi);
       addToBindingList(multiMap, viac, vi);
@@ -202,10 +203,10 @@ public class PptSliceEquality extends PptSlice {
   public void instantiate_from_pairs(Set<VarInfo.Pair> eset) {
 
     // Build a map from each variable to all those that are equal to it
-    Map<VarInfo, @Growable List<VarInfo>> varmap = new LinkedHashMap<>();
+    Map<VarInfo, @Growable @IteratorPolyMod List<VarInfo>> varmap = new LinkedHashMap<>();
     Map<VarInfo, Integer> sample_cnt_map = new LinkedHashMap<>();
     for (VarInfo.Pair cp : eset) {
-      @Growable List<VarInfo> vlist = varmap.get(cp.v1);
+      @Growable @IteratorPolyMod List<VarInfo> vlist = varmap.get(cp.v1);
       if (vlist == null) {
         vlist = new ArrayList<VarInfo>();
         vlist.add(cp.v1);
@@ -342,7 +343,7 @@ public class PptSliceEquality extends PptSlice {
   private List<Equality> createEqualityInvs(
       List<VarInfo> vis, ValueTuple vt, Equality leader, int count) {
     assert !vis.isEmpty();
-    HashMap<Object, @Growable List<VarInfo>> multiMap = new HashMap<>(); /* key is a value */
+    HashMap<Object, @Growable @IteratorPolyMod List<VarInfo>> multiMap = new HashMap<>(); /* key is a value */
     List<VarInfo> out_of_bounds = new ArrayList<>();
     for (VarInfo vi : vis) {
       if (vi.missingOutOfBounds()) {
@@ -366,7 +367,7 @@ public class PptSliceEquality extends PptSlice {
     /*NNC:@MonotonicNonNull*/ Equality[] resultArray =
         new Equality[multiMap.values().size() + out_of_bounds.size()];
     int resultCount = 0;
-    for (Map.Entry<@KeyFor("multiMap") Object, @Growable List<VarInfo>> entry : multiMap.entrySet()) {
+    for (Map.Entry<@KeyFor("multiMap") Object, @Growable @IteratorPolyMod List<VarInfo>> entry : multiMap.entrySet()) {
       Object key = entry.getKey();
       List<VarInfo> list = entry.getValue();
       assert !list.isEmpty();
@@ -445,11 +446,11 @@ public class PptSliceEquality extends PptSlice {
    *     create a new List associated with key and insert value.
    * @param value the value to insert into the List mapped to key
    */
-  private <T> void addToBindingList(@Growable Map<T, @Growable List<VarInfo>> map, T key, VarInfo value) {
+  private <T> void addToBindingList(@Growable Map<T, @Growable @IteratorPolyMod List<VarInfo>> map, T key, VarInfo value) {
     if (key == null) {
       throw new IllegalArgumentException();
     }
-    @Growable List<VarInfo> elements = map.computeIfAbsent(key, __ -> new ArrayList<VarInfo>());
+    @Growable @IteratorPolyMod List<VarInfo> elements = map.computeIfAbsent(key, __ -> new ArrayList<VarInfo>());
     elements.add(value);
   }
 
@@ -564,7 +565,7 @@ public class PptSliceEquality extends PptSlice {
       VarInfo leader,
       List<VarInfo> newVis,
       PptSlice slice,
-      @Growable List<PptSlice> newSlices,
+      @Growable @IteratorPolyMod List<PptSlice> newSlices,
       int position,
       int loop,
       VarInfo[] soFar) {

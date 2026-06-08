@@ -51,6 +51,7 @@ import java.util.logging.Logger;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.KeyFor;
@@ -90,7 +91,7 @@ public class LogicalCompare {
   // method should create an instance.
 
   /** key = ppt name */
-  private static @MonotonicNonNull @Growable @Replaceable Map<String, @Growable List<Lemma>> extra_assumptions;
+  private static @MonotonicNonNull @Growable @Replaceable Map<String, @Growable @IteratorPolyMod List<Lemma>> extra_assumptions;
 
   private static @Owning @MonotonicNonNull LemmaStack lemmas;
 
@@ -619,7 +620,7 @@ public class LogicalCompare {
           comment = comment.trim();
           @SuppressWarnings(
               "nullness") // map: on previous loop iteration, this key was added to map
-          @NonNull @Growable List<Lemma> assumption_vec = extra_assumptions.get(ppt_name);
+          @NonNull @Growable @IteratorPolyMod List<Lemma> assumption_vec = extra_assumptions.get(ppt_name);
           assumption_vec.add(new Lemma(comment, formula));
         } else {
           System.err.println("Can't parse " + line + " in assumptions file");

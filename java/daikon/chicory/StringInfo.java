@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 /**
  * The StringInfo class is a subtype of DaikonVariableInfo used for variable types that can be
@@ -129,7 +130,7 @@ public class StringInfo extends DaikonVariableInfo {
   }
 
   @Override
-  public @Growable EnumSet<VarFlags> get_var_flags() {
+  public @Growable @IteratorPolyMod EnumSet<VarFlags> get_var_flags() {
     EnumSet<VarFlags> flags = super.get_var_flags();
     flags.add(VarFlags.SYNTHETIC);
     flags.add(VarFlags.TO_STRING);

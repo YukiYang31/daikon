@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -708,7 +709,7 @@ public class DeclWriter extends DaikonWriter implements ComparabilityProvider {
       boolean is_static_method,
       DaikonVariableInfo parent,
       DaikonVariableInfo var,
-      @Growable List<VarRelation> relations) {
+      @Growable @IteratorPolyMod List<VarRelation> relations) {
 
     // If there is a new relation for this variable add it to the list and
     // return it.  Note that each static variable in an object ppt will
