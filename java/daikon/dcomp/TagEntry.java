@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.StringJoiner;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -338,13 +339,13 @@ class TagEntry extends WeakReference<Object> {
    */
   public static String dump() {
 
-    LinkedHashMap<Object, @Growable List<Object>> sets = new LinkedHashMap<>();
+    LinkedHashMap<Object, @Growable @IteratorPolyMod List<Object>> sets = new LinkedHashMap<>();
 
     // Fill `sets` from `object_map` by placing every object in an ArrayList
     // whose key is its root.
     for (Object obj : object_map.keySet()) {
       Object rep = find(obj);
-      @Growable List<Object> set = sets.computeIfAbsent(rep, __ -> new ArrayList<Object>());
+      @Growable @IteratorPolyMod List<Object> set = sets.computeIfAbsent(rep, __ -> new ArrayList<Object>());
       set.add(obj);
     }
 

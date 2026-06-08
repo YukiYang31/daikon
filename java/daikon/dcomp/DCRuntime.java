@@ -94,7 +94,7 @@ public final class DCRuntime implements ComparabilityProvider {
   public static @Nullable Throwable exit_exception = null;
 
   /** Storage for each static tag. */
-  public static @Growable @Replaceable List<@Nullable Object> static_tags = new ArrayList<>();
+  public static @Growable @Replaceable @IteratorPolyMod List<@Nullable Object> static_tags = new ArrayList<>();
 
   /** Either "java.lang.DCompInstrumented" or "daikon.dcomp.DCompInstrumented". */
   static @BinaryName String instrumentation_interface;

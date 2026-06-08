@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -34,7 +35,7 @@ public class ClassInfo {
   // Does not include class initializers, so each element's .member field
   // is non-null.
   /** list of methods in the class. */
-  public @Growable List<MethodInfo> method_infos = new ArrayList<>();
+  public @Growable @IteratorPolyMod List<MethodInfo> method_infos = new ArrayList<>();
 
   /** This class's classloader. */
   private @Nullable ClassLoader loader;

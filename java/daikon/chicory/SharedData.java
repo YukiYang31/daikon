@@ -7,6 +7,7 @@ import java.util.List;
 import org.checkerframework.checker.lock.qual.GuardedBy;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 /**
  * Data that is shared across Chicory. The primary users are Instrument.java and Runtime.java. As
@@ -26,8 +27,8 @@ public class SharedData {
   public static final @GuardedBy("<self>") @Growable @Shrinkable Deque<ClassInfo> new_classes = new ArrayDeque<>();
 
   /** List of all instrumented classes. */
-  public static final @GuardedBy("<self>") @Growable List<ClassInfo> all_classes = new ArrayList<>();
+  public static final @GuardedBy("<self>") @Growable @IteratorPolyMod List<ClassInfo> all_classes = new ArrayList<>();
 
   /** List of all instrumented methods. */
-  public static final @GuardedBy("<self>") @Growable List<MethodInfo> methods = new ArrayList<>();
+  public static final @GuardedBy("<self>") @Growable @IteratorPolyMod List<MethodInfo> methods = new ArrayList<>();
 }

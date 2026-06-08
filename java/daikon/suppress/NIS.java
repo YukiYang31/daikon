@@ -148,10 +148,10 @@ public class NIS {
       suppressor_map_suppression_count;
 
   /** List of all suppressions. Is set by {@link #init_ni_suppression}. */
-  static @MonotonicNonNull @Growable List<NISuppressionSet> all_suppressions;
+  static @MonotonicNonNull @Growable @IteratorPolyMod List<NISuppressionSet> all_suppressions;
 
   /** List of suppressor invariant prototypes. */
-  public static @MonotonicNonNull @Growable List<@Prototype Invariant> suppressor_proto_invs;
+  public static @MonotonicNonNull @Growable @IteratorPolyMod List<@Prototype Invariant> suppressor_proto_invs;
 
   /**
    * List of invariants that are unsuppressed by the current sample. The {@link #falsified} and
@@ -166,7 +166,7 @@ public class NIS {
    * sample is applied to invariants in new_invs. The list is only used when the falsified method is
    * used for processing suppressions.
    */
-  public static @Modifiable List<Invariant> newly_falsified = new ArrayList<>();
+  public static @Modifiable @IteratorPolyMod List<Invariant> newly_falsified = new ArrayList<>();
 
   // Statistics that are kept during processing.  Some of these are kept
   // and/or make sense for some approaches and not for others
@@ -863,7 +863,7 @@ public class NIS {
   @RequiresNonNull("suppressor_map")
   static int find_antecedents(
       Iterator<PptSlice> slice_iterator,
-      @Growable Map<Class<? extends Invariant>, @Growable List<Invariant>> antecedent_map) {
+      @Growable Map<Class<? extends Invariant>, @Growable @IteratorPolyMod List<Invariant>> antecedent_map) {
 
     int false_cnt = 0;
 
@@ -1075,7 +1075,7 @@ public class NIS {
      * Map from the antecedent invariants class to a list of the antecedent invariants of that
      * class. Allows fast access to invariants by type.
      */
-    @Growable @Replaceable Map<Class<? extends Invariant>, @Growable List<Invariant>> antecedent_map;
+    @Growable @Replaceable Map<Class<? extends Invariant>, @Growable @IteratorPolyMod List<Invariant>> antecedent_map;
 
     /** Number of antecedents that are false. */
     int false_cnt = 0;
@@ -1122,7 +1122,7 @@ public class NIS {
       }
 
       // Add the invariant to the map for its class
-      @Growable List<Invariant> antecedents = get(inv.getClass());
+      @Growable @IteratorPolyMod List<Invariant> antecedents = get(inv.getClass());
       if (antecedents == null) {
         antecedents = new ArrayList<Invariant>();
         antecedent_map.put(inv.getClass(), antecedents);
@@ -1149,7 +1149,7 @@ public class NIS {
      * Returns a list of all of the antecedent invariants of the specified class. Returns null if
      * there are none of that class.
      */
-    public @Nullable @Growable List<Invariant> get(Class<? extends Invariant> cls) {
+    public @Nullable @Growable @IteratorPolyMod List<Invariant> get(Class<? extends Invariant> cls) {
 
       return antecedent_map.get(cls);
     }

@@ -36,6 +36,7 @@ import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -3061,7 +3062,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     // state and accessors
-    private final @Modifiable List<VarInfoName> result = new ArrayList<>();
+    private final @Modifiable @IteratorPolyMod List<VarInfoName> result = new ArrayList<>();
 
     /** Method returning the actual results (the nodes in order). */
     public List<VarInfoName> nodes() {
@@ -3532,7 +3533,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     /** Record type for return value of the quantify method below. */
     public static class QuantifyReturn {
       public @Interned VarInfoName[] root_primes;
-      public @Growable List<@Interned VarInfoName[]>
+      public @Growable @IteratorPolyMod List<@Interned VarInfoName[]>
           bound_vars; // each element is VarInfoName[3] = <variable, lower, upper>
     }
 

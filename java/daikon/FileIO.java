@@ -2752,7 +2752,7 @@ public final class FileIO {
      * function application.
      */
     @SuppressWarnings("serial")
-    public @Nullable @Growable List<String> function_args = null;
+    public @Nullable @Growable @IteratorPolyMod List<String> function_args = null;
 
     /** The type of the variable as stored in the dtrace file (required) */
     public ProglangType rep_type = null;
@@ -2772,7 +2772,7 @@ public final class FileIO {
 
     /** Parent program points in ppt hierarchy (optional) */
     @SuppressWarnings("serial")
-    public @Shrinkable @Growable List<VarParent> parents;
+    public @Shrinkable @Growable @IteratorPolyMod List<VarParent> parents;
 
     /** Non-null if this 'variable' always has the same value (optional) */
     @SuppressWarnings("serial")

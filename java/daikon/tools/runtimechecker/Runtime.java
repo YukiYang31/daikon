@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.checkerframework.checker.lock.qual.GuardedBy;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 /**
  * If a class has been instrumented with the instrumenter, invariant violations are added to the
@@ -20,7 +21,7 @@ public class Runtime {
   /** A list of throwables seen when attempting to evaluate properties. */
   public static List<Throwable> internalInvariantEvaluationErrors = new ArrayList<>();
 
-  private static @GuardedBy("Runtime.class") @Modifiable List<Violation> violations =
+  private static @GuardedBy("Runtime.class") @Modifiable @IteratorPolyMod List<Violation> violations =
       new ArrayList<Violation>();
 
   // The number of times that an invariant was checked (whether the

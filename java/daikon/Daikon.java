@@ -194,6 +194,7 @@ import java.util.regex.PatternSyntaxException;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -2612,7 +2613,7 @@ public final class Daikon {
     ppt.equality_view.instantiate_invariants();
   }
 
-  private static @Growable List<SpinfoFile> spinfoFiles = new ArrayList<>();
+  private static @Growable @IteratorPolyMod List<SpinfoFile> spinfoFiles = new ArrayList<>();
 
   /**
    * Create user-defined splitters. For each file in the input, add a SpinfoFile to the spinfoFiles

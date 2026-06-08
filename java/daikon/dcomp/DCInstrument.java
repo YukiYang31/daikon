@@ -98,6 +98,7 @@ import org.apache.bcel.verifier.structurals.OperandStack;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -198,7 +199,7 @@ public class DCInstrument extends InstructionListUtils {
   protected static final boolean debugHandleInvoke = false;
 
   /** Keeps track of the methods that were not successfully instrumented. */
-  protected @Growable List<String> skipped_methods = new ArrayList<>();
+  protected @Growable @IteratorPolyMod List<String> skipped_methods = new ArrayList<>();
 
   /** Either "java.lang" or "daikon.dcomp". */
   protected @DotSeparatedIdentifiers String dcomp_prefix;

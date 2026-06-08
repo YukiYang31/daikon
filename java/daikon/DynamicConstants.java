@@ -103,7 +103,7 @@ public class DynamicConstants implements Serializable {
   // Same contents in both.  Why two data structures?
   /** List of all variables. Some may be non-constant. */
   @SuppressWarnings("serial")
-  @Modifiable List<Constant> all_list = new ArrayList<>();
+  @Modifiable @IteratorPolyMod List<Constant> all_list = new ArrayList<>();
 
   /** Program point of these constants. */
   PptTopLevel ppt;

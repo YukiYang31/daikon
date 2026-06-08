@@ -273,7 +273,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
 
   /** Parent program points in ppt hierarchy (optional) */
   @SuppressWarnings("serial")
-  public @Growable List<VarParent> parents;
+  public @Growable @IteratorPolyMod List<VarParent> parents;
 
   /**
    * The relative name of this variable with respect to its enclosing variable. Field name for
@@ -2595,7 +2595,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
         }
       }
 
-      private @Shrinkable List<VarInfo> addVar(@Growable @Shrinkable List<VarInfo> result, VarInfoName vin) {
+      private @Shrinkable List<VarInfo> addVar(@Growable @Shrinkable @IteratorPolyMod List<VarInfo> result, VarInfoName vin) {
         VarInfo vi = ppt.find_var_by_name(applyPreMaybe(vin).name());
         // vi could be null because some variable's prefix is not a
         // variable.  Example: for static variable "Class.staticvar",
@@ -2627,7 +2627,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
        */
       // Should this operate by side effect on a global variable?
       // (Then what is the type of the visitor; what does everything return?)
-      private @Shrinkable List<VarInfo> addVarInfo(@Growable @Shrinkable List<VarInfo> result, VarInfo vi) {
+      private @Shrinkable List<VarInfo> addVarInfo(@Growable @Shrinkable @IteratorPolyMod List<VarInfo> result, VarInfo vi) {
         assert vi != null;
         assert !vi.isDerived() || vi.isDerived() : "addVar on derived variable: " + vi;
         // Don't guard primitives
@@ -2657,7 +2657,7 @@ public final @Interned class VarInfo implements Cloneable, Serializable {
     } // end of class GuardingVisitor
 
     if (!FileIO.new_decl_format) {
-      @Shrinkable List<VarInfo> result = var_info_name.accept(new GuardingVisitor()); // vin ok
+      @Shrinkable @IteratorPolyMod List<VarInfo> result = var_info_name.accept(new GuardingVisitor()); // vin ok
       result.remove(ppt.find_var_by_name(var_info_name.name())); // vin ok
       assert !ArraysPlume.anyNull(result);
       return result;
