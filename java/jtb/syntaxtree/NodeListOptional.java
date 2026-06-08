@@ -6,6 +6,7 @@ package jtb.syntaxtree;
 
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 import java.util.*;
 
@@ -49,6 +50,6 @@ public class NodeListOptional implements NodeListInterface {
    public Node getParent()       { return parent; }
 
    private Node parent;
-   public @Growable @Replaceable Vector<Node> nodes;
+   public @Growable @Replaceable @IteratorPolyMod Vector<Node> nodes;
 }
 

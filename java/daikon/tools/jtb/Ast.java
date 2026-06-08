@@ -1108,7 +1108,7 @@ public class Ast {
   // parameters.
   public static List<FormalParameter> getParameters(ConstructorDeclaration cd) {
     class GetParametersVisitor extends DepthFirstVisitor {
-      @Growable List<FormalParameter> parameters = new ArrayList<>();
+      @Growable @IteratorPolyMod List<FormalParameter> parameters = new ArrayList<>();
 
       @Override
       public void visit(FormalParameter p) {

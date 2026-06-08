@@ -7,6 +7,7 @@ package jtb.syntaxtree;
 import java.util.*;
 
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 // Represents a sequence of nodes nested within a choice, list,
 // optional list, or optional, e.g. ( A B )+ or [ C D E ]
@@ -48,6 +49,6 @@ public class NodeSequence implements NodeListInterface {
    public Node getParent()       { return parent; }
 
    private Node parent;
-   public @Replaceable Vector<Node> nodes;
+   public @Replaceable @IteratorPolyMod Vector<Node> nodes;
 }
 
