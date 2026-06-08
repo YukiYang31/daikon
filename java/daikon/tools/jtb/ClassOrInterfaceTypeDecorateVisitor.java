@@ -11,6 +11,7 @@ import jtb.syntaxtree.*;
 import jtb.visitor.*;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.SeqGrowable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 
 /** Replaces uses of generic type parameters with versions that do not use generics. */
@@ -213,7 +214,7 @@ public class ClassOrInterfaceTypeDecorateVisitor extends DepthFirstVisitor {
 
     // Drop all type arguments.
     n.f1 = new NodeOptional(); // This removes optional node, if present.
-    @Growable List<Node> nodeSequenceList = n.f2.nodes;
+    @Growable @IteratorPolyMod List<Node> nodeSequenceList = n.f2.nodes;
     for (int i = 0; i < nodeSequenceList.size(); i++) {
       NodeSequence oldSequence = (NodeSequence) nodeSequenceList.get(i);
       NodeSequence newSequence = new NodeSequence(3);

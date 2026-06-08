@@ -207,7 +207,7 @@ public class SpinfoFile {
   private void readPptStatements(
       @UnknownInitialization SpinfoFile this,
       LineNumberReader spinfoFile,
-      @Growable List<List<String>> pptSections,
+      @Growable @IteratorPolyMod List<List<String>> pptSections,
       String pptName)
       throws IOException {
     List<String> pptSection = new ArrayList<>();

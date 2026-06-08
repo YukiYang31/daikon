@@ -28,6 +28,7 @@ import jdk.javadoc.doclet.Reporter;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -458,7 +459,7 @@ public class InvariantDoclet implements Doclet {
       }
 
       // get a list of any other configuration variables
-      @Shrinkable List<Element> config_vars = find_fields(dc, Configuration.PREFIX);
+      @Shrinkable @IteratorPolyMod List<Element> config_vars = find_fields(dc, Configuration.PREFIX);
       for (int i = 0; i < config_vars.size(); i++) {
         Element f = config_vars.get(i);
         if (f.getSimpleName().toString().equals(Configuration.PREFIX + "enabled")) {
@@ -557,7 +558,7 @@ public class InvariantDoclet implements Doclet {
    * @return vector of FieldDoc entries for each field that matches. If no fields are found, a zero
    *     length vector is returned (not null).
    */
-  public @Shrinkable List<Element> find_fields(TypeElement cd, String prefix) {
+  public @Shrinkable @IteratorPolyMod List<Element> find_fields(TypeElement cd, String prefix) {
 
     List<Element> list = new ArrayList<>();
 

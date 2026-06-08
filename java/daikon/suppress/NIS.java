@@ -138,7 +138,7 @@ public class NIS {
    * Map from invariant class to a list of all of the suppression sets that contain a suppressor of
    * that class.
    */
-  public static @MonotonicNonNull @Shrinkable @Growable Map<Class<? extends Invariant>, @Growable List<NISuppressionSet>>
+  public static @MonotonicNonNull @Shrinkable @Growable Map<Class<? extends Invariant>, @Growable @IteratorPolyMod List<NISuppressionSet>>
       suppressor_map;
 
   /**

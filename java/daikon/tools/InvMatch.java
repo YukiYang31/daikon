@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -179,7 +180,7 @@ public class InvMatch {
    * @param index the current index in xlate_list
    */
   public static void consider_xlate(
-      @Growable List<List<InvTranslate>> valid_translations,
+      @Growable @IteratorPolyMod List<List<InvTranslate>> valid_translations,
       List<InvTranslate> current_translation,
       List<List<InvTranslate>> xlate_list,
       int index) {

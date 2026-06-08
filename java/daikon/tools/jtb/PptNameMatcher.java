@@ -10,6 +10,7 @@ import jtb.visitor.*;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.signature.qual.Identifier;
 
 /**
@@ -70,7 +71,7 @@ public class PptNameMatcher {
         NodeSequence seq = (NodeSequence) intermediateSequence.elementAt(0);
         NodeSequence seqOrig = (NodeSequence) intermediateSequenceOrig.elementAt(0);
 
-        @Replaceable List<Node> singleElementList = seq.nodes;
+        @Replaceable @IteratorPolyMod List<Node> singleElementList = seq.nodes;
         List<Node> singleElementListOrig = seqOrig.nodes;
         // Replace the ClassOrInterfaceType with its ungenerified version.
 

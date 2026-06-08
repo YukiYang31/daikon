@@ -13,6 +13,7 @@ import java.util.List;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.dataflow.qual.Pure;
@@ -49,7 +50,7 @@ public final @Interned class ProglangType implements Serializable {
   static final long serialVersionUID = 20020122L;
 
   /** Maps from a base type name to its ProglangTypes and arrays with that base. */
-  private static @Growable HashMap<@Interned String, @Growable List<ProglangType>> all_known_types = new HashMap<>();
+  private static @Growable HashMap<@Interned String, @Growable @IteratorPolyMod List<ProglangType>> all_known_types = new HashMap<>();
 
   /**
    * The set of (interned) names of classes that implement java.util.List. For a Java class, this is
@@ -228,7 +229,7 @@ public final @Interned class ProglangType implements Serializable {
     @SuppressWarnings("interning") // test above did not find one, so the new one is interned
     @Interned ProglangType result = new ProglangType(t_base, t_dims);
 
-    @Growable List<ProglangType> v =
+    @Growable @IteratorPolyMod List<ProglangType> v =
         all_known_types.computeIfAbsent(t_base, __ -> new ArrayList<ProglangType>());
 
     v.add(result);

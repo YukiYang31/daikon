@@ -52,7 +52,7 @@ public class NISuppressionSet implements Iterable<NISuppression> {
    * the same suppressor class appears more than once, the suppression is only added once.
    */
   public void add_to_suppressor_map(
-      @Growable Map<Class<? extends Invariant>, @Growable List<NISuppressionSet>> suppressor_map) {
+      @Growable Map<Class<? extends Invariant>, @Growable @IteratorPolyMod List<NISuppressionSet>> suppressor_map) {
 
     Set<Class<? extends Invariant>> all_suppressors =
         new LinkedHashSet<Class<? extends Invariant>>();

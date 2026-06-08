@@ -32,6 +32,7 @@ import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.SeqGrowable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -68,7 +69,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
   public static final String JML_START_COMMENT = "/*@" + lineSep;
   public static final String JML_END_COMMENT = "@*/" + lineSep;
 
-  public @Replaceable @Growable  List<String> javaFileLines;
+  public @Replaceable @Growable @IteratorPolyMod List<String> javaFileLines;
 
   public PptMap ppts;
 
@@ -95,7 +96,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
    */
   public int maxInvariantsPP;
 
-  public @Growable List<NodeToken> addedComments = new ArrayList<>();
+  public @Growable @IteratorPolyMod List<NodeToken> addedComments = new ArrayList<>();
 
   private @SeqGrowable @Shrinkable Deque<ClassFieldInfo> cfis = new ArrayDeque<ClassFieldInfo>();
 
