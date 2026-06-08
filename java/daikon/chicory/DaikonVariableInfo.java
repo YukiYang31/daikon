@@ -24,6 +24,7 @@ import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -1378,7 +1379,7 @@ public abstract class DaikonVariableInfo
    * Returns the variable flags for this variable. Subclasses should call super(), then add in any
    * flags that they add.
    */
-  public @Growable EnumSet<VarFlags> get_var_flags() {
+  public @Growable @IteratorPolyMod EnumSet<VarFlags> get_var_flags() {
     return empty_var_flags.clone();
   }
 

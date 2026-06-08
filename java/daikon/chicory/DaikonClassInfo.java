@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 /**
  * The DaikonClassInfo class is a subtype of DaikonVariableInfo used for variables which represent
@@ -88,8 +89,8 @@ public class DaikonClassInfo extends DaikonVariableInfo {
   }
 
   @Override
-  public @Growable EnumSet<VarFlags> get_var_flags() {
-    @Growable EnumSet<VarFlags> flags = super.get_var_flags();
+  public @Growable @IteratorPolyMod EnumSet<VarFlags> get_var_flags() {
+    @Growable @IteratorPolyMod EnumSet<VarFlags> flags = super.get_var_flags();
     flags.add(VarFlags.SYNTHETIC);
     flags.add(VarFlags.CLASSNAME);
     flags.add(VarFlags.NON_NULL);

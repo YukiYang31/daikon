@@ -23,6 +23,7 @@ import jtb.visitor.DepthFirstVisitor;
 import jtb.visitor.TreeDumper;
 import jtb.visitor.TreeFormatter;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.signature.qual.Identifier;
@@ -58,8 +59,8 @@ public class InstrumentVisitor extends DepthFirstVisitor {
 
   // The methods and constructors that were visited (in other words,
   // those explicitly declared in the source).
-  public @Modifiable List<Method> visitedMethods = new ArrayList<>();
-  public @Modifiable List<Constructor<?>> visitedConstructors = new ArrayList<>();
+  public @Modifiable @IteratorPolyMod List<Method> visitedMethods = new ArrayList<>();
+  public @Modifiable @IteratorPolyMod List<Constructor<?>> visitedConstructors = new ArrayList<>();
 
   // [[ TODO: I'm using xmlString() because it will definitely give
   // different values for different Properties. But if Properties

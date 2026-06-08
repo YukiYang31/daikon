@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import jtb.syntaxtree.*;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /** Represents a set of classes created by the instrumenter to check invariants. */
 public class CheckerClasses {
 
-  protected @Modifiable List<CheckerClass> classes = new ArrayList<>();
+  protected @Modifiable @IteratorPolyMod List<CheckerClass> classes = new ArrayList<>();
 
   public void addCheckerClass(ClassOrInterfaceBody clazz) {
     classes.add(new CheckerClass(clazz));

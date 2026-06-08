@@ -14,6 +14,7 @@ import java.util.StringJoiner;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -46,7 +47,7 @@ public final class CompleteOneOfScalar extends SingleScalar {
   // When the set of values seen is large, this representation is inefficient.
   @Unused(when = Prototype.class)
   @SuppressWarnings("serial")
-  public @Growable List<Info> vals;
+  public @Growable @IteratorPolyMod List<Info> vals;
 
   /** Boolean. True iff CompleteOneOfScalar invariants should be considered. */
   public static boolean dkconfig_enabled = false;

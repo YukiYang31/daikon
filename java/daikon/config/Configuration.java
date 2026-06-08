@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.plumelib.reflection.ReflectionPlume;
@@ -28,7 +29,7 @@ public final class Configuration implements Serializable {
 
   /** The statements that set the configuration. */
   @SuppressWarnings("serial")
-  private @Growable List<String> statements = new ArrayList<>();
+  private @Growable @IteratorPolyMod List<String> statements = new ArrayList<>();
 
   // ============================== STATIC COMPONENT ==============================
 

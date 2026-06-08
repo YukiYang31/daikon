@@ -69,7 +69,7 @@ import org.checkerframework.dataflow.qual.Pure;
 public final class DCRuntime implements ComparabilityProvider {
 
   /** List of all instrumented methods. */
-  public static final @Growable List<MethodInfo> methods = new ArrayList<>();
+  public static final @Growable @IteratorPolyMod List<MethodInfo> methods = new ArrayList<>();
 
   /**
    * Keep track of whether or not we are already processing an enter/exit so we can avoid recursion.
@@ -177,7 +177,7 @@ public final class DCRuntime implements ComparabilityProvider {
       new WeakIdentityHashMap<Object, Object[]>();
 
   /** List of all classes encountered. These are the classes that will have comparability output. */
-  private static @Growable List<ClassInfo> all_classes = new ArrayList<>();
+  private static @Growable @IteratorPolyMod List<ClassInfo> all_classes = new ArrayList<>();
 
   /** Set of classes whose static initializer has run. */
   private static @Growable Set<String> initialized_eclassses = new HashSet<>();

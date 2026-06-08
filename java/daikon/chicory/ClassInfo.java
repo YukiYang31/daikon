@@ -63,7 +63,7 @@ public class ClassInfo {
   }
 
   /** Set the list of methods. */
-  public void set_method_infos(@Growable List<MethodInfo> method_infos) {
+  public void set_method_infos(@Growable @IteratorPolyMod List<MethodInfo> method_infos) {
     this.method_infos = method_infos;
   }
 

@@ -797,7 +797,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
     }
 
     @Override
-    public <T> @Shrinkable T accept(Visitor<T> v) {
+    public <T> @Shrinkable @IteratorPolyMod T accept(Visitor<T> v) {
       return v.visitSimple(this);
     }
   }

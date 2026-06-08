@@ -16,6 +16,7 @@ import junit.framework.*;
 import org.junit.Test;
 
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 
 /**
@@ -26,7 +27,7 @@ import org.checkerframework.checker.modifiability.qual.Growable;
 public final class TestAst {
 
   public static class MethodDeclarationHarvester extends DepthFirstVisitor {
-    @Growable List<MethodDeclaration> decls = new ArrayList<>();
+    @Growable @IteratorPolyMod List<MethodDeclaration> decls = new ArrayList<>();
 
     @Override
     public void visit(MethodDeclaration m) {
@@ -42,7 +43,7 @@ public final class TestAst {
   }
 
   public static class ClassOrInterfaceDeclarationHarvester extends DepthFirstVisitor {
-    @Growable List<ClassOrInterfaceDeclaration> decls = new ArrayList<>();
+    @Growable @IteratorPolyMod List<ClassOrInterfaceDeclaration> decls = new ArrayList<>();
 
     @Override
     public void visit(ClassOrInterfaceDeclaration m) {

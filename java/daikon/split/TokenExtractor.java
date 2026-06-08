@@ -8,6 +8,7 @@ import jtb.syntaxtree.NodeToken;
 import jtb.visitor.DepthFirstVisitor;
 
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 
 /**
@@ -18,7 +19,7 @@ import org.checkerframework.checker.modifiability.qual.Growable;
 class TokenExtractor extends DepthFirstVisitor {
 
   /** The tokens of expression. */
-  private @Growable List<NodeToken> tokens = new ArrayList<>();
+  private @Growable @IteratorPolyMod List<NodeToken> tokens = new ArrayList<>();
 
   /** blocks public constructor. */
   private TokenExtractor() {

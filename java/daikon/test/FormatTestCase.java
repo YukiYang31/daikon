@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -690,7 +691,7 @@ class FormatTestCase {
   private static void getSamples(
       ProglangType[] types,
       LineNumberReader commands,
-      @Growable List<Object[]> samples,
+      @Growable @IteratorPolyMod List<Object[]> samples,
       boolean generateGoals,
       String firstLine) {
     String currentLine =

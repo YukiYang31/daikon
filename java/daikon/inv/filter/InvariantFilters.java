@@ -56,7 +56,7 @@ public class InvariantFilters {
   // n) to O(n), but that functionality isn't used a whole lot and
   // there are only ~10 filters anyway.
 
-  @Growable List<InvariantFilter> propertyFilters = new ArrayList<>();
+  @Growable @IteratorPolyMod List<InvariantFilter> propertyFilters = new ArrayList<>();
   @Growable @Shrinkable @IteratorPolyMod List<VariableFilter> variableFilters = new ArrayList<>();
 
   public InvariantFilters() {
