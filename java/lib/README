@@ -22,7 +22,7 @@ checker-framework/ and checker-qual.jar : https://github.com/typetools/checker-f
   rm -rf checker-framework-$VER.zip checker-framework-$VER
 To install a snapshot of the current Checker Framework, run from this directory:
   (cd $CHECKERFRAMEWORK && ./gradlew assembleForJavac) && \
-  cp -pf $CHECKERFRAMEWORK/checker/dist/checker.jar $CHECKERFRAMEWORK/checker/dist/javac.jar checker-framework/ && \
+  cp -pf $CHECKERFRAMEWORK/checker/dist/checker.jar checker-framework/ && \
   cp -pf $CHECKERFRAMEWORK/checker/dist/checker-qual.jar .
 When compiling Daikon, if environment variable CHECKERFRAMEWORK is set,
 compilation uses it instead of these .jar files in this directory.
