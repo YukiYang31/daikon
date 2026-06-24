@@ -183,6 +183,10 @@ JAVA_FILES := $(shell find . -follow \( -name '*daikon-java*' -o -name '*daikon-
 ifeq (${JAVA24}, 0)
   JAVA_FILES :=  $(filter-out %24.java, ${JAVA_FILES})
 endif
+# Java 24-specific sources use APIs and annotations that the Modifiability
+# Checker does not support yet.  Keep them in the compile lists on Java 24+,
+# but never pass them to the Modifiability Checker.
+MODIFIABILITY_JAVA_FILES := $(filter-out %24.java, ${JAVA_FILES})
 JAVA_FILES_FOR_DEPENDENCES := $(filter-out daikon/test/split/SplitterFactoryTestUpdater.java, $(filter-out daikon/test/split/SplitterFactoryTest.java, ${JAVA_FILES}))
 JAVA_FILES_FOR_STYLE := $(shell find . -follow \( -name '*daikon-java*' -o -name '*daikon-instrumented*' -o -name 'PrototypeChecker.java' -o -name 'VIndexChecker.java' -o -name 'VIndexAnnotatedTypeFactory.java' -o -name 'ReturnBytecodes.java' -o -name 'SplitterFactoryTest.java' -o -name 'WeakHasherMap.java' -o -name 'WeakIdentityHashMap.java' -o -name '\.\#*' -o -path './jtb' -o -path './daikon/dcomp-transfer' \) -prune -o -name '*.java' -print | grep -v '/jakarta-oro.*/src/java/examples/' | ${SORT_DIRECTORY_ORDER})
 ifeq (${JAVA24}, 0)
@@ -1074,7 +1078,7 @@ typecheck-modifiability: ${ALL_GENERATED_FILES} compile
 	${MAKE} typecheck-modifiability-nocompile
 typecheck-modifiability-nocompile:
 	@echo ${JAVAC_COMMAND} ${JAVAC_MODIFIABILITY_ARGS} ${CHECKER_ARGS} ...
-	@${JAVAC_COMMAND} ${JAVAC_MODIFIABILITY_ARGS} ${CHECKER_ARGS} ${JAVA_FILES}
+	@${JAVAC_COMMAND} ${JAVAC_MODIFIABILITY_ARGS} ${CHECKER_ARGS} ${MODIFIABILITY_JAVA_FILES}
 
 typecheck-signature: ${ALL_GENERATED_FILES} compile
 	${MAKE} typecheck-signature-nocompile
