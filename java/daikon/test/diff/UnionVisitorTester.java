@@ -31,7 +31,7 @@ public class UnionVisitorTester {
   // map1 union map2: A->{W, X1, X2, Y, Z}, B->{Y}, C->{Z},
   //                  D->{M_001, N_0001, O_1}
   @Test
-  @SuppressWarnings("modifiability:argument")
+  // @SuppressWarnings("modifiability:argument") // test code
   public void testXor() {
     VarInfo[] vars = {
       DiffTester.newIntVarInfo("w"),

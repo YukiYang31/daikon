@@ -49,12 +49,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
-import org.checkerframework.checker.modifiability.qual.SeqGrowable;
 import org.checkerframework.checker.modifiability.qual.Growable;
-import org.checkerframework.checker.modifiability.qual.Replaceable;
-import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.SeqGrowable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -94,7 +94,8 @@ public final class DCRuntime implements ComparabilityProvider {
   public static @Nullable Throwable exit_exception = null;
 
   /** Storage for each static tag. */
-  public static @Growable @Replaceable @IteratorPolyMod List<@Nullable Object> static_tags = new ArrayList<>();
+  public static @Growable @Replaceable @IteratorPolyMod List<@Nullable Object> static_tags =
+      new ArrayList<>();
 
   /** Either "java.lang.DCompInstrumented" or "daikon.dcomp.DCompInstrumented". */
   static @BinaryName String instrumentation_interface;
@@ -2106,7 +2107,8 @@ public final class DCRuntime implements ComparabilityProvider {
    */
   public static void printComparableTraced(PrintWriter pw, MethodInfo mi) {
     List<DVSet> l = get_comparable(mi.traversalEnter);
-    Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> t = get_comparable_traced(mi.traversalEnter);
+    Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> t =
+        get_comparable_traced(mi.traversalEnter);
     pw.printf("DynComp Traced Tree for %s enter%n", clean_decl_name(mi.toString()));
     if (t == null) {
       pw.printf("  not called%n");
@@ -2149,7 +2151,10 @@ public final class DCRuntime implements ComparabilityProvider {
    * @param depth distance from node to root of tree
    */
   static void printTree(
-      PrintWriter pw, Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> tree, DaikonVariableInfo node, int depth) {
+      PrintWriter pw,
+      Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> tree,
+      DaikonVariableInfo node,
+      int depth) {
 
     /* This method, for some reason, triggers a segfault due to the way
      * DVSets are handled conceptually. A trace-tree of one element creates
@@ -2246,7 +2251,6 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /** Set of Daikon variables. Implements comparable on first DaikonVariable in each set. */
-  @SuppressWarnings("modifiability:annotation.unverified") // cannot verify that DVSet is @Modifiable @IteratorPolyMod. 
   private static class DVSet extends ArrayList<DaikonVariableInfo> implements Comparable<DVSet> {
     static final long serialVersionUID = 20050923L;
 
@@ -2363,7 +2367,8 @@ public final class DCRuntime implements ComparabilityProvider {
    * each parent node as the key to a set contains all its children. The parameter RootInfo node is
    * included as a key to all its children.
    */
-  static @PolyNull Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> get_comparable_traced(@PolyNull RootInfo root) {
+  static @PolyNull Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet>
+      get_comparable_traced(@PolyNull RootInfo root) {
     if (root == null) {
       return null;
     }
@@ -2388,7 +2393,9 @@ public final class DCRuntime implements ComparabilityProvider {
     return sets;
   }
 
-  static void add_variable_traced(@Growable @Replaceable Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> sets, DaikonVariableInfo dv) {
+  static void add_variable_traced(
+          @Growable @Replaceable Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> sets,
+      DaikonVariableInfo dv) {
     try {
       DaikonVariableInfo parent = (DaikonVariableInfo) TagEntry.tracer_find(dv);
       @Growable DVSet set = sets.computeIfAbsent(parent, __ -> new DVSet());
@@ -2540,7 +2547,9 @@ public final class DCRuntime implements ComparabilityProvider {
    * Adds this daikon variable and all of its children into their appropriate sets (those of their
    * leader) in sets.
    */
-  static void add_variable(@Growable Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> sets, DaikonVariableInfo dv) {
+  static void add_variable(
+      @Growable Map<DaikonVariableInfo, @Growable @Replaceable @IteratorPolyMod DVSet> sets,
+      DaikonVariableInfo dv) {
 
     // Add this variable into the set of its leader
     if (dv.declShouldPrint()) {

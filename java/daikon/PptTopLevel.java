@@ -102,11 +102,12 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
-import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Unshrinkable;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
@@ -289,6 +290,8 @@ public class PptTopLevel extends Ppt {
 
     int splitter_index = 0;
     int ppts_index = 0;
+
+    @Unshrinkable CondIterator() {}
 
     @Override
     @SuppressWarnings(
@@ -2875,8 +2878,7 @@ public class PptTopLevel extends Ppt {
     if (debugEqualTo.isLoggable(Level.FINE)) {
       debugEqualTo.fine("  Doing cloneAllPivots: ");
     }
-    for (
-      @Shrinkable Iterator<PptSlice> iSlices = slices.iterator(); iSlices.hasNext(); ) {
+    for (@Shrinkable Iterator<PptSlice> iSlices = slices.iterator(); iSlices.hasNext(); ) {
       PptSlice slice = iSlices.next();
       boolean needPivoting = false;
       for (int i = 0; i < slice.arity(); i++) {
@@ -3347,7 +3349,7 @@ public class PptTopLevel extends Ppt {
     Iterator<PptSlice> vitor;
     @Nullable Iterator<Invariant> implication_iterator;
 
-    public ViewsIteratorIterator(PptTopLevel ppt) {
+    public @Unshrinkable ViewsIteratorIterator(PptTopLevel ppt) {
       vitor = ppt.views_iterator();
       implication_iterator = ppt.joiner_view.invs.iterator();
     }
@@ -3743,7 +3745,7 @@ public class PptTopLevel extends Ppt {
 
     // Get all of the binary relationships from the first child's
     // equality sets.
-    // at run time, equalityPairs is a LinkedHashMap. 
+    // at run time, equalityPairs is a LinkedHashMap.
     @Shrinkable Map<VarInfo.Pair, VarInfo.Pair> equalityPairs = null; // a set of pairs, represented as a map
     int first_child = 0; // the index of the first child with num_samples() > 0
     for (first_child = 0; first_child < children.size(); first_child++) {
@@ -3779,7 +3781,7 @@ public class PptTopLevel extends Ppt {
       Map<VarInfo.Pair, VarInfo.Pair> eq_new = rel.get_child_equalities_as_parent();
       // Cannot use foreach loop, due to desire to remove from equalityPairs.
       for (
-        @Shrinkable Iterator<VarInfo.@KeyFor("equalityPairs") Pair> j = equalityPairs.keySet().iterator();
+          @Shrinkable Iterator<VarInfo.@KeyFor("equalityPairs") Pair> j = equalityPairs.keySet().iterator();
           j.hasNext(); ) {
         VarInfo.Pair curpair = j.next();
         VarInfo.Pair newpair = eq_new.get(curpair);

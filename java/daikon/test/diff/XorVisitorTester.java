@@ -28,7 +28,7 @@ public class XorVisitorTester {
   // map2: A->{W, X2, Z}, C->{Z}, D->{M_unjustified, N}
   // map1 xor map2: A->{X1, X2, Y, Z}, B->{Y}, C->{Z}, D->{M, N}
   @Test
-  @SuppressWarnings("modifiability:argument")
+  // @SuppressWarnings("modifiability:argument") // test code
   public void testXor() {
     VarInfo[] vars = {
       DiffTester.newIntVarInfo("w"),
