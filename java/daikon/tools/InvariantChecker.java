@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.logging.Logger;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
@@ -266,14 +267,13 @@ public class InvariantChecker {
       dtrace_files.add(dtrace.toString());
     }
 
-    String commaLine = "";
+    StringJoiner commaLine = new StringJoiner(",");
     for (File inFile : invariants) {
-      String name = inFile.getName().replace(".inv", "").replace(".gz", "");
-      commaLine += "," + name;
+      commaLine.add(inFile.getName().replace(".inv", "").replace(".gz", ""));
     }
-    outputComma.add(commaLine);
+    outputComma.add(commaLine.toString());
 
-    commaLine = "";
+    commaLine = new StringJoiner(",");
     for (File inFile : invariants) {
       File inv_file = inFile;
       failedInvariants.clear();
@@ -291,9 +291,9 @@ public class InvariantChecker {
       int failedCount = failedInvariants.size();
       int testedCount = testedInvariants.size();
       String percent = toPercentage(failedCount, testedCount);
-      commaLine += "," + percent;
+      commaLine.add(percent);
     }
-    outputComma.add(commaLine);
+    outputComma.add(commaLine.toString());
 
     System.out.println();
     for (String output : outputComma) {

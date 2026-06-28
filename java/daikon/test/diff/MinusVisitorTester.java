@@ -29,7 +29,7 @@ public class MinusVisitorTester {
   // map2: A->{W, X2, Z}, C->{Z}, D->{M_unjustified, N}
   // map1-map2: A->{X1, Y}, B->{Y}, D->{M}
   @Test
-  // @SuppressWarnings("modifiability:argument") // test code
+  @SuppressWarnings("modifiability:argument") // test code
   public void testMinus() {
     VarInfo[] vars = {
       DiffTester.newIntVarInfo("w"),

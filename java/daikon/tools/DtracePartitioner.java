@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Unshrinkable;
 import org.checkerframework.checker.mustcall.qual.CreatesMustCallFor;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.plumelib.util.FilesPlume;
@@ -38,7 +39,7 @@ public class DtracePartitioner implements Closeable, Partitioner<String, String>
   /**
    * @param filename the Daikon trace file to be partitioned
    */
-  public DtracePartitioner(String filename) {
+  public @Unshrinkable DtracePartitioner(String filename) {
     try {
       this.filename = filename;
       // System.out.printf("trying with file %s%n", filename);
