@@ -23,6 +23,8 @@ JAVAC ?= javac
 JAVADOC ?= javadoc
 JAR ?= jar
 
+BuildJDKTool = BuildJDK
+
 ifeq ($(shell uname), Darwin)
   JAVA_HOME ?= $(shell /usr/libexec/java_home)
 else
@@ -64,6 +66,7 @@ endif
 # JDK 24 isn't an LTS version, but we need it to know whether to compile Instrument24.java.
 ifeq ($(shell test ${JAVA_RELEASE_NUMBER} -ge 24; echo $$?),0)
   JAVA24 := 1
+  BuildJDKTool = BuildJDK24
 endif
 ifeq ($(shell test ${JAVA_RELEASE_NUMBER} -ge 25; echo $$?),0)
   JAVA25 := 1
@@ -135,17 +138,7 @@ CHECKERFRAMEWORK_JAVAC ?= ${CHECKERFRAMEWORK_JAR_DIR}/javac.jar
 ## Classpath
 
 ## Daikon compiled files
-ifeq "$(wildcard ${DAIKONDIR}/java/lib/daikon-plumelib.jar)" "${DAIKONDIR}/java/lib/daikon-plumelib.jar"
-  # Add jar files that only exist for the development version, not the
-  # distributed version, of Daikon.  The if clause avoids a (harmless but
-  # annoying) javac error message that they don't exist.
-  # This classpath is a problem, because CHECKERFRAMEWORK_JAR may have
-  # a different version of a plume-lib library than java/lib/* does.
-  # One (unclean) approach is to update them simultaneously.  Does that even work?
-  DAIKON_CLASSPATH := ${CHECKERFRAMEWORK_JAR}:${DAIKONDIR}/java/lib/*:${DAIKONDIR}/java
-else
-  DAIKON_CLASSPATH := ${DAIKONDIR}/java
-endif
+DAIKON_CLASSPATH := ${DAIKONDIR}/java/lib/*:${DAIKONDIR}/java
 
 ## Add tools.jar and rt.jar, if they exist
 ifneq "$(wildcard ${JAVA_HOME}/lib/tools.jar)" ""
@@ -484,7 +477,7 @@ export DAIKONDIR
 ### Test targets
 ###
 
-.PHONY: default all
+.PHONY: all test clean default
 default: daikon
 all: daikon
 
@@ -557,13 +550,16 @@ endif
 # compiled, but changing JDKs doesn't cause this Makefile to otherwise
 # trigger re-execution.
 .PRECIOUS: ChicoryPremain.jar
-ChicoryPremain.jar : daikon/Chicory.class daikon/chicory/manifest.txt
+ChicoryPremain.jar : daikon/Daikon.class daikon/chicory/manifest.txt
 	${JAR} cfm ChicoryPremain.jar daikon/chicory/manifest.txt \
 	  daikon/chicory/ChicoryPremain.class
 
-.PHONY: chicory chicory-test
-chicory chicory-test : daikon/chicory/inv_out.diff
-daikon/chicory/inv_out.diff : ChicoryPremain.jar daikon/Daikon.class
+.PHONY: chicory
+chicory: ChicoryPremain.jar
+
+.PHONY: chicory-test
+chicory-test: daikon/chicory/inv_out.diff
+daikon/chicory/inv_out.diff: ChicoryPremain.jar
 	cd daikon/chicory && rm -f ChicoryTest.log ChicoryTest.dtrace.gz ChicoryTest.inv.gz ChicoryTest.inv.out
 	cd daikon/chicory && ${JAVA_COMMAND} daikon.Chicory --verbose --debug daikon.chicory.ChicoryTest > ChicoryTest.log || (cat ChicoryTest.log; false)
 	cd daikon/chicory && ${JAVA_COMMAND} daikon.Daikon --no_text_output --no_show_progress ChicoryTest.dtrace.gz
@@ -630,7 +626,7 @@ dyncomp-jdk dcomp-jdk   : dcomp_rt.jar
 ${DCOMP_RT} dcomp_rt.jar : dcomp_premain.jar
 	/bin/rm -rf ${DCOMP_RT}
 	${INSTALL} -d ${DCOMP_RT}
-	${JAVA_COMMAND} -Xmx7g daikon.dcomp.BuildJDK ${DCOMP_RT}
+	${JAVA_COMMAND} -Xmx7g daikon.dcomp.${BuildJDKTool} ${DCOMP_RT}
 # "then" clause is Java 8, "else" clause is Java 9+.
 # For Java 9+, there appears to be a bug in the Java reflection invoke code that it
 # does not check that the arg list matches.  Hence, it tries to invoke
@@ -873,9 +869,10 @@ audit:
 
 .PHONY: reformat check-format
 
+# google-java-format requires JDK 21 or later.
 format: reformat
 reformat:
-ifeq (${JAVA17}, 0)
+ifeq (${JAVA21}, 0)
 	echo "Formatting is not run under Java ${JAVA_VERSION_STRING}"
 else
 	${MAKE} -C .. update-run-google-java-format
@@ -884,7 +881,7 @@ else
 endif
 
 check-format:
-ifeq (${JAVA17}, 0)
+ifeq (${JAVA21}, 0)
 	echo "Formatting is not run under Java ${JAVA_VERSION_STRING}"
 else
 	${MAKE} -C .. update-run-google-java-format
@@ -1206,6 +1203,11 @@ check-serialize:
 junit: daikon/Daikon.class
 	@echo "Running unit (not system) tests..."
 	LC_ALL=en_US.UTF-8 ${JAVA_COMMAND} org.junit.runner.JUnitCore daikon.test.AllTestsSuite
+ifeq (${JAVA24}, 1)
+	@# These tests are not in AllTestsSuite, because AllTestsSuite must compile
+	@# under versions of Java that do not have java.lang.classfile.
+	LC_ALL=en_US.UTF-8 ${JAVA_COMMAND} org.junit.runner.JUnitCore daikon.test.AllTestsSuite24
+endif
 
 ## TODO:  This target is never used!!!
 junit-all: junit
@@ -2088,6 +2090,21 @@ daikon/derive/unary/SequenceInitialFactory.java: daikon/derive/unary/SequenceIni
 
 daikon/derive/unary/SequenceInitialFactoryFloat.java: daikon/derive/unary/SequenceInitialFactory.java.jpp
 	$(JAVA_CPP:DEFINEDVAR=TYPEDOUBLE)
+
+
+###########################################################################
+### Diffs
+###
+
+# Don't diff StackMapUtils24.java, ClassGen24.java, MethodGen24.java, or
+# OperandStack24.java, because there are too many differences between the
+# upstream version (in BCEL or in bcel-util) and the version in Daikon.
+.PHONY: diff24
+diff24:
+	-diff -u daikon/dcomp/Instrument.java daikon/dcomp/Instrument24.java
+	-diff -u daikon/dcomp/DCInstrument.java daikon/dcomp/DCInstrument24.java
+	-diff -u daikon/dcomp/BuildJDK.java daikon/dcomp/BuildJDK24.java
+	-diff -u daikon/chicory/Instrument.java daikon/chicory/Instrument24.java
 
 
 ###########################################################################

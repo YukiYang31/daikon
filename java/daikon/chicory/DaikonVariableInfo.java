@@ -220,9 +220,9 @@ public abstract class DaikonVariableInfo
   }
 
   /**
-   * Returns a string representation of this node and its descandants.
+   * Returns a string representation of this node and its descendants.
    *
-   * @return a string representation of this node and its descandants
+   * @return a string representation of this node and its descendants
    */
   public String treeString() {
     return getStringBuilder("--").toString();
@@ -472,7 +472,7 @@ public abstract class DaikonVariableInfo
 
     DaikonVariableInfo thisInfo; // DaikonVariableInfo corresponding to the "this" object
     if (!dontPrintInstanceVars && topLevelCall) {
-      // "this" variable; must must be at the first level of recursion (not lower) to print it
+      // "this" variable; must be at the first level of recursion (not lower) to print it
       thisInfo = new ThisObjInfo(type);
       addChild(thisInfo);
 
@@ -875,7 +875,7 @@ public abstract class DaikonVariableInfo
    * classes).
    */
   public static @BinaryName String stdClassName(Class<?> type) {
-    return Runtime.classGetNameToBinaryName(type.getName());
+    return Signatures.classGetNameToBinaryName(type.getName());
   }
 
   /**

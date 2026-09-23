@@ -27,6 +27,8 @@ java/dcomp_premain.jar
 java/*.class
 java/**/*.class
 java/lib/tmp
+# Directory generated when building daikon-plumelib.jar
+java/lib/.gradle
 # Temporary file used during compilation
 java/java_files.txt
 java/javadoc-files.txt
@@ -345,6 +347,8 @@ make-typecheck-nullness-output.txt*
 tests/chicory-tests/option-tests/DataStructures
 tests/chicory-tests/option-tests/StackArTester.dtrace.gz
 tests/chicory-tests/option-tests/StackArTesterException.dtrace.gz
+tests/daikon-tests/ncalc/libcalculator.so
+tests/daikon-tests/ncalc/ncalc.h
 tests/dyncomp-tests/Apples/Apples
 tests/dyncomp-tests/DerivedComparability/DerivedComparability
 tests/dyncomp-tests/FloatTest/FloatTest

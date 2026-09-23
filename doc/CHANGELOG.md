@@ -21,6 +21,22 @@ Further documentation can be found in:
      `make -C $DAIKONDIR/java javadoc`
    It is also available at <http://plse.cs.washington.edu/daikon/download/api/> .
 
+## Version 5.9.0 (September 1, 2026)
+
+* All Daikon tools now work with Java 8-26.
+* Compiling Daikon with Java 8 is no longer supported.
+
+DynComp:
+
+* Fixed instrumentation problem in some methods with multiple constructors.
+
+Fjalar/Kvasir:
+
+* Fixed problem with multi-dimensional array support.
+* Improved support for clang compiler.
+* Added support for DWARF-4 binary format (in addition to 2 & 3).
+* Initial support for Rust programs.
+
 ## Version 5.8.24 (May 6, 2026)
 
 All Daikon tools now work with Java 8-25.
@@ -1489,7 +1505,7 @@ User-visible changes
   Bug-fixes
 
 * Fixed a problem with clone where the instrumentation incorrectly added a
-    call to a instrumented version of clone where it did not exist.
+    call to an instrumented version of clone where it did not exist.
 
 * Fixed some problems with the instrumentation of equals.
 
@@ -2540,7 +2556,7 @@ a Bugzilla database.
 
 ### General
 
-  Daikon problems are now tracked in the Bugzilla database at at:
+  Daikon problems are now tracked in the Bugzilla database at:
   <http://pag.csail.mit.edu/bugzilla/>.  There are separate products for
   Daikon and Kvasir.  Problems with Chicory and other front ends
   should be submitted against the Daikon product.

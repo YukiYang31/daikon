@@ -210,7 +210,7 @@ public class InstrumentVisitor extends DepthFirstVisitor {
    * Adds code to check class invariants and preconditions on entry (but not object invariants,
    * because there's no object yet!).
    *
-   * <p>Adds code to check postcontiions, class and object invariants on exit.
+   * <p>Adds code to check postconditions, class and object invariants on exit.
    */
   // ConstructorDeclaration:
   // f0 -> [ TypeParameters() ]
@@ -662,9 +662,9 @@ public class InstrumentVisitor extends DepthFirstVisitor {
   }
 
   /**
-   * Returns an AST for initializng the {@code daikonProperties} variable.
+   * Returns an AST for initializing the {@code daikonProperties} variable.
    *
-   * @return an AST for initializng the {@code daikonProperties} variable
+   * @return an AST for initializing the {@code daikonProperties} variable
    */
   private ClassOrInterfaceBodyDeclaration staticPropertyInit() {
     StringJoiner code = new StringJoiner(System.lineSeparator());

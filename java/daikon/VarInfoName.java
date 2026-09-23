@@ -3330,8 +3330,8 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
 
   /**
    * Helper for writing parts of quantification expressions. Formatting methods in invariants call
-   * the formatting methods in this class to get commonly-used parts, like how universal
-   * quanitifiers look in the different formatting schemes.
+   * the formatting methods in this class to get commonly-used parts, like how universal quantifiers
+   * look in the different formatting schemes.
    */
   public static class QuantHelper {
 
@@ -3617,7 +3617,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
 
     // <root*> -> <string string* string>
     /**
-     * Given a list of roots, return a String array where the first element is a ESC-style
+     * Given a list of roots, return a String array where the first element is an ESC-style
      * quantification over newly-introduced bound variables, the last element is a closer, and the
      * other elements are esc-named strings for the provided roots (with sequences subscripted by
      * one of the new bound variables).

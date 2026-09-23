@@ -370,7 +370,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
       @Override
       public void visit(NodeChoice nc) {
         // Since we know we are in a Modifiers() parse tree, the only
-        // thing a NodeChoice can hold is a NodeToken for the modifer.
+        // thing a NodeChoice can hold is a NodeToken for the modifier.
         Annotate.debug.fine("InsertBehavior visitor visiting a NodeChoice");
         String modifier = (nc != null && nc.choice != null ? nc.choice.toString() : "");
         Annotate.debug.fine("A node choice here: " + modifier);
@@ -619,7 +619,7 @@ public class AnnotateVisitor extends DepthFirstVisitor {
     }
 
     if (!(modifiesString.startsWith("modifies") || modifiesString.startsWith("assignable"))) {
-      // Doesn't look ilke a modifies clause.
+      // Doesn't look like a modifies clause.
       return false;
     }
 

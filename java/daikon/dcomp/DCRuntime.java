@@ -48,6 +48,7 @@ import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
@@ -67,6 +68,20 @@ import org.checkerframework.dataflow.qual.Pure;
  */
 @SuppressWarnings({"nullness", "interning"}) // tricky code, skip for now
 public final class DCRuntime implements ComparabilityProvider {
+
+  /**
+   * The largest tag frame that {@link #create_tag_frame} accepts, and therefore the largest number
+   * of local variable slots an instrumented method may use. The frame size is passed to {@code
+   * create_tag_frame} as a character obtained by adding the size to '0' (decimal 48), and an
+   * unsigned byte holds at most 255. This is unrelated to the JVM's 64K limit on a method's
+   * bytecode length. Largest frame size noted so far is 123.
+   *
+   * <p>Both instrumenters, {@link DCInstrument} and {@code DCInstrument24}, enforce this limit; it
+   * is defined here because it is a property of {@code create_tag_frame}'s encoding. {@code
+   * DCInstrument24} is not linked, because it is compiled only under JDK 24 and later while this
+   * class is compiled everywhere.
+   */
+  public static final int MAX_TAG_FRAME_SIZE = 206;
 
   /** List of all instrumented methods. */
   public static final @Growable @IteratorPolyMod List<MethodInfo> methods = new ArrayList<>();
@@ -98,12 +113,12 @@ public final class DCRuntime implements ComparabilityProvider {
       new ArrayList<>();
 
   /** Either "java.lang.DCompInstrumented" or "daikon.dcomp.DCompInstrumented". */
-  static @BinaryName String instrumentation_interface;
+  static @BinaryName @Interned String instrumentation_interface;
 
   /**
    * Object used to mark procedure entries in the tag stack. It is pushed on the stack at entry and
-   * checked on exit to make sure it is in on the top of the stack. That allows us to determine
-   * which method caused a tag stack problem.
+   * checked on exit to make sure it is on the top of the stack. That allows us to determine which
+   * method caused a tag stack problem.
    */
   public static Object method_marker = new Object();
 
@@ -711,10 +726,23 @@ public final class DCRuntime implements ComparabilityProvider {
     for (int ii = 1; ii < params.length(); ii++) {
       int offset = params.charAt(ii) - '0';
       // Character.digit (params.charAt(ii), Character.MAX_RADIX);
-      assert td.tag_stack.peek() != method_marker;
-      tag_frame[offset] = td.tag_stack.pop();
-      if (debug_tag_frame) {
-        System.out.printf("popped %s into tag_frame[%d]%n", tag_frame[offset], offset);
+      if (td.tag_stack.isEmpty() || td.tag_stack.peek() == method_marker) {
+        // The caller left no argument tags on the tag stack.  Either it is an uninstrumented
+        // method body reached through an instrumented calling convention (see
+        // uninstrumented_enter, which pushes the marker that stops this loop) or the call did not
+        // come from Java code at all, as when JUnit invokes a test method reflectively.  Use a
+        // fresh tag, which makes the parameter comparable to nothing else, rather than consuming
+        // a tag that belongs to an outer frame.
+        tag_frame[offset] = new Constant();
+        if (debug_tag_frame) {
+          System.out.printf(
+              "caller left no tag; created %s for tag_frame[%d]%n", tag_frame[offset], offset);
+        }
+      } else {
+        tag_frame[offset] = td.tag_stack.pop();
+        if (debug_tag_frame) {
+          System.out.printf("popped %s into tag_frame[%d]%n", tag_frame[offset], offset);
+        }
       }
     }
 
@@ -847,6 +875,93 @@ public final class DCRuntime implements ComparabilityProvider {
     td.tag_stack.push(ret_tag);
     if (debug_tag_frame) {
       System.out.printf("push return value tag: %s%n", ret_tag);
+      System.out.printf("tag stack size: %d%n", td.tag_stack.size());
+    }
+  }
+
+  /**
+   * Called on entry to an uninstrumented method body that is reached through an instrumented
+   * calling convention. That happens for a method whose instrumented form exceeds the JVM's 64K
+   * code-size limit; see {@code DCInstrument.create_oversized_method}.
+   *
+   * <p>Discards the tags that the caller left for this call, then pushes a method marker. The
+   * marker matters because an uninstrumented body pushes no argument tags for the calls it makes:
+   * without it, a callee that does maintain the tag stack would consume tags belonging to an outer
+   * frame. {@link #create_tag_frame} sees the marker and creates fresh tags instead. {@link
+   * #uninstrumented_exit} and {@link #uninstrumented_exit_primitive} remove the marker. If an
+   * exception propagates out of the body instead, a catch-all handler that DCInstrument added
+   * around the body calls {@code uninstrumented_exit} and rethrows; the enclosing method's {@code
+   * normal_exit} would not do it, because the body belongs to a JUnit test method whose caller is
+   * JUnit's reflective invocation rather than an instrumented frame.
+   *
+   * @param tagCount the number of tags the caller left on the tag stack for this call
+   */
+  public static void uninstrumented_enter(int tagCount) {
+    if (debug) {
+      System.out.printf("%nEnter uninstrumented: %s%n", caller_name());
+    }
+
+    // This may be the first DCRuntime method called on this thread, so the per-thread data map
+    // must be checked, exactly as in create_tag_frame.
+    Thread t = Thread.currentThread();
+    ThreadData td = thread_to_data.computeIfAbsent(t, __ -> new ThreadData());
+
+    while (--tagCount >= 0 && !td.tag_stack.isEmpty() && td.tag_stack.peek() != method_marker) {
+      td.tag_stack.pop();
+    }
+    td.tag_stack.push(method_marker);
+    td.tag_stack_call_depth++;
+    if (debug_tag_frame) {
+      System.out.printf("tag stack call_depth: %d%n", td.tag_stack_call_depth);
+      System.out.printf("tag stack size: %d%n", td.tag_stack.size());
+    }
+  }
+
+  /**
+   * Called on return from an uninstrumented method body whose return type is not primitive; see
+   * {@link #uninstrumented_enter}. Discards everything the body left on the tag stack, including
+   * the marker that {@code uninstrumented_enter} pushed.
+   */
+  public static void uninstrumented_exit() {
+    uninstrumented_exit(false);
+  }
+
+  /**
+   * Called on return from an uninstrumented method body whose return type is primitive; see {@link
+   * #uninstrumented_enter}. Discards everything the body left on the tag stack, including the
+   * marker that {@code uninstrumented_enter} pushed, and then pushes the result tag that this
+   * method's caller expects.
+   */
+  public static void uninstrumented_exit_primitive() {
+    uninstrumented_exit(true);
+  }
+
+  /**
+   * Implements {@link #uninstrumented_exit} and {@link #uninstrumented_exit_primitive}.
+   *
+   * @param primitiveResult true if the method's return type is primitive, in which case a result
+   *     tag is pushed for the caller
+   */
+  private static void uninstrumented_exit(boolean primitiveResult) {
+    if (debug) {
+      System.out.printf("Exit uninstrumented: %s%n", caller_name());
+    }
+
+    ThreadData td = thread_to_data.get(Thread.currentThread());
+    // Discard any tag the body's callees left behind, then the marker itself.  The marker is
+    // missing only if something else has already unwound past it, which normal_exit also tolerates.
+    while (!td.tag_stack.isEmpty() && td.tag_stack.peek() != method_marker) {
+      td.tag_stack.pop();
+    }
+    if (!td.tag_stack.isEmpty()) {
+      td.tag_stack.pop(); // discard marker
+    }
+    td.tag_stack_call_depth--;
+    if (primitiveResult) {
+      push_const();
+    }
+    if (debug_tag_frame) {
+      System.out.printf("tag stack call_depth: %d%n", td.tag_stack_call_depth);
       System.out.printf("tag stack size: %d%n", td.tag_stack.size());
     }
   }
@@ -996,6 +1111,18 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /**
+   * Returns the number of entries on the current thread's tag stack, counting the method markers.
+   * Intended for tests, which use it to verify that instrumented code leaves the tag stack as its
+   * callers expect.
+   *
+   * @return the size of the current thread's tag stack
+   */
+  static int tag_stack_size() {
+    ThreadData td = thread_to_data.get(Thread.currentThread());
+    return td == null ? 0 : td.tag_stack.size();
+  }
+
+  /**
    * Manipulate the tags for an array store instruction. The tag at the top of stack is stored into
    * the tag storage for the array. Mark the array and the index as comparable.
    *
@@ -1068,7 +1195,7 @@ public final class DCRuntime implements ComparabilityProvider {
    * verification in Java 7 we can no longer use the same runtime routine for both data types.
    * Hence, the addition of zastore below for boolean.
    *
-   * <p>Execute an bastore instruction and manipulate the tags accordingly. The tag at the top of
+   * <p>Execute a bastore instruction and manipulate the tags accordingly. The tag at the top of
    * stack is stored into the tag storage for the array.
    */
   public static void bastore(byte[] arr, int index, byte val) {
@@ -1092,7 +1219,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /**
-   * Execute an castore instruction and manipulate the tags accordingly. The tag at the top of stack
+   * Execute a castore instruction and manipulate the tags accordingly. The tag at the top of stack
    * is stored into the tag storage for the array.
    */
   public static void castore(char[] arr, int index, char val) {
@@ -1106,7 +1233,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /**
-   * Execute an dastore instruction and manipulate the tags accordingly. The tag at the top of stack
+   * Execute a dastore instruction and manipulate the tags accordingly. The tag at the top of stack
    * is stored into the tag storage for the array.
    */
   public static void dastore(double[] arr, int index, double val) {
@@ -1120,7 +1247,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /**
-   * Execute an fastore instruction and manipulate the tags accordingly. The tag at the top of stack
+   * Execute a fastore instruction and manipulate the tags accordingly. The tag at the top of stack
    * is stored into the tag storage for the array.
    */
   public static void fastore(float[] arr, int index, float val) {
@@ -1148,7 +1275,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /**
-   * Execute an lastore instruction and manipulate the tags accordingly. The tag at the top of stack
+   * Execute a lastore instruction and manipulate the tags accordingly. The tag at the top of stack
    * is stored into the tag storage for the array.
    */
   public static void lastore(long[] arr, int index, long val) {
@@ -1162,7 +1289,7 @@ public final class DCRuntime implements ComparabilityProvider {
   }
 
   /**
-   * Execute an sastore instruction and manipulate the tags accordingly. The tag at the top of stack
+   * Execute a sastore instruction and manipulate the tags accordingly. The tag at the top of stack
    * is stored into the tag storage for the array.
    */
   public static void sastore(short[] arr, int index, short val) {
@@ -1330,7 +1457,7 @@ public final class DCRuntime implements ComparabilityProvider {
     merge_dv.log("this: %s%n", obj_str(obj));
 
     // For some reason the following line causes DynComp to behave incorrectly.
-    // I have not take the time to investigate.
+    // I have not taken the time to investigate.
     // merge_dv.log("arguments: %s%n", Arrays.toString(args));
 
     // Map from an Object to the Daikon variable that currently holds
@@ -1848,12 +1975,12 @@ public final class DCRuntime implements ComparabilityProvider {
   // static Stopwatch watch = new Stopwatch();
 
   /**
-   * Prints a decl ENTER/EXIT records with comparability. Returns the list of comparabile DVSets for
+   * Prints a decl ENTER/EXIT records with comparability. Returns the list of comparable DVSets for
    * the exit.
    *
    * @param pw where to produce output
    * @param mi the class to output
-   * @return the list of comparabile DVSets for the exit
+   * @return the list of comparable DVSets for the exit
    */
   public static List<DVSet> printMethod(PrintWriter pw, MethodInfo mi) {
 
@@ -2035,7 +2162,7 @@ public final class DCRuntime implements ComparabilityProvider {
     String comp_str = Integer.toString(comp);
     if (dv.isArray()) {
       String name = dv.getName();
-      // If we an array of CLASSNAME or TO_STRING get the index
+      // If we have an array of CLASSNAME or TO_STRING get the index
       // comparability from the base array.
       if (name.endsWith(DaikonVariableInfo.class_suffix)) {
         name = name.substring(0, name.length() - DaikonVariableInfo.class_suffix.length());
@@ -2142,8 +2269,8 @@ public final class DCRuntime implements ComparabilityProvider {
 
   /**
    * Prints to [stream] the segment of the tree that starts at [node], interpreting [node] as
-   * [depth] steps from the root. Requires a Map [tree] that represents a tree though key-value sets
-   * of the form {@code <}parent, set of children{@code >}.
+   * [depth] steps from the root. Requires a Map [tree] that represents a tree through key-value
+   * sets of the form {@code <}parent, set of children{@code >}.
    *
    * @param pw where to write output
    * @param tree map parents to children
@@ -2260,7 +2387,7 @@ public final class DCRuntime implements ComparabilityProvider {
     }
 
     /**
-     * Creates a DVSet with that contains the given variables.
+     * Creates a DVSet that contains the given variables.
      *
      * @param variables the variables
      */

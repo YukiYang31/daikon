@@ -28,12 +28,14 @@ public class ClassInfo {
   /** True if the class has a class initializer. */
   public boolean hasClinit;
 
+  /** True if the class is a JUnit test class. */
+  public boolean isJunitTestClass;
+
   // set by initViaReflection()
   /** reflection object for this class. */
   public @MonotonicNonNull Class<?> clazz;
 
-  // Does not include class initializers, so each element's .member field
-  // is non-null.
+  // Does not include class initializers, so each element's .member field is non-null.
   /** list of methods in the class. */
   public @Growable @IteratorPolyMod List<MethodInfo> method_infos = new ArrayList<>();
 
@@ -50,9 +52,8 @@ public class ClassInfo {
   /** True if any methods in this class were instrumented. */
   public boolean shouldInclude = false;
 
-  /** Mapping from field name to string representation of its value* */
-  // only for static final primitives
-  // which are declared by a CONSTANT VALUE in the code
+  /** Mapping from field name to string representation of its value. */
+  // Only for static final primitives which are declared by a CONSTANT VALUE in the code.
   public @Growable @Replaceable Map<String, String> staticMap = new HashMap<>();
 
   /** Create ClassInfo with specified name. */

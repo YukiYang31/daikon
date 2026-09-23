@@ -58,11 +58,11 @@ import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
-import org.checkerframework.checker.modifiability.qual.Shrinkable;
-import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -526,7 +526,7 @@ public final class FileIO {
     return pr;
   }
 
-  /** Parses a program point flag record. Adds any specified flags to to flags. */
+  /** Parses a program point flag record. Adds any specified flags to flags. */
   private static void parse_ppt_flags(ParseState state, Scanner scanner, @Growable @IteratorPolyMod EnumSet<PptFlags> flags) {
 
     flags.add(parse_enum_val(state, scanner, PptFlags.class, "ppt flags"));
@@ -1054,7 +1054,7 @@ public final class FileIO {
       // System.out.printf("processing filename %s%n", filename);
       try {
         read_data_trace_file(filename, all_ppts, processor, false, ppts_may_be_new);
-      } catch (Daikon.NormalTermination e) {
+      } catch (Daikon.NormalTermination | Daikon.UserError e) {
         throw e;
       } catch (Throwable e) {
         if (dkconfig_continue_after_file_exception) {
@@ -2141,6 +2141,17 @@ public final class FileIO {
                 + " for program point "
                 + ppt.name());
       }
+      if (line.isEmpty()) {
+        throw new Daikon.UserError(
+            "Unexpected end of dtrace record at "
+                + data_trace_state.filename
+                + " line "
+                + reader.getLineNumber()
+                + lineSep
+                + "  Expected to find variable name"
+                + " for program point "
+                + ppt.name());
+      }
 
       if (!unescape_decl(line.trim()).equals(vi.str_name())) {
         throw new Daikon.UserError(
@@ -2509,7 +2520,7 @@ public final class FileIO {
   }
 
   /**
-   * Read either a serialized PptMap or a InvMap and return a PptMap. If an InvMap is specified, it
+   * Read either a serialized PptMap or an InvMap and return a PptMap. If an InvMap is specified, it
    * is converted to a PptMap.
    *
    * @param file the input file
@@ -2668,9 +2679,8 @@ public final class FileIO {
           post_esc = this_esc + 2;
           break;
         case '\\':
-          // This is not in the default case because the search would find
-          // the quoted backslash.  Here we incluce the first backslash in
-          // the output, but not the first.
+          // This is not in the default case because the search would find the quoted backslash.
+          // This code puts just one of the two backslashes in the output.
           sb.append(orig.substring(post_esc, this_esc + 1));
           post_esc = this_esc + 2;
           break;
@@ -3072,7 +3082,7 @@ public final class FileIO {
 
     /**
      * Looks up the next token as a member of enum_class. Throws Daikon.UserError if there is no
-     * token or if it is not valid member of the class. Enums are presumed to be in in upper case.
+     * token or if it is not a valid member of the class. Enums are presumed to be in upper case.
      */
     public <E extends Enum<E>> E parse_enum_val(
         Scanner scanner, Class<E> enum_class, String descr) {
@@ -3100,7 +3110,7 @@ public final class FileIO {
 
   /**
    * Looks up the next token as a member of enum_class. Throws Daikon.UserError if there is no token
-   * or if it is not valid member of the class. Enums are presumed to be in in upper case.
+   * or if it is not a valid member of the class. Enums are presumed to be in upper case.
    */
   public static <E extends Enum<E>> E parse_enum_val(
       ParseState state, Scanner scanner, Class<E> enum_class, String descr) {
