@@ -435,7 +435,7 @@ public class Premain {
    * and only one instrumenter is active in a JVM. Thread-safe because a multithreaded target
    * program instruments classes concurrently.
    */
-  protected static Set<String> junitTestClasses = ConcurrentHashMap.newKeySet();
+  protected static @Growable Set<String> junitTestClasses = ConcurrentHashMap.newKeySet();
 
   /**
    * Returns true if the given class is one that transforms other classes, and so must not itself be
