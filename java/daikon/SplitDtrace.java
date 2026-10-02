@@ -34,7 +34,7 @@ public final class SplitDtrace {
 
   /** Do not instantiate. */
   private SplitDtrace() {
-    throw new Error("Do not instantiate");
+    throw new UnsupportedOperationException("Do not instantiate");
   }
 
   /**

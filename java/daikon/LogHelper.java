@@ -22,7 +22,7 @@ import org.checkerframework.checker.modifiability.qual.Growable;
  */
 public final class LogHelper {
   private LogHelper() {
-    throw new Error("do not instantiate");
+    throw new UnsupportedOperationException("do not instantiate");
   }
 
   /**

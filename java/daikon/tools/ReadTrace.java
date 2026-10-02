@@ -38,7 +38,7 @@ public class ReadTrace {
 
   /** Do not instantiate. */
   private ReadTrace() {
-    throw new Error("Do not instantiate");
+    throw new UnsupportedOperationException("Do not instantiate");
   }
 
   /**

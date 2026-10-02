@@ -43,7 +43,7 @@ public class DaikonSimple {
 
   /** Do not instantiate. */
   private DaikonSimple() {
-    throw new Error("Do not instantiate");
+    throw new UnsupportedOperationException("Do not instantiate");
   }
 
   // logging information

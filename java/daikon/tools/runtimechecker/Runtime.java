@@ -15,7 +15,7 @@ public class Runtime {
 
   /** Do not instantiate. */
   private Runtime() {
-    throw new Error("Do not instantiate");
+    throw new UnsupportedOperationException("Do not instantiate");
   }
 
   /** A list of throwables seen when attempting to evaluate properties. */

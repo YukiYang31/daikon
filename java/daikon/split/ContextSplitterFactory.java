@@ -29,7 +29,7 @@ public class ContextSplitterFactory {
 
   /** Do not instantiate. */
   private ContextSplitterFactory() {
-    throw new Error("Do not instantiate");
+    throw new UnsupportedOperationException("Do not instantiate");
   }
 
   /** Debug tracer. */

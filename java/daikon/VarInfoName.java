@@ -3337,7 +3337,7 @@ public abstract @Interned class VarInfoName implements Serializable, Comparable<
 
     /** Do not instantiate. */
     private QuantHelper() {
-      throw new Error("Do not instantiate");
+      throw new UnsupportedOperationException("Do not instantiate");
     }
 
     /** Debug tracer. */

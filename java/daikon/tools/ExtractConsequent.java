@@ -49,7 +49,7 @@ public class ExtractConsequent {
 
   /** Do not instantiate. */
   private ExtractConsequent() {
-    throw new Error("Do not instantiate");
+    throw new UnsupportedOperationException("Do not instantiate");
   }
 
   public static final Logger debug = Logger.getLogger("daikon.ExtractConsequent");
