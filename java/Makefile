@@ -46,7 +46,7 @@ ifneq (,$(findstring start1.8,start${JAVA_VERSION_STRING}))
   JAVA21 := 0
   JAVA24 := 0
   JAVA25 := 0
-  JAVA26 := 0
+  JAVA27 := 0
   JAVA_RELEASE_NUMBER := 8
 else
   JAVA8 := 0
@@ -54,7 +54,7 @@ else
   JAVA21 := 0
   JAVA24 := 0
   JAVA25 := 0
-  JAVA26 := 0
+  JAVA27 := 0
   JAVA_RELEASE_NUMBER := $(shell echo ${JAVA_VERSION_STRING} | sed 's/\([0-9]*\)\..*/\1/')
 endif
 ifeq ($(shell test ${JAVA_RELEASE_NUMBER} -ge 17; echo $$?),0)
@@ -76,10 +76,13 @@ ifeq ($(shell test ${JAVA_RELEASE_NUMBER} -eq 25; echo $$?),0)
     JAVA25_HOME := ${JAVA_HOME}
   endif
 endif
+ifeq ($(shell test ${JAVA_RELEASE_NUMBER} -ge 27; echo $$?),0)
+  JAVA27 := 1
+endif
+# Use -ge 26, not -ge 27, so that JDK 26 has a value for the --system flag below.
 ifeq ($(shell test ${JAVA_RELEASE_NUMBER} -ge 26; echo $$?),0)
-  JAVA26 := 1
-  ifndef JAVA26_HOME
-    JAVA26_HOME := ${JAVA_HOME}
+  ifndef JAVA27_HOME
+    JAVA27_HOME := ${JAVA_HOME}
   endif
 endif
 
@@ -97,11 +100,11 @@ ifeq (${JAVA25}, 1)
   ifdef JAVA25_HOME
     JAVAC_TARGET_FLAGS ?= --source 25 --target 25 --system ${JAVA25_HOME}
   else
-  ifdef JAVA26_HOME
-    JAVAC_TARGET_FLAGS ?= --source 25 --target 25 --system ${JAVA26_HOME}
+  ifdef JAVA27_HOME
+    JAVAC_TARGET_FLAGS ?= --source 25 --target 25 --system ${JAVA27_HOME}
   else
     # If this happens, $JAVA_HOME must also be empty.
-    $(error JAVA25_HOME and JAVA26_HOME are not set; JAVA_HOME=${JAVA_HOME})
+    $(error JAVA25_HOME and JAVA27_HOME are not set; JAVA_HOME=${JAVA_HOME})
   endif
   endif
 else
@@ -178,7 +181,7 @@ JAVADOC_COMMAND := ${JAVADOC} -cp ${DAIKON_CLASSPATH}
 JAVAC_COMMAND := ${JAVAC} -cp ${DAIKON_CLASSPATH} -Xlint -J-Xmx7g ${JAVAC_ARGS}
 JAVA_COMMAND := ${JAVA} -cp ${DAIKON_CLASSPATH}
 
-DOCLETPATH := ${DAIKONDIR}/java:$(wildcard ${DAIKONDIR}/java/lib/bcel-util-*.jar):$(wildcard ${DAIKONDIR}/java/lib/plume-util-*.jar):$(wildcard ${DAIKONDIR}/java/lib/reflection-util-*.jar):$(wildcard ${DAIKONDIR}/java/lib/hashmap-util-*.jar):${DAIKONDIR}/java/lib/daikon-plumelib.jar
+DOCLETPATH := ${DAIKONDIR}/java:$(wildcard ${DAIKONDIR}/java/lib/java-getopt-*.jar):$(wildcard ${DAIKONDIR}/java/lib/bcel-util-*.jar):$(wildcard ${DAIKONDIR}/java/lib/plume-util-*.jar):$(wildcard ${DAIKONDIR}/java/lib/reflection-util-*.jar):$(wildcard ${DAIKONDIR}/java/lib/hashmap-util-*.jar):${DAIKONDIR}/java/lib/daikon-plumelib.jar
 
 DOCLET_FLAGS :=
 LINKOFFLINE := https://docs.oracle.com/javase/8/docs/api/
@@ -808,7 +811,7 @@ endif
 # See version numbers at https://github.com/google/error-prone/releases
 # and https://errorprone.info/docs/installation.
 # Only run under Java 21+.
-error-prone-version := 2.46.0
+error-prone-version := 2.50.0
 # "-XDaddTypeAnnotationsToSymbol=true" is only required under exactly Java 21,
 # but it's harmless (has no effect) on later versions of Java.
 extra-error-prone-args-1 := --should-stop=ifError=FLOW -XDaddTypeAnnotationsToSymbol=true
@@ -831,6 +834,7 @@ error-prone: errorprone
 errorprone: compile errorprone-nocompile
 # Some of the -Xep are temporary
 #   -Xep:PatternMatchingInstanceof:OFF  requires Java 17 source code
+#   -Xep:StringConcatToTextBlock:OFF  requires Java 15 source code (text blocks)
 errorprone-nocompile:
 ifneq (${JAVA21}, 1)
 	@echo "Error Prone is only run under Java 21+"
@@ -840,7 +844,7 @@ else
 	javac -cp ${DAIKON_CLASSPATH} \
 	  ${JAVAC_ANNOTATION_PROCESSOR_ARGS} \
 	  -XDcompilePolicy=simple -processorpath ${ERRORPRONE_PROCESSOR_PATH} \
-	  '-Xplugin:ErrorProne -Xep:ReferenceEquality:OFF -Xep:StringSplitter:OFF -Xep:AnnotateFormatMethod:OFF -Xep:MutablePublicArray:OFF -Xep:DoNotCallSuggester:OFF -Xep:InlineMeSuggester:OFF -Xep:CanIgnoreReturnValueSuggester:OFF -Xep:ExtendsObject:OFF -Xep:PatternMatchingInstanceof:OFF -Xep:StatementSwitchToExpressionSwitch:OFF' \
+	  '-Xplugin:ErrorProne -Xep:ReferenceEquality:OFF -Xep:StringSplitter:OFF -Xep:AnnotateFormatMethod:OFF -Xep:MutablePublicArray:OFF -Xep:DoNotCallSuggester:OFF -Xep:InlineMeSuggester:OFF -Xep:CanIgnoreReturnValueSuggester:OFF -Xep:ExtendsObject:OFF -Xep:PatternMatchingInstanceof:OFF -Xep:StatementSwitchToExpressionSwitch:OFF -Xep:StringConcatToTextBlock:OFF' \
 	  -Xmaxwarns 100000 \
 	  -Werror \
 	  ${extra-error-prone-args-1} \
@@ -926,7 +930,7 @@ endif
 # override (not augment) any other use of -Alint in this Makefile.
 # "-proc:only" prevents generation of .class files (so generated classfiles are
 # version 8 rather than version 9, and so typecheck jobs can be run in parallel).
-# JAVACHECK_EXTRA_ARGS is set only by the user (and is currently used by Travis).
+# JAVACHECK_EXTRA_ARGS is set only by the user.
 CHECKER_ARGS_ALL_JDK_VERSIONS ?= -Xmaxerrs 10000 -Xmaxwarns 10000 -Aversion -ArequirePrefixInWarningSuppressions -AwarnUnneededSuppressions -AwarnRedundantAnnotations -XDignore.symbol.file -Xlint:deprecation -proc:only -processorpath ${CHECKERFRAMEWORK_JAR} ${JAVACHECK_EXTRA_ARGS}
 ifneq (,$(findstring 1.8.,$(shell java -version 2>&1)))
   CHECKER_ARGS ?= ${CHECKER_ARGS_ALL_JDK_VERSIONS} -J-Xbootclasspath/p:${CHECKERFRAMEWORK_JAVAC}
@@ -986,7 +990,7 @@ show_nullness_java_files:
 	@echo ${DAIKON_JAVA_FILES}
 
 ## TODO: Reinstate these dependencies later:  typecheck-prototype typecheck-vindex
-# Check is in multiple parts because Travis won't run jobs longer than 50 minutes
+# Check is in multiple parts to keep each CI job short
 # and because CI memory can get exhausted on multiple CI platforms (why?).
 # Index Checker takes much longer than any other checker.
 # Typechecking times (in minutes, as of 2025-11-03):
@@ -1227,6 +1231,9 @@ check-serialize:
 
 .PHONY: junit
 junit: daikon/Daikon.class
+	@# This is not a prerequisite, so that "make -j" does not run it concurrently
+	@# with compiling Daikon, whose classes the SplitterFactoryTest rules use.
+	${MAKE} ${AUTO_GENERATED_CLASSES_2}
 	@echo "Running unit (not system) tests..."
 	LC_ALL=en_US.UTF-8 ${JAVA_COMMAND} org.junit.runner.JUnitCore daikon.test.AllTestsSuite
 ifeq (${JAVA24}, 1)
@@ -1234,14 +1241,9 @@ ifeq (${JAVA24}, 1)
 	@# under versions of Java that do not have java.lang.classfile.
 	LC_ALL=en_US.UTF-8 ${JAVA_COMMAND} org.junit.runner.JUnitCore daikon.test.AllTestsSuite24
 endif
-
-## TODO:  This target is never used!!!
-junit-all: junit
-	@# Alternately, MasterUnitTester could run SplitterFactoryTest,
-	@# but I'm having trouble with that, apparently due to hard-coded
-	@# directory paths.  And these tests are slow, so we want them to
-	@# be separate anyway.
-	${JAVA_COMMAND} daikon.test.split.SplitterFactoryTest
+	@# SplitterFactoryTest is not in AllTestsSuite, because SplitterFactoryTest
+	@# is generated after the rest of Daikon (including AllTestsSuite) is compiled.
+	LC_ALL=en_US.UTF-8 ${JAVA_COMMAND} org.junit.runner.JUnitCore daikon.test.split.SplitterFactoryTest
 
 ###
 ### Clover (code coverage)
@@ -1307,6 +1309,13 @@ endif
 # If Java 8, don't run javadoc; a bug in javadoc causes it to crash.
 ifeq (${JAVA8}, 1)
   SKIP_JAVADOC=1
+endif
+
+# Fails if the api target would skip javadoc.
+.PHONY: check-javadoc-enabled
+check-javadoc-enabled:
+ifeq (${SKIP_JAVADOC},1)
+	$(error Javadoc is disabled (Java 8, or SKIP_JAVADOC=1); use Java 11 or later)
 endif
 
 # Build javadoc using the daikon package and all subpackages of daikon.
@@ -1475,15 +1484,30 @@ daikon/test/split/SplitterFactoryTestUpdater.class: daikon/test/split/SplitterFa
 	${JAVAC_COMMAND} $<
 
 ## First, a file not generated via java-cpp.
-daikon/test/split/SplitterFactoryTest.java: daikon/test/split/SplitterFactoryTestUpdater.class
+# Depending on daikon/Daikon.class regenerates the test whenever Daikon is
+# recompiled, because SplitterFactory determines which splitters the test covers.
+# The rule for daikon/Daikon.class makes this file only after touching
+# daikon/Daikon.class, so this prerequisite does not cause a regress.
+# SPLITTER_UPDATER_ARGS is set by the update-splitter-goals target.
+daikon/test/split/SplitterFactoryTest.java: daikon/Daikon.class \
+		daikon/test/split/SplitterFactoryTestUpdater.class \
+		$(wildcard daikon/test/split/targets/*.spinfo daikon/test/split/targets/*.decls)
 	rm -f $@
 # Has expected errors while compiling splitter files.
 # Suppress output unless whole command fails.
-	(${JAVA_COMMAND} daikon.test.split.SplitterFactoryTestUpdater > /dev/null 2>&1) || ${JAVA_COMMAND} daikon.test.split.SplitterFactoryTestUpdater
+	(${JAVA_COMMAND} daikon.test.split.SplitterFactoryTestUpdater ${SPLITTER_UPDATER_ARGS} > /dev/null 2>&1) \
+	  || ${JAVA_COMMAND} daikon.test.split.SplitterFactoryTestUpdater ${SPLITTER_UPDATER_ARGS}
 	chmod a-w $@
 
 ${AUTO_GENERATED_CLASSES_2}: ${AUTO_GENERATED_FILES_2}
 	${JAVAC_COMMAND} ${AUTO_GENERATED_FILES_2}
+
+# Overwrites SplitterFactoryTest's goal files with the current SplitterFactory output.
+# Examine the differences (e.g., with "git diff") before committing them.
+.PHONY: update-splitter-goals
+update-splitter-goals: daikon/Daikon.class daikon/test/split/SplitterFactoryTestUpdater.class
+	rm -f daikon/test/split/SplitterFactoryTest.java
+	${MAKE} SPLITTER_UPDATER_ARGS=--update-goals ${AUTO_GENERATED_CLASSES_2}
 
 # Create the auto-generated files with jpp
 .PHONY: jpp

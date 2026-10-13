@@ -132,6 +132,10 @@ public final class BuildJDK24 {
             DynComp.class,
             DCInstrument24.class);
     String[] cl_args = options.parse(true, args);
+    if (DynComp.help) {
+      options.printUsage();
+      System.exit(0);
+    }
     if (cl_args.length < 1) {
       System.err.println("must specify destination dir");
       options.printUsage();
@@ -204,7 +208,7 @@ public final class BuildJDK24 {
       File jdk_classes_file = new File(dest_dir, "java/lang/jdk_classes.txt");
       System.out.printf("Writing a list of class names to %s%n", jdk_classes_file);
       // Class names are written in internal form.
-      try (PrintWriter pw = new PrintWriter(jdk_classes_file, UTF_8.name())) {
+      try (PrintWriter pw = new PrintWriter(jdk_classes_file, UTF_8)) {
         for (String classFileName : class_stream_map.keySet()) {
           pw.println(removeSuffix(classFileName, ".class"));
         }
