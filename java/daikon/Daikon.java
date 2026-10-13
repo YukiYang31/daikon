@@ -1494,7 +1494,7 @@ public final class Daikon {
    * Invariants passed on the command line with the {@code --user-defined-invariant} option. A list
    * of class names in the format required by {@link Class#forName(String)}.
    */
-  private static @Growable @IteratorPolyMod List<@ClassGetName String> userDefinedInvariants =
+  private static @Growable @Shrinkable @IteratorPolyMod List<@ClassGetName String> userDefinedInvariants =
       new ArrayList<@ClassGetName String>();
 
   /**
@@ -2603,7 +2603,7 @@ public final class Daikon {
     ppt.equality_view.instantiate_invariants();
   }
 
-  private static @Growable @IteratorPolyMod List<SpinfoFile> spinfoFiles = new ArrayList<>();
+  private static @Growable @Shrinkable @IteratorPolyMod List<SpinfoFile> spinfoFiles = new ArrayList<>();
 
   /**
    * Create user-defined splitters. For each file in the input, add a SpinfoFile to the spinfoFiles
